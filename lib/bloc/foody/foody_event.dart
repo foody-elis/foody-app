@@ -8,3 +8,4 @@ class FoodyEvent extends Equatable {
 }
 
 class DarkThemeToggled extends FoodyEvent {}
+

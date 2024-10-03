@@ -10,11 +10,14 @@ class FoodyState extends Equatable {
     required this.initialRoute,
   });
 
-  const FoodyState.initial() :
-          darkTheme = false,
-          initialRoute = welcomeRoute;
+  const FoodyState.initial()
+      : darkTheme = false,
+        initialRoute = welcomeRoute;
 
-  FoodyState copyWith({bool? darkTheme, bool? copyWithTap}) {
+  FoodyState copyWith({
+    bool? darkTheme,
+    bool? copyWithTap,
+  }) {
     return FoodyState(
       darkTheme: darkTheme ?? this.darkTheme,
       initialRoute: initialRoute,

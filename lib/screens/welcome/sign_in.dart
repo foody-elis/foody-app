@@ -59,7 +59,7 @@ class SignIn extends StatelessWidget {
                 title: 'Password',
                 hint: '**********',
                 obscureText: true,
-                suffixIcon: const Icon(PhosphorIconsRegular.password),
+                suffixIcon: const Icon(PhosphorIconsRegular.lockKey),
                 margin: const EdgeInsets.only(top: 16),
                 onChanged: (password) =>
                     context.read<SignInBloc>().add(PasswordChanged(password: password)),

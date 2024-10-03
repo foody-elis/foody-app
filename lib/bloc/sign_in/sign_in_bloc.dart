@@ -40,9 +40,9 @@ class SignInBloc extends Bloc<SignInEvent, SignInState> {
   }
 
   void _onLoginSubmit(LoginSubmit event, Emitter<SignInState> emit) {
-    if (_isFormValid(emit)) {
+    //if (_isFormValid(emit)) {
       _navigationService.resetToScreen(homeRoute);
-    }
+    //}
   }
 
   void _onEmailChanged(EmailChanged event, Emitter<SignInState> emit) {

@@ -34,7 +34,7 @@ class Welcome extends StatelessWidget {
                 width: 350,
                 height: 350,
                 child:
-                    Lottie.asset("assets/lottie/welcome2.json", animate: true),
+                    Lottie.asset("assets/lottie/welcome.json", animate: true),
               ),
             ),
           ),

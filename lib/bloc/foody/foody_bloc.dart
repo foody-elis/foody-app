@@ -7,16 +7,16 @@ class FoodyBloc extends Bloc<FoodyEvent, FoodyState> {
   // final UserRepository userRepository;
   // final SettingsRepository settingsRepository;
 
-  FoodyBloc(/*{required this.userRepository, required this.settingsRepository}*/)
+  FoodyBloc(
+      /*{required this.userRepository, required this.settingsRepository}*/)
       : super(const FoodyState.initial(
-          /*settingsRepository.get(),
+            /*settingsRepository.get(),
           userRepository.isLogged(),*/
-        )) {
+            )) {
     on<DarkThemeToggled>(_onDarkThemeToggled);
   }
 
-  void _onDarkThemeToggled(
-      DarkThemeToggled event, Emitter<FoodyState> emit) {
+  void _onDarkThemeToggled(DarkThemeToggled event, Emitter<FoodyState> emit) {
     /*final settings = settingsRepository.get();
     settings?.darkTheme = !settings.darkTheme;
     settingsRepository.update(settings!);*/

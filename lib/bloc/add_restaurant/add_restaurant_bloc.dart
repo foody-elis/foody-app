@@ -43,9 +43,9 @@ class AddRestaurantBloc extends Bloc<AddRestaurantEvent, AddRestaurantState> {
   }
 
   void _onFormSubmit(FormSubmit event, Emitter<AddRestaurantState> emit) {
-    if (_isFormValid(emit)) {
+    //if (_isFormValid(emit)) {
       _navigationService.resetToScreen(homeRoute);
-    }
+    //}
   }
 
   void _onNameChanged(NameChanged event, Emitter<AddRestaurantState> emit) {

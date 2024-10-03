@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_spinbox/flutter_spinbox.dart';
-import 'package:phosphor_flutter/phosphor_flutter.dart';
 
 class FoodyNumberField extends StatelessWidget {
   const FoodyNumberField({
@@ -45,20 +44,21 @@ class FoodyNumberField extends StatelessWidget {
             ),
           ),
           Container(
-              margin: const EdgeInsets.only(top: 8),
-              // width: MediaQuery.of(context).size.width,
-              height: 50,
-              decoration: BoxDecoration(
-                color: Theme.of(context).colorScheme.primary.withOpacity(0.1),
-                borderRadius: BorderRadius.circular(10),
-              ),
-              child: SpinBox(
-                min: 1,
-                max: 999,
-                // value: 50,
-                decoration: const InputDecoration(border: InputBorder.none),
-                onChanged: onChanged,
-              )),
+            margin: const EdgeInsets.only(top: 8),
+            // width: MediaQuery.of(context).size.width,
+            height: 50,
+            decoration: BoxDecoration(
+              color: Theme.of(context).colorScheme.primary.withOpacity(0.1),
+              borderRadius: BorderRadius.circular(10),
+            ),
+            child: SpinBox(
+              min: 1,
+              max: 999,
+              // value: 50,
+              decoration: const InputDecoration(border: InputBorder.none),
+              onChanged: onChanged,
+            ),
+          ),
           /*if (errorText != null)
                           Text(
                             errorText!,

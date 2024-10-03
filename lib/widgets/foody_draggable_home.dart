@@ -63,28 +63,30 @@ class FoodyDraggableHome extends StatefulWidget {
   final double stretchMaxHeight;
 
   /// floatingActionButton: An object that defines a position for the FloatingActionButton based on the Scaffold's ScaffoldPrelayoutGeometry.
-  final Widget? floatingActionButton;
+  // final Widget? floatingActionButton;
 
   /// bottomSheet: A persistent bottom sheet shows information that supplements the primary content of the app. A persistent bottom sheet remains visible even when the user interacts with other parts of the app.
   final Widget? bottomSheet;
 
   /// bottomNavigationBarHeight: This is requires when using custom height to adjust body height. This make no effect on bottomNavigationBar.
-  final double? bottomNavigationBarHeight;
+  // final double? bottomNavigationBarHeight;
 
   /// bottomNavigationBar: Snack bars slide from underneath the bottom navigation bar while bottom sheets are stacked on top.
-  final Widget? bottomNavigationBar;
+  // final Widget? bottomNavigationBar;
 
   /// floatingActionButtonLocation: An object that defines a position for the FloatingActionButton based on the Scaffold's ScaffoldPrelayoutGeometry.
-  final FloatingActionButtonLocation? floatingActionButtonLocation;
+  // final FloatingActionButtonLocation? floatingActionButtonLocation;
 
   /// floatingActionButtonAnimator: Provider of animations to move the FloatingActionButton between FloatingActionButtonLocations.
-  final FloatingActionButtonAnimator? floatingActionButtonAnimator;
+  // final FloatingActionButtonAnimator? floatingActionButtonAnimator;
 
   /// physics: How the scroll view should respond to user input. For example, determines how the scroll view continues to animate after the user stops dragging the scroll view.
   final ScrollPhysics? physics;
 
   /// scrollController: An object that can be used to control the position to which this scroll view is scrolled.
   final ScrollController? scrollController;
+
+  final bool extendBody;
 
   /// This will create DraggableHome.
   const FoodyDraggableHome({
@@ -108,13 +110,14 @@ class FoodyDraggableHome extends StatefulWidget {
     this.expandedBody,
     this.stretchMaxHeight = 0.9,
     this.bottomSheet,
-    this.bottomNavigationBarHeight = kBottomNavigationBarHeight,
-    this.bottomNavigationBar,
-    this.floatingActionButton,
-    this.floatingActionButtonLocation,
-    this.floatingActionButtonAnimator,
+    // this.bottomNavigationBarHeight = kBottomNavigationBarHeight,
+    // this.bottomNavigationBar,
+    // this.floatingActionButton,
+    // this.floatingActionButtonLocation,
+    // this.floatingActionButtonAnimator,
     this.physics,
     this.scrollController,
+    this.extendBody = false,
   })  : assert(headerExpandedHeight > 0.0 &&
             headerExpandedHeight < stretchMaxHeight),
         assert(
@@ -148,37 +151,39 @@ class _FoodyDraggableHomeState extends State<FoodyDraggableHome> {
     final double fullyExpandedHeight =
         MediaQuery.of(context).size.height * (widget.stretchMaxHeight);
 
-    return Scaffold(
+    /*return Scaffold(
+      extendBody: widget.extendBody,
       backgroundColor:
           widget.backgroundColor ?? Theme.of(context).scaffoldBackgroundColor,
       drawer: widget.drawer,
-      body: NotificationListener<ScrollNotification>(
-        onNotification: (notification) {
-          if (notification.metrics.axis == Axis.vertical) {
-            // isFullyCollapsed
-            if ((isFullyExpanded.value) &&
-                notification.metrics.extentBefore > 100) {
-              isFullyExpanded.add(false);
-            }
-            //isFullyCollapsed
-            if (notification.metrics.extentBefore >
-                expandedHeight - AppBar().preferredSize.height - 40) {
-              if (!(isFullyCollapsed.value)) isFullyCollapsed.add(true);
-            } else {
-              if ((isFullyCollapsed.value)) isFullyCollapsed.add(false);
-            }
+      body:*/
+    return NotificationListener<ScrollNotification>(
+      onNotification: (notification) {
+        if (notification.metrics.axis == Axis.vertical) {
+          // isFullyCollapsed
+          if ((isFullyExpanded.value) &&
+              notification.metrics.extentBefore > 100) {
+            isFullyExpanded.add(false);
           }
-          return false;
-        },
-        child: sliver(context, appBarHeight, fullyExpandedHeight,
-            expandedHeight, topPadding),
-      ),
-      bottomSheet: widget.bottomSheet,
+          //isFullyCollapsed
+          if (notification.metrics.extentBefore >
+              expandedHeight - AppBar().preferredSize.height - 40) {
+            if (!(isFullyCollapsed.value)) isFullyCollapsed.add(true);
+          } else {
+            if ((isFullyCollapsed.value)) isFullyCollapsed.add(false);
+          }
+        }
+        return false;
+      },
+      child: sliver(context, appBarHeight, fullyExpandedHeight, expandedHeight,
+          topPadding),
+    );
+    /*bottomSheet: widget.bottomSheet,
       bottomNavigationBar: widget.bottomNavigationBar,
       floatingActionButton: widget.floatingActionButton,
       floatingActionButtonLocation: widget.floatingActionButtonLocation,
-      floatingActionButtonAnimator: widget.floatingActionButtonAnimator,
-    );
+      floatingActionButtonAnimator: widget.floatingActionButtonAnimator,*/
+    //);
   }
 
   CustomScrollView sliver(
@@ -266,7 +271,7 @@ class _FoodyDraggableHomeState extends State<FoodyDraggableHome> {
                               ? const SizedBox()
                               : widget.headerBottomBar ?? Container(),
                     ),
-                  )
+                  ),
                 ],
               ),
               stretchTriggerOffset: widget.stretchTriggerOffset,
@@ -305,23 +310,19 @@ class _FoodyDraggableHomeState extends State<FoodyDraggableHome> {
   }
 
   SliverList sliverList(BuildContext context, double topHeight) {
-    final double bottomPadding =
-        widget.bottomNavigationBar == null ? 0 : kBottomNavigationBarHeight;
     return SliverList(
       delegate: SliverChildListDelegate(
         [
           Stack(
             children: [
               Container(
-                height: MediaQuery.of(context).size.height -
-                    topHeight -
-                    bottomPadding,
+                height: MediaQuery.of(context).size.height - topHeight,
                 color: widget.backgroundColor ??
                     Theme.of(context).scaffoldBackgroundColor,
               ),
               Column(
                 children: [
-                  expandedUpArrow(),
+                  // expandedUpArrow(),
                   //Body
                   ...widget.body
                 ],
@@ -333,7 +334,7 @@ class _FoodyDraggableHomeState extends State<FoodyDraggableHome> {
     );
   }
 
-  StreamBuilder<bool> expandedUpArrow() {
+  /*StreamBuilder<bool> expandedUpArrow() {
     return StreamBuilder<bool>(
       stream: isFullyExpanded.stream,
       builder: (context, snapshot) {
@@ -350,5 +351,5 @@ class _FoodyDraggableHomeState extends State<FoodyDraggableHome> {
         );
       },
     );
-  }
+  }*/
 }

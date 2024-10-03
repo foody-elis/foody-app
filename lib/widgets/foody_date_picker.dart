@@ -49,7 +49,7 @@ class _FoodyDatePickerState extends State<FoodyDatePicker>
   @override
   Widget build(BuildContext context) {
     return FoodyTextField(
-      title: "Birth Date",
+      title: "Data di nascita",
       hint: "-- / -- / --",
       controller: controller,
       onTap: onShowCalendarClick,

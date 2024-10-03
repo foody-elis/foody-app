@@ -55,7 +55,7 @@ class SignUpForm extends StatelessWidget {
                 obscureText: true,
                 margin: const EdgeInsets.only(top: 16),
                 suffixIcon: const Icon(
-                  PhosphorIconsRegular.password,
+                  PhosphorIconsRegular.lockKey,
                 ),
                 onChanged: (password) => context
                     .read<SignUpBloc>()
@@ -64,11 +64,11 @@ class SignUpForm extends StatelessWidget {
               ),
               FoodyTextField(
                 required: true,
-                title: 'Conferma Password',
+                title: 'Conferma password',
                 hint: '**********',
                 obscureText: true,
                 margin: const EdgeInsets.only(top: 16),
-                suffixIcon: const Icon(PhosphorIconsRegular.password),
+                suffixIcon: const Icon(PhosphorIconsRegular.lockKey),
                 onChanged: (confirmPassword) => context.read<SignUpBloc>().add(
                     ConfirmPasswordChanged(confirmPassword: confirmPassword)),
                 errorText: state.confirmPasswordError,
@@ -77,6 +77,7 @@ class SignUpForm extends StatelessWidget {
               FoodyDatePicker(
                 // firstDate: DateTime(1900),
                 // lastDate: DateTime.now(),
+
                 onChanged: (birthDate) => context
                     .read<SignUpBloc>()
                     .add(BirthDateChanged(birthDate: birthDate.toString())),

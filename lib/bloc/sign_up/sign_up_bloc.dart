@@ -63,9 +63,9 @@ class SignUpBloc extends Bloc<SignUpEvent, SignUpState> {
   }
 
   void _onSignUpConsumer(SignUpConsumer event, Emitter<SignUpState> emit) {
-    if (_isFormValid(emit)) {
+    //if (_isFormValid(emit)) {
       _navigationService.replaceScreen(homeRoute);
-    }
+    //}
   }
 
   void _onSignUpRestaurateur(

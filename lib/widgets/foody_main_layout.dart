@@ -25,10 +25,11 @@ class FoodyMainLayout extends HookWidget {
     }, [scrollController]);
 
     return CustomScrollView(
+      // shrinkWrap: true,
       controller: scrollController,
       slivers: [
         SliverPersistentHeader(delegate: FoodyAppBar(), pinned: true),
-        SliverFillRemaining(child: child),
+        SliverToBoxAdapter(child: child),
       ],
     );
   }

@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:foody_app/bloc/add_restaurant/add_restaurant_bloc.dart';
 import 'package:foody_app/bloc/bottom_nav_bar/bottom_nav_bar_bloc.dart';
+import 'package:foody_app/bloc/home/home_bloc.dart';
 import 'package:foody_app/bloc/welcome/welcome_bloc.dart';
 import 'package:foody_app/screens/add_restaurant.dart';
 import 'package:foody_app/screens/home/home.dart';
@@ -35,8 +36,11 @@ class Router {
         return CupertinoPageRoute(
           builder: (_) => BlocProvider<BottomNavBarBloc>(
             create: (context) => BottomNavBarBloc(),
-            child: const FoodyPageView(
-              home: Home(),
+            child: FoodyPageView(
+              home: BlocProvider<HomeBloc>(
+                create: (context) => HomeBloc(),
+                child: const Home(),
+              ),
               chats: Chats(),
               orders: Orders(),
               profile: Profile(),

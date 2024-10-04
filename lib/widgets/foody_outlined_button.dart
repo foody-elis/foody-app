@@ -5,16 +5,19 @@ class FoodyOutlinedButton extends StatelessWidget {
     super.key,
     required this.label,
     this.height = 60,
+    this.width,
     this.onPressed,
   });
 
   final String label;
   final double height;
+  final double? width;
   final void Function()? onPressed;
 
   @override
   Widget build(BuildContext context) {
     return SizedBox(
+      width: width,
       height: height,
       child: OutlinedButton(
         onPressed: onPressed,

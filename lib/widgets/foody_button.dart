@@ -1,17 +1,23 @@
 import 'package:flutter/material.dart';
 
 class FoodyButton extends StatelessWidget {
-  const FoodyButton(
-      {super.key, required this.label, this.height = 60, this.onPressed});
+  const FoodyButton({
+    super.key,
+    required this.label,
+    this.height = 60,
+    this.width,
+    this.onPressed,
+  });
 
   final String label;
   final double height;
+  final double? width;
   final void Function()? onPressed;
 
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      // width: size.width >= 540 ? 270.0 : size.width * 0.45,
+      width: width,
       height: height,
       child: ElevatedButton(
         onPressed: onPressed,

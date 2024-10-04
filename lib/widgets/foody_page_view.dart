@@ -8,7 +8,7 @@ import 'package:foody_app/widgets/foody_bottom_nav_bar.dart';
 
 class FoodyPageView extends HookWidget {
   //late PageController _controller;
-  final _duration = const Duration(milliseconds: 500);
+  final _duration = const Duration(milliseconds: 600);
 
   final Widget home;
   final Widget chats;

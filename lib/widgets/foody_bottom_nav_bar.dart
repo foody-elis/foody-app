@@ -112,14 +112,14 @@ class FoodyBottomNavBar extends HookWidget {
                           3 => 254,
                           _ => 34,
                         },
-                        curve: Curves.easeInOut,
+                        curve: Curves.easeIn,
                         duration: const Duration(milliseconds: 600),
                         child: AnimatedContainer(
                           duration: const Duration(milliseconds: 300),
                           width: indicatorWidth.value,
                           onEnd: () => indicatorWidth.value = 5,
                           height: 5,
-                          curve: Curves.easeInOut,
+                          curve: Curves.easeIn,
                           decoration: BoxDecoration(
                               color: Theme.of(context).colorScheme.primary,
                               shape: BoxShape.rectangle,

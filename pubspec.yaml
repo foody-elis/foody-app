@@ -51,6 +51,7 @@ dependencies:
   flutter_spinbox: ^0.13.1
   flutter_hooks: ^0.20.5
   skeletonizer: ^1.4.2
+  time_range_picker: ^2.3.0
 
 dev_dependencies:
   flutter_test:

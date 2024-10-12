@@ -3,6 +3,7 @@
 const String welcomeRoute = '/';
 const String homeRoute = 'home';
 const String addRestaurant = 'add_restaurant';
+const String addSittingTimes = 'add_sitting_times';
 // const String loginRoute = "login";
 // const String preferencesRoute = "preferences";
 // const String settingsRoute = 'settings';

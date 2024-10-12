@@ -11,15 +11,28 @@ class FoodySecondaryLayout extends HookWidget {
   const FoodySecondaryLayout({
     super.key,
     required this.title,
-    required this.subtitle,
+    this.titleWidget,
+    this.subtitle,
+    this.subtitleWidget,
     this.showBottomNavBar = true,
     required this.body,
-  });
+    this.expandedBody,
+    this.horizontalPadding = 20,
+    this.headerExpandedHeight = 0.22,
+  })  :assert(
+            (subtitle == null && subtitleWidget != null) ||
+                (subtitle != null && subtitleWidget == null),
+            "subtitle and subtitleWidget cannot be set at the same time");
 
   final bool showBottomNavBar;
   final String title;
-  final String subtitle;
+  final Widget? titleWidget;
+  final String? subtitle;
+  final Widget? subtitleWidget;
   final List<Widget> body;
+  final Widget? expandedBody;
+  final double horizontalPadding;
+  final double headerExpandedHeight;
 
   @override
   Widget build(BuildContext context) {
@@ -40,14 +53,16 @@ class FoodySecondaryLayout extends HookWidget {
     }
 
     return FoodyDraggableHome(
+      expandedBody: expandedBody,
       scrollController: scrollController,
+      stretchMaxHeight: 0.8,
       extendBody: showBottomNavBar,
       appBarColor: Theme.of(context).colorScheme.surfaceContainer,
       title: Text(
         title,
         style: const TextStyle(fontWeight: FontWeight.bold),
       ),
-      headerExpandedHeight: 0.22,
+      headerExpandedHeight: headerExpandedHeight,
       curvedBodyRadius: 20,
       headerWidget: Container(
         color: Theme.of(context).colorScheme.surfaceContainer,
@@ -57,22 +72,27 @@ class FoodySecondaryLayout extends HookWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Text(
+              titleWidget != null ? titleWidget! : Text(
                 title,
                 style: const TextStyle(
                   fontWeight: FontWeight.bold,
                   fontSize: 26,
                 ),
               ),
-              Text(
-                subtitle,
+              subtitleWidget != null ? subtitleWidget! : Text(
+                subtitle!,
                 style: const TextStyle(color: Colors.grey),
               ),
             ],
           ),
         ),
       ),
-      body: body,
+      body: [
+        Padding(
+          padding: EdgeInsets.symmetric(horizontal: horizontalPadding),
+          child: Column(children: body),
+        ),
+      ],
       // floatingActionButton: floatingActionButton,
     );
   }

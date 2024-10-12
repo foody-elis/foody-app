@@ -3,8 +3,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:foody_app/bloc/home/home_bloc.dart';
 import 'package:foody_app/bloc/home/home_state.dart';
 import 'package:foody_app/widgets/foody_card_restaurant.dart';
-import 'package:foody_app/widgets/foody_tag.dart';
-import 'package:phosphor_flutter/phosphor_flutter.dart';
 import 'package:skeletonizer/skeletonizer.dart';
 
 class Restaurants extends StatelessWidget {
@@ -25,6 +23,7 @@ class Restaurants extends StatelessWidget {
               containersColor: Colors.grey.shade100,
               enabled: false,
               child: ListView.builder(
+                padding: const EdgeInsets.only(top: 10),
                 // primary: false,
                 shrinkWrap: true,
                 physics: const NeverScrollableScrollPhysics(),

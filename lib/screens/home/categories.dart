@@ -26,6 +26,7 @@ class Categories extends StatelessWidget {
                 containersColor: Colors.grey.shade100,
                 enabled: false,
                 child: ListView.builder(
+                  padding: const EdgeInsets.only(top: 10),
                   scrollDirection: Axis.horizontal,
                   itemCount: state.categories.length,
                   itemBuilder: (context, index) {
@@ -33,7 +34,7 @@ class Categories extends StatelessWidget {
                     return FoodyTagOutlined(
                       height: null,
                       width: null,
-                      margin: const EdgeInsets.only(top: 8, right: 5),
+                      margin: const EdgeInsets.only(right: 5),
                       label: category,
                     );
                     /*return Card(

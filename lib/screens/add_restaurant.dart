@@ -25,107 +25,98 @@ class AddRestaurant extends StatelessWidget {
                 "Compila il form per aggiungere il tuo ristorante sulla piattaforma e invia la richiesta.",
             showBottomNavBar: false,
             body: [
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 20),
-                child: Column(
-                  children: [
-                    FoodyTextField(
-                      title: "Nome",
+              FoodyTextField(
+                title: "Nome",
+                required: true,
+                margin: const EdgeInsets.only(top: 16),
+                errorText: state.nameError,
+              ),
+              FoodyTextField(
+                title: "Descrizione",
+                required: true,
+                margin: const EdgeInsets.only(top: 16),
+                textArea: true,
+                errorText: state.descriptionError,
+              ),
+              FoodyPhoneNumberField(
+                title: 'Cellulare',
+                required: true,
+                padding: const EdgeInsets.only(top: 24),
+                onInputChanged: (PhoneNumber value) {
+                  if (value.phoneNumber != null) {
+                    context.read<AddRestaurantBloc>().add(
+                        PhoneNumberChanged(phoneNumber: value.phoneNumber!));
+                  }
+                },
+                errorText: state.phoneNumberError,
+              ),
+              const Row(
+                children: [
+                  Flexible(
+                    flex: 2,
+                    child: FoodyTextField(
                       required: true,
+                      title: "Via/Indirizzo",
                       margin: EdgeInsets.only(top: 16),
-                      errorText: state.nameError,
                     ),
-                    FoodyTextField(
-                      title: "Descrizione",
+                  ),
+                  SizedBox(width: 10),
+                  Flexible(
+                    flex: 1,
+                    child: FoodyTextField(
                       required: true,
+                      title: "Numero Civico",
                       margin: EdgeInsets.only(top: 16),
-                      textArea: true,
-                      errorText: state.descriptionError,
                     ),
-                    FoodyPhoneNumberField(
-                      title: 'Cellulare',
+                  ),
+                ],
+              ),
+              const Row(
+                children: [
+                  Flexible(
+                    flex: 2,
+                    child: FoodyTextField(
                       required: true,
-                      padding: const EdgeInsets.only(top: 24),
-                      onInputChanged: (PhoneNumber value) {
-                        if (value.phoneNumber != null) {
-                          context.read<AddRestaurantBloc>().add(
-                              PhoneNumberChanged(
-                                  phoneNumber: value.phoneNumber!));
-                        }
-                      },
-                      errorText: state.phoneNumberError,
+                      title: "Città",
+                      margin: EdgeInsets.only(top: 16),
                     ),
-                    const Row(
-                      children: [
-                        Flexible(
-                          flex: 2,
-                          child: FoodyTextField(
-                            required: true,
-                            title: "Via/Indirizzo",
-                            margin: EdgeInsets.only(top: 16),
-                          ),
-                        ),
-                        SizedBox(width: 10),
-                        Flexible(
-                          flex: 1,
-                          child: FoodyTextField(
-                            required: true,
-                            title: "Numero Civico",
-                            margin: EdgeInsets.only(top: 16),
-                          ),
-                        ),
-                      ],
+                  ),
+                  SizedBox(width: 10),
+                  Flexible(
+                    flex: 2,
+                    child: FoodyTextField(
+                      required: true,
+                      title: "Provincia",
+                      margin: EdgeInsets.only(top: 16),
                     ),
-                    const Row(
-                      children: [
-                        Flexible(
-                          flex: 2,
-                          child: FoodyTextField(
-                            required: true,
-                            title: "Città",
-                            margin: EdgeInsets.only(top: 16),
-                          ),
-                        ),
-                        SizedBox(width: 10),
-                        Flexible(
-                          flex: 2,
-                          child: FoodyTextField(
-                            required: true,
-                            title: "Provincia",
-                            margin: EdgeInsets.only(top: 16),
-                          ),
-                        ),
-                      ],
+                  ),
+                ],
+              ),
+              Row(
+                children: [
+                  const Flexible(
+                    flex: 2,
+                    child: FoodyTextField(
+                      required: true,
+                      title: "CAP",
+                      margin: EdgeInsets.only(top: 16),
                     ),
-                    Row(
-                      children: [
-                        const Flexible(
-                          flex: 2,
-                          child: FoodyTextField(
-                            required: true,
-                            title: "CAP",
-                            margin: EdgeInsets.only(top: 16),
-                          ),
-                        ),
-                        const SizedBox(width: 10),
-                        Flexible(
-                          flex: 2,
-                          child: FoodyNumberField(
-                            required: true,
-                            title: "Posti a sedere",
-                            margin: const EdgeInsets.only(top: 16),
-                            onChanged: (value) => context
-                                .read<AddRestaurantBloc>()
-                                .add(SeatsChanged(seats: value.toInt())),
-                          ),
-                        ),
-                      ],
+                  ),
+                  const SizedBox(width: 10),
+                  Flexible(
+                    flex: 2,
+                    child: FoodyNumberField(
+                      required: true,
+                      title: "Posti a sedere",
+                      margin: const EdgeInsets.only(top: 16),
+                      onChanged: (value) => context
+                          .read<AddRestaurantBloc>()
+                          .add(SeatsChanged(seats: value.toInt())),
                     ),
-                  ],
-                ),
+                  ),
+                ],
               ),
             ],
-
           ),
           floatingActionButton: FloatingActionButton(
             onPressed: () =>

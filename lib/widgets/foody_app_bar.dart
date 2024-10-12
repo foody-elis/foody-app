@@ -53,6 +53,7 @@ class FoodyAppBar extends SliverPersistentHeaderDelegate {
             duration: const Duration(milliseconds: 100),
             child: FadeInRight(
               animate: true,
+              delay: const Duration(milliseconds: 500),
               duration: const Duration(milliseconds: 800),
               child: SizedBox(
                 width: 250,

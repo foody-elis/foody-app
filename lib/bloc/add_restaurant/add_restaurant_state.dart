@@ -23,7 +23,7 @@ class AddRestaurantState extends Equatable {
       : name = "",
         description = "",
         phoneNumber = "",
-        seats = 0,
+        seats = 1,
         nameError = null,
         descriptionError = null,
         phoneNumberError = null;

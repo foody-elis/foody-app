@@ -2,7 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:foody_app/bloc/add_restaurant/add_restaurant_bloc.dart';
-import 'package:foody_app/bloc/add_sitting_times/add_sitting_times_bloc.dart';
+import 'package:foody_app/bloc/add_sitting_times_list/add_sitting_times_list_bloc.dart';
 import 'package:foody_app/bloc/bottom_nav_bar/bottom_nav_bar_bloc.dart';
 import 'package:foody_app/bloc/home/home_bloc.dart';
 import 'package:foody_app/bloc/welcome/welcome_bloc.dart';
@@ -37,7 +37,10 @@ class Router {
         );
       case addSittingTimes:
         return CupertinoPageRoute(
-          builder: (_) => AddSittingTimesList(),
+          builder: (_) => BlocProvider<AddSittingTimesListBloc>(
+            create: (context) => AddSittingTimesListBloc(),
+            child: const AddSittingTimesList(),
+          ),
         );
       case homeRoute:
         return CupertinoPageRoute(

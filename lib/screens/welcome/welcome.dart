@@ -8,8 +8,6 @@ import 'package:foody_app/screens/welcome/sign_up.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:lottie/lottie.dart';
 
-import '../../bloc/foody_segmented_control/segmented_control_bloc.dart';
-
 class Welcome extends StatelessWidget {
   const Welcome({super.key});
 
@@ -49,9 +47,7 @@ class Welcome extends StatelessWidget {
                 child: Text(
                   'Foody',
                   style: GoogleFonts.palanquinDark(
-                    fontSize: 36,
-                    fontWeight: FontWeight.w600
-                  ),
+                      fontSize: 36, fontWeight: FontWeight.w600),
                   /*style: TextStyle(
                     fontWeight: FontWeight.w900,
                     fontSize: 36,
@@ -66,7 +62,10 @@ class Welcome extends StatelessWidget {
                 delay: const Duration(milliseconds: 800),
                 child: const Text(
                   "Hai fame? Scrolla, prenota e mangia!",
-                  style: TextStyle(fontStyle: FontStyle.italic, color: Colors.grey, fontSize: 16),
+                  style: TextStyle(
+                      fontStyle: FontStyle.italic,
+                      color: Colors.grey,
+                      fontSize: 16),
                 ),
               ),
             ],
@@ -95,15 +94,8 @@ class Welcome extends StatelessWidget {
                               ),
                             ),*/
                           builder: (context) {
-                            return MultiBlocProvider(
-                              providers: [
-                                BlocProvider<SegmentedControlBloc>(
-                                  create: (context) => SegmentedControlBloc(),
-                                ),
-                                BlocProvider<SignUpBloc>(
-                                  create: (context) => SignUpBloc(),
-                                ),
-                              ],
+                            return BlocProvider<SignUpBloc>(
+                              create: (context) => SignUpBloc(),
                               child: const SignUp(),
                             );
                           },
@@ -113,7 +105,7 @@ class Welcome extends StatelessWidget {
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(10),
                         ),
-                        backgroundColor: Theme.of(context).colorScheme.primary,
+                        backgroundColor: Theme.of(context).primaryColor,
                       ),
                       child: const Text(
                         'Registrati',
@@ -152,7 +144,7 @@ class Welcome extends StatelessWidget {
                           borderRadius: BorderRadius.circular(10),
                         ),
                         side: BorderSide(
-                          color: Theme.of(context).colorScheme.primary,
+                          color: Theme.of(context).primaryColor,
                           width: 1,
                         ),
                       ),

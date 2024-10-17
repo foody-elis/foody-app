@@ -1,135 +1,159 @@
+import 'package:animate_do/animate_do.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:foody_app/bloc/add_sitting_times/add_sitting_times_bloc.dart';
-import 'package:foody_app/bloc/add_sitting_times/add_sitting_times_event.dart';
-import 'package:foody_app/bloc/add_sitting_times/add_sitting_times_state.dart';
-import 'package:foody_app/dto/sitting_time.dart';
+import 'package:foody_app/bloc/add_sitting_times_list/add_sitting_times_list_bloc.dart';
+import 'package:foody_app/bloc/add_sitting_times_list/add_sitting_times_list_event.dart';
 import 'package:foody_app/widgets/foody_secondary_layout.dart';
-import 'package:intl/intl.dart';
+import 'package:lottie/lottie.dart';
 import 'package:phosphor_flutter/phosphor_flutter.dart';
 
 import 'add_sitting_times.dart';
 
 class AddSittingTimesList extends StatelessWidget {
-  AddSittingTimesList({super.key});
-
-  final weekDays = [
-    "Lunedì",
-    "Martedì",
-    "Mercoledì",
-    "Giovedì",
-    "Venerdì",
-    "Sabato",
-    "Domenica"
-  ];
+  const AddSittingTimesList({super.key});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: FoodySecondaryLayout(
-        headerExpandedHeight: 0.42,
+        // headerExpandedHeight: 0.3,
+        expandedBodyHeight: 0.8,
         showBottomNavBar: false,
-        expandedBody: const Center(child: Text("EXPANDED BODY")),
+        startWithExpandedBody: true,
+        expandedBody: Padding(
+          padding: const EdgeInsets.only(
+            top: 30,
+            left: 20,
+            right: 20,
+          ),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              FadeInDown(
+                animate: true,
+                duration: const Duration(milliseconds: 500),
+                // delay: const Duration(milliseconds: 1400),
+                child: Lottie.asset(
+                  width: 300,
+                  height: 250,
+                  "assets/lottie/sitting_times.json",
+                  animate: true,
+                ),
+              ),
+              const Text(
+                "Descrizione",
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontSize: 16,
+                ),
+              ),
+              const SizedBox(height: 8),
+              const Text.rich(
+                TextSpan(
+                  children: [
+                    TextSpan(text: "Nel form sottostante dovrai inserire gli "),
+                    TextSpan(
+                      text: "orari",
+                      style: TextStyle(fontWeight: FontWeight.bold),
+                    ),
+                    TextSpan(
+                        text:
+                            " di apertura e chiusura settimanali del tuo ristorante.\n\n"),
+                    TextSpan(
+                        text: "Successivamente dovrai scegliere in quanti "),
+                    TextSpan(
+                      text: "intervalli",
+                      style: TextStyle(fontWeight: FontWeight.bold),
+                    ),
+                    TextSpan(
+                        text: " suddividere la tua giornata lavorativa, "
+                            "cosi da permettere ai clienti di prenotarsi."),
+                  ],
+                ),
+              ),
+              const SizedBox(height: 5),
+              Row(
+                children: [
+                  Chip(
+                    padding: const EdgeInsets.all(0),
+                    // labelPadding: EdgeInsets.z,
+
+                    backgroundColor: Theme.of(context).primaryColor,
+                    label: const Text(
+                      "15 min",
+                      style: TextStyle(color: Colors.white),
+                    ),
+                  ),
+                  const Text(" genera opzioni come 12:00, 12:15, 12:30"),
+                ],
+              ),
+              Row(
+                children: [
+                  Chip(
+                    padding: const EdgeInsets.all(0),
+                    backgroundColor: Theme.of(context).primaryColor,
+                    label: const Text(
+                      "30 min",
+                      style: TextStyle(color: Colors.white),
+                    ),
+                  ),
+                  const Text(" genera opzioni come 12:00, 12:30, 13:00"),
+                ],
+              ),
+              Row(
+                children: [
+                  Chip(
+                    padding: const EdgeInsets.all(0),
+                    backgroundColor: Theme.of(context).primaryColor,
+                    label: const Text(
+                      "60 min",
+                      style: TextStyle(color: Colors.white),
+                    ),
+                  ),
+                  const Text(" genera opzioni come 12:00, 13:00, 14:00"),
+                ],
+              ),
+            ],
+          ),
+        ),
         title: "Orari del tuo ristorante",
-        subtitleWidget: Column(
+        subtitleWidget: const Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const Text(
+            Text(
               "Inserisci gli intervalli di orari in cui i tuoi clienti potranno prenotarsi.",
               style: TextStyle(color: Colors.grey),
             ),
-            const SizedBox(height: 8),
-            Row(
-              children: [
-                Chip(
-                  padding: const EdgeInsets.all(5),
-                  avatar: const Icon(Icons.add),
-                  label: const Text("30 minuti"),
-                  materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                  side: const BorderSide(width: 0),
-                  backgroundColor: Theme.of(context).primaryColor,
-                  labelStyle: const TextStyle(color: Colors.white),
-                  iconTheme: const IconThemeData(color: Colors.white),
-                ),
-                const SizedBox(width: 8),
-                const Text("Aggiungi un intervallo di 30 minuti"),
-              ],
-            ),
-            const SizedBox(height: 8),
-            Row(
-              children: [
-                Chip(
-                  padding: const EdgeInsets.all(5),
-                  avatar: const Icon(Icons.add),
-                  label: const Text("1 ora"),
-                  materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                  side: const BorderSide(width: 0),
-                  backgroundColor: Theme.of(context).primaryColor,
-                  labelStyle: const TextStyle(color: Colors.white),
-                  iconTheme: const IconThemeData(color: Colors.white),
-                ),
-                const SizedBox(width: 8),
-                const Text("Aggiungi un intervallo di 1 ora"),
-              ],
-            ),
-            const SizedBox(height: 8),
-            Row(
-              children: [
-                Container(
-                  padding: const EdgeInsets.all(5),
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(10),
-                    color: Theme.of(context).primaryColor,
-                  ),
-                  child: const Icon(
-                    Icons.add,
-                    color: Colors.white,
-                    size: 16,
-                  ),
-                ),
-                const SizedBox(width: 8),
-                const Text("Aggiungi un intervallo personalizzato"),
-              ],
-            ),
-            const SizedBox(height: 8),
-            Row(
-              children: [
-                Container(
-                  padding: const EdgeInsets.all(5),
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(10),
-                    color: Colors.red,
-                  ),
-                  child: const Icon(
-                    PhosphorIconsRegular.trash,
-                    color: Colors.white,
-                    size: 16,
-                  ),
-                ),
-                const SizedBox(width: 8),
-                const Text("Elimina tutti gli intervallli"),
-              ],
-            ),
+            SizedBox(height: 8),
           ],
         ),
         body: [
           ListView.builder(
             shrinkWrap: true,
-            itemCount: weekDays.length,
+            itemCount: context
+                .read<AddSittingTimesListBloc>()
+                .state
+                .weekDays
+                .keys
+                .length,
             physics: const NeverScrollableScrollPhysics(),
             itemBuilder: (context, index) {
-              return BlocProvider<AddSittingTimesBloc>(
-                create: (context) => AddSittingTimesBloc(
-                  defaultIntervals: index < weekDays.length - 1,
-                ),
-                child: AddSittingTimes(weekDay: weekDays[index]),
-              );
+              String weekDay = context
+                  .read<AddSittingTimesListBloc>()
+                  .state
+                  .weekDays
+                  .keys
+                  .elementAt(index);
+
+              return AddSittingTimes(weekDay: weekDay);
             },
           ),
         ],
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: () => context.read<AddSittingTimesBloc>().add(FormSubmit()),
+        onPressed: () {
+          context.read<AddSittingTimesListBloc>().add(FormSubmit());
+        },
         child: const Icon(PhosphorIconsRegular.paperPlaneRight),
       ),
     );

@@ -26,7 +26,7 @@ class FoodyOutlinedButton extends StatelessWidget {
             borderRadius: BorderRadius.circular(10),
           ),
           side: BorderSide(
-            color: Theme.of(context).colorScheme.primary,
+            color: Theme.of(context).primaryColor,
             width: 1,
           ),
         ),

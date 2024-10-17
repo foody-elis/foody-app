@@ -18,6 +18,7 @@ class FoodyTextField extends StatelessWidget {
     this.errorText,
     this.required = false,
     this.textArea = false,
+    this.label,
   });
 
   final String title;
@@ -33,9 +34,12 @@ class FoodyTextField extends StatelessWidget {
   final String? errorText;
   final bool required;
   final bool textArea;
+  final String? label;
 
   @override
   Widget build(BuildContext context) {
+    if(label != null) controller?.text = label!;
+
     return Container(
       padding: padding,
       margin: margin,
@@ -63,18 +67,20 @@ class FoodyTextField extends StatelessWidget {
             width: MediaQuery.of(context).size.width,
             height: textArea ? 100 : 50,
             decoration: BoxDecoration(
-              color: Theme.of(context).colorScheme.primary.withOpacity(0.1),
+              color: Theme.of(context).primaryColor.withOpacity(0.1),
               borderRadius: BorderRadius.circular(10),
             ),
             child: TextFormField(
               maxLines: textArea ? 5 : 1,
-              keyboardType:  textArea ? TextInputType.multiline : null,
+              keyboardType: textArea ? TextInputType.multiline : null,
               textAlignVertical: suffixIcon != null || errorText != null
                   ? TextAlignVertical.center
                   : null,
               controller: controller,
               obscureText: obscureText,
               decoration: InputDecoration(
+                // label: label != null ? Text(label!) : null,
+                // alignLabelWithHint: false,
                 hintText: hint,
                 hintStyle: TextStyle(fontSize: 14, color: Colors.grey[400]),
                 contentPadding:  EdgeInsets.only(left: 16, right: 16, top: textArea ? 8 : 0),

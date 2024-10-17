@@ -27,7 +27,7 @@ class FoodyTag extends StatelessWidget {
                         side: const BorderSide(color: Colors.grey, width: 1.0),
                         borderRadius: BorderRadius.circular(10.0),
                       ),*/
-        color: Theme.of(context).colorScheme.primary,
+        color: Theme.of(context).primaryColor,
         margin: margin,
         child: InkWell(
           borderRadius: BorderRadius.circular(10),

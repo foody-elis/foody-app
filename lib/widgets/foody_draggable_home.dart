@@ -63,7 +63,7 @@ class FoodyDraggableHome extends HookWidget {
   /// scrollController: An object that can be used to control the position to which this scroll view is scrolled.
   final ScrollController? scrollController;
 
-  final bool extendBody;
+  final bool startWithExpandedBody;
 
   /// This will create DraggableHome.
   const FoodyDraggableHome({
@@ -87,7 +87,7 @@ class FoodyDraggableHome extends HookWidget {
     this.bottomSheet,
     this.physics,
     this.scrollController,
-    this.extendBody = false,
+    this.startWithExpandedBody = false,
   })  : assert(headerExpandedHeight > 0.0 &&
             headerExpandedHeight < stretchMaxHeight),
         assert((stretchMaxHeight > headerExpandedHeight) &&
@@ -119,6 +119,14 @@ class FoodyDraggableHome extends HookWidget {
       curve: Curves.elasticOut,
       reverseCurve: Curves.elasticIn,
     )));
+
+    useEffect(() {
+      if(startWithExpandedBody) {
+        isFullyExpanded.value = true;
+        animationController.forward(from: 1);
+      }
+      return null;
+    }, []);
 
     return NotificationListener<ScrollNotification>(
       onNotification: (notification) {

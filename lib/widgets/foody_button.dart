@@ -25,7 +25,7 @@ class FoodyButton extends StatelessWidget {
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(10),
           ),
-          backgroundColor: Theme.of(context).colorScheme.primary,
+          backgroundColor: Theme.of(context).primaryColor,
         ),
         child: Text(
           label,

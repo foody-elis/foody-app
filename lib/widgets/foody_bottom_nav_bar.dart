@@ -121,7 +121,7 @@ class FoodyBottomNavBar extends HookWidget {
                           height: 5,
                           curve: Curves.easeIn,
                           decoration: BoxDecoration(
-                              color: Theme.of(context).colorScheme.primary,
+                              color: Theme.of(context).primaryColor,
                               shape: BoxShape.rectangle,
                               borderRadius:
                                   const BorderRadius.all(Radius.circular(20))),

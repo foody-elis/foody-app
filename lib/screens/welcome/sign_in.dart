@@ -6,7 +6,6 @@ import 'package:foody_app/bloc/sign_in/sign_in_state.dart';
 import 'package:foody_app/screens/welcome/sign_up.dart';
 import 'package:phosphor_flutter/phosphor_flutter.dart';
 
-import '../../bloc/foody_segmented_control/segmented_control_bloc.dart';
 import '../../bloc/sign_up/sign_up_bloc.dart';
 import '../../widgets/foody_text_field.dart';
 
@@ -61,8 +60,9 @@ class SignIn extends StatelessWidget {
                 obscureText: true,
                 suffixIcon: const Icon(PhosphorIconsRegular.lockKey),
                 margin: const EdgeInsets.only(top: 16),
-                onChanged: (password) =>
-                    context.read<SignInBloc>().add(PasswordChanged(password: password)),
+                onChanged: (password) => context
+                    .read<SignInBloc>()
+                    .add(PasswordChanged(password: password)),
                 errorText: state.passwordError,
               ),
               // Log in Button
@@ -76,7 +76,7 @@ class SignIn extends StatelessWidget {
                   style: ElevatedButton.styleFrom(
                     shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(10)),
-                    backgroundColor: Theme.of(context).colorScheme.primary,
+                    backgroundColor: Theme.of(context).primaryColor,
                   ),
                   child: const Text(
                     'Accedi',
@@ -92,15 +92,8 @@ class SignIn extends StatelessWidget {
                     backgroundColor: Colors.white,
                     isScrollControlled: true,
                     builder: (context) {
-                      return MultiBlocProvider(
-                        providers: [
-                          BlocProvider<SegmentedControlBloc>(
-                            create: (context) => SegmentedControlBloc(),
-                          ),
-                          BlocProvider<SignUpBloc>(
-                            create: (context) => SignUpBloc(),
-                          ),
-                        ],
+                      return BlocProvider<SignUpBloc>(
+                        create: (context) => SignUpBloc(),
                         child: const SignUp(),
                       );
                     },

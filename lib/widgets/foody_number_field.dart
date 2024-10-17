@@ -48,7 +48,7 @@ class FoodyNumberField extends StatelessWidget {
             // width: MediaQuery.of(context).size.width,
             height: 50,
             decoration: BoxDecoration(
-              color: Theme.of(context).colorScheme.primary.withOpacity(0.1),
+              color: Theme.of(context).primaryColor.withOpacity(0.1),
               borderRadius: BorderRadius.circular(10),
             ),
             child: SpinBox(

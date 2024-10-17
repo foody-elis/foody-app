@@ -50,7 +50,7 @@ class _FoodyDatePickerState extends State<FoodyDatePicker>
   Widget build(BuildContext context) {
     return FoodyTextField(
       title: "Data di nascita",
-      hint: "-- / -- / --",
+      hint: "-- / -- / ----",
       controller: controller,
       onTap: onShowCalendarClick,
       suffixIcon: const Icon(PhosphorIconsRegular.calendarDots),

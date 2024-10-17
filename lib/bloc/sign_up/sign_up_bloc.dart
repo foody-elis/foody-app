@@ -19,6 +19,7 @@ class SignUpBloc extends Bloc<SignUpEvent, SignUpState> {
     on<PasswordChanged>(_onPasswordChanged);
     on<ConfirmPasswordChanged>(_onConfirmPasswordChanged);
     on<BirthDateChanged>(_onBirthDateChanged);
+    on<ActiveIndexChanged>(_onActiveIndexChanged);
   }
 
   bool _isFormValid(Emitter<SignUpState> emit) {
@@ -99,5 +100,10 @@ class SignUpBloc extends Bloc<SignUpEvent, SignUpState> {
 
   void _onBirthDateChanged(BirthDateChanged event, Emitter<SignUpState> emit) {
     emit(state.copyWith(birthDate: event.birthDate));
+  }
+
+  void _onActiveIndexChanged(
+      ActiveIndexChanged event, Emitter<SignUpState> emit) {
+    emit(state.copyWith(activeIndex: event.activeIndex));
   }
 }

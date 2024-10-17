@@ -12,6 +12,7 @@ class SignUpState extends Equatable {
   final String? emailError;
   final String? passwordError;
   final String? confirmPasswordError;
+  final int activeIndex;
 
   const SignUpState({
     required this.name,
@@ -25,6 +26,7 @@ class SignUpState extends Equatable {
     required this.emailError,
     required this.passwordError,
     required this.confirmPasswordError,
+    required this.activeIndex,
   });
 
   const SignUpState.initial()
@@ -38,7 +40,8 @@ class SignUpState extends Equatable {
         surnameError = null,
         emailError = null,
         passwordError = null,
-        confirmPasswordError = null;
+        confirmPasswordError = null,
+        activeIndex = 0;
 
   SignUpState copyWith({
     String? name,
@@ -52,6 +55,7 @@ class SignUpState extends Equatable {
     String? emailError,
     String? passwordError,
     String? confirmPasswordError,
+    int? activeIndex,
   }) {
     return SignUpState(
       name: name ?? this.name,
@@ -69,6 +73,7 @@ class SignUpState extends Equatable {
       confirmPasswordError: confirmPasswordError == "null"
           ? null
           : confirmPasswordError ?? this.confirmPasswordError,
+      activeIndex: activeIndex ?? this.activeIndex,
     );
   }
 
@@ -85,5 +90,6 @@ class SignUpState extends Equatable {
         emailError,
         passwordError,
         confirmPasswordError,
+        activeIndex,
       ];
 }

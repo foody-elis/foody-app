@@ -19,6 +19,8 @@ class FoodySecondaryLayout extends HookWidget {
     this.expandedBody,
     this.horizontalPadding = 20,
     this.headerExpandedHeight = 0.22,
+    this.expandedBodyHeight = 0.8,
+    this.startWithExpandedBody = false,
   })  :assert(
             (subtitle == null && subtitleWidget != null) ||
                 (subtitle != null && subtitleWidget == null),
@@ -33,6 +35,8 @@ class FoodySecondaryLayout extends HookWidget {
   final Widget? expandedBody;
   final double horizontalPadding;
   final double headerExpandedHeight;
+  final double expandedBodyHeight;
+  final bool startWithExpandedBody;
 
   @override
   Widget build(BuildContext context) {
@@ -55,8 +59,8 @@ class FoodySecondaryLayout extends HookWidget {
     return FoodyDraggableHome(
       expandedBody: expandedBody,
       scrollController: scrollController,
-      stretchMaxHeight: 0.8,
-      extendBody: showBottomNavBar,
+      stretchMaxHeight: expandedBodyHeight,
+      startWithExpandedBody: startWithExpandedBody,
       appBarColor: Theme.of(context).colorScheme.surfaceContainer,
       title: Text(
         title,

@@ -1,21 +1,18 @@
 import 'package:custom_sliding_segmented_control/custom_sliding_segmented_control.dart';
-import 'package:flutter/cupertino.dart' show CupertinoColors;
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:foody_app/bloc/foody_segmented_control/segmented_control_bloc.dart';
-import 'package:foody_app/bloc/foody_segmented_control/segmented_control_event.dart';
-import 'package:foody_app/bloc/foody_segmented_control/segmented_control_state.dart';
 import 'package:phosphor_flutter/phosphor_flutter.dart';
 
 class FoodySegmentedControl extends StatelessWidget {
   const FoodySegmentedControl({
     super.key,
     required this.labels,
+    required this.activeIndex,
     this.icons,
     this.onValueChanged,
   });
 
   final List<String> labels;
+  final int activeIndex;
   final List<Function([PhosphorIconsStyle])>? icons;
   final void Function(int)? onValueChanged;
 
@@ -27,28 +24,28 @@ class FoodySegmentedControl extends StatelessWidget {
         index,
         SizedBox(
           height: 40,
-          child: BlocBuilder<SegmentedControlBloc, SegmentedControlState>(builder: (context, state) {
-            return Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                if (icons != null) ...[
-                  Icon(
-                    icons![index](index == state.activeIndex
-                        ? PhosphorIconsStyle.bold
-                        : PhosphorIconsStyle.regular),
-                    size: 20,
-                  ),
-                  const SizedBox(width: 8),
-                ],
-                Text(
-                  label,
-                  style: TextStyle(
-                      fontWeight:
-                      index == state.activeIndex ? FontWeight.bold : null),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              if (icons != null) ...[
+                Icon(
+                  icons![index](index == activeIndex
+                      ? PhosphorIconsStyle.bold
+                      : PhosphorIconsStyle.regular),
+                  size: 20,
+                  color: index == activeIndex ? Colors.white : Colors.black,
                 ),
+                const SizedBox(width: 8),
               ],
-            );
-          })
+              Text(
+                label,
+                style: TextStyle(
+                  fontWeight: index == activeIndex ? FontWeight.bold : null,
+                  color: index == activeIndex ? Colors.white : Colors.black,
+                ),
+              ),
+            ],
+          ),
         ),
       );
     });
@@ -57,13 +54,12 @@ class FoodySegmentedControl extends StatelessWidget {
       isStretch: true,
       innerPadding: const EdgeInsets.all(0),
       decoration: BoxDecoration(
-        color: CupertinoColors.lightBackgroundGray,
-        borderRadius: BorderRadius.circular(8),
+        color: Theme.of(context).primaryColor.withOpacity(0.1),
+        borderRadius: BorderRadius.circular(10),
       ),
       thumbDecoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(6),
-        border: Border.all(color: Colors.black.withOpacity(0.8)),
+        color: Theme.of(context).colorScheme.primary,
+        borderRadius: BorderRadius.circular(10),
         boxShadow: [
           BoxShadow(
             color: Colors.black.withOpacity(0.2),
@@ -76,11 +72,9 @@ class FoodySegmentedControl extends StatelessWidget {
           ),
         ],
       ),
+      initialValue: activeIndex,
       children: segmentedButtons,
-      onValueChanged: (int value) {
-        context.read<SegmentedControlBloc>().add(ActiveIndexChanged(activeIndex: value));
-        onValueChanged?.call(value);
-      },
+      onValueChanged: (int value) => onValueChanged?.call(value),
     );
   }
 }

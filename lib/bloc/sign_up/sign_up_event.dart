@@ -64,3 +64,12 @@ class BirthDateChanged extends SignUpEvent {
   @override
   List<Object> get props => [birthDate];
 }
+
+class ActiveIndexChanged extends SignUpEvent {
+  const ActiveIndexChanged({required this.activeIndex});
+
+  final int activeIndex;
+
+  @override
+  List<Object> get props => [activeIndex];
+}

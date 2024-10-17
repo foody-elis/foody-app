@@ -17,7 +17,7 @@ class AppBarWave extends StatelessWidget {
           decoration: BoxDecoration(
             gradient: LinearGradient(
               colors: [
-                Theme.of(context).colorScheme.primary,
+                Theme.of(context).primaryColor,
                 const Color(0xFFF6EFE9)
               ],
             ),

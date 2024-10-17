@@ -1,28 +1,31 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
-import 'package:foody_app/bloc/add_sitting_times/add_sitting_times_bloc.dart';
-import 'package:foody_app/bloc/add_sitting_times/add_sitting_times_event.dart';
-import 'package:foody_app/bloc/add_sitting_times/add_sitting_times_state.dart';
-import 'package:foody_app/utils/show_snackbar.dart';
+import 'package:foody_app/bloc/add_sitting_times_list/add_sitting_times_list_bloc.dart';
+import 'package:foody_app/bloc/add_sitting_times_list/add_sitting_times_list_event.dart';
+import 'package:foody_app/bloc/add_sitting_times_list/add_sitting_times_list_state.dart';
+import 'package:foody_app/utils/show_foody_time_range_picker.dart';
+import 'package:foody_app/widgets/foody_segmented_control.dart';
 import 'package:intl/intl.dart';
 import 'package:phosphor_flutter/phosphor_flutter.dart';
-import 'package:time_range_picker/time_range_picker.dart';
+
+import '../../widgets/foody_text_field.dart';
 
 class AddSittingTimes extends HookWidget {
   const AddSittingTimes({super.key, required this.weekDay});
 
   final String weekDay;
 
-  bool _isBefore(TimeOfDay a, TimeOfDay b) =>
-      a.hour < b.hour || (a.hour == b.hour && a.minute <= b.minute);
-
   @override
   Widget build(BuildContext context) {
-    final gridViewScrollController = useScrollController();
+    final lunchTextController = useTextEditingController();
+    final dinnerTextController = useTextEditingController();
 
-    return BlocBuilder<AddSittingTimesBloc, AddSittingTimesState>(
-      builder: (context, state) {
+    return BlocBuilder<AddSittingTimesListBloc, AddSittingTimesListState>(
+      buildWhen: (prev, curr) => prev.weekDays[weekDay] != curr.weekDays[weekDay],
+      builder: (context, listState) {
+        final state = listState.weekDays[weekDay]!;
+
         return Card(
           clipBehavior: Clip.antiAlias,
           margin: const EdgeInsets.only(bottom: 10),
@@ -38,9 +41,11 @@ class AddSittingTimes extends HookWidget {
             shape: const Border(),
             minTileHeight: 60,
             onExpansionChanged: (expanded) => context
-                .read<AddSittingTimesBloc>()
-                .add(AccordionStateChanged(state: expanded)),
-            title: state.accordionsState == false && state.sittingTimes.isEmpty
+                .read<AddSittingTimesListBloc>()
+                .add(AccordionStateChanged(weekDay: weekDay, state: expanded)),
+            title: state.accordionsState == false &&
+                    state.lunchStartTime == null &&
+                    state.dinnerStartTime == null
                 ? Text(
                     "$weekDay - Chiuso",
                     style: const TextStyle(
@@ -59,7 +64,69 @@ class AddSittingTimes extends HookWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Container(
+                    FoodyTextField(
+                      title: "Orario lavorativo pranzo",
+                      hint: "Dalle --:-- alle --:--",
+                      controller: lunchTextController,
+                      label: state.lunchStartTime != null
+                          ? "Dalle ${DateFormat('HH:mm').format(state.lunchStartTime!)} "
+                              "alle ${DateFormat('HH:mm').format(state.lunchEndTime!)}"
+                          : null,
+                      onTap: showFoodyTimeRangePicker(
+                        context: context,
+                        lastDateTime:
+                            DateTime.now().copyWith(hour: 12, minute: 0),
+                        onSubmit: (startTime, endTime) => context
+                            .read<AddSittingTimesListBloc>()
+                            .add(LunchTimeChanged(
+                          weekDay: weekDay,
+                          startTime: startTime,
+                              endTime: endTime,
+                            )),
+                      ),
+                      suffixIcon: const Icon(PhosphorIconsRegular.sun),
+                      showCursor: false,
+                      readOnly: true,
+                    ),
+                    FoodyTextField(
+                      margin: const EdgeInsets.only(top: 10),
+                      title: "Orario lavorativo cena",
+                      hint: "Dalle --:-- alle --:--",
+                      controller: dinnerTextController,
+                      label: state.dinnerStartTime != null
+                          ? "Dalle ${DateFormat('HH:mm').format(state.dinnerStartTime!)} "
+                              "alle ${DateFormat('HH:mm').format(state.dinnerEndTime!)}"
+                          : null,
+                      onTap: showFoodyTimeRangePicker(
+                        context: context,
+                        lastDateTime:
+                            DateTime.now().copyWith(hour: 19, minute: 0),
+                        onSubmit: (startTime, endTime) => context
+                            .read<AddSittingTimesListBloc>()
+                            .add(DinnerTimeChanged(
+                          weekDay: weekDay,
+                          startTime: startTime,
+                              endTime: endTime,
+                            )),
+                      ),
+                      suffixIcon: const Icon(PhosphorIconsRegular.moon),
+                      showCursor: false,
+                      readOnly: true,
+                    ),
+                    const SizedBox(height: 15),
+                    const Text(
+                      "Suddivisione intervalli",
+                      style: TextStyle(color: Colors.grey),
+                    ),
+                    const SizedBox(height: 8),
+                    FoodySegmentedControl(
+                      labels: const ["15 min", "30 min", "60 min"],
+                      activeIndex: state.activeIndex,
+                      onValueChanged: (value) => context
+                          .read<AddSittingTimesListBloc>()
+                          .add(ActiveIndexChanged(weekDay: weekDay, activeIndex: value)),
+                    ),
+                    /*Container(
                       height: 240,
                       // margin: const EdgeInsets.symmetric(horizontal: 15),
                       padding: const EdgeInsets.symmetric(horizontal: 8),
@@ -84,6 +151,7 @@ class AddSittingTimes extends HookWidget {
                           crossAxisCount: 2,
                           childAspectRatio: 4.2,
                         ),
+                        controller: gridViewScrollController,
                         // controller: ScrollController(),
                         shrinkWrap: true,
                         // scrollDirection: Axis.horizontal,
@@ -98,7 +166,7 @@ class AddSittingTimes extends HookWidget {
                                 MaterialTapTargetSize.shrinkWrap,*/
                             // padding: const EdgeInsets.all(5),
                             onDeleted: () => context
-                                .read<AddSittingTimesBloc>()
+                                .read<AddSittingTimesListBloc>()
                                 .add(SittingTimesDeleted(
                                     sittingTime: sittingTime)),
                             label: SizedBox(
@@ -110,7 +178,6 @@ class AddSittingTimes extends HookWidget {
                             ),
                             labelStyle: const TextStyle(
                               fontWeight: FontWeight.bold,
-                              // color: Colors.white,
                             ),
                           );
                         },
@@ -129,7 +196,7 @@ class AddSittingTimes extends HookWidget {
                           iconTheme: const IconThemeData(color: Colors.white),
                           // backgroundColor: Theme.of(context).primaryColor,
                           onPressed: () => context
-                              .read<AddSittingTimesBloc>()
+                              .read<AddSittingTimesListBloc>()
                               .add(Add30MinutesSittingTime()),
                         ),
                         const SizedBox(width: 8),
@@ -144,7 +211,7 @@ class AddSittingTimes extends HookWidget {
                           // color: WidgetStateProperty.all(Theme.of(context).primaryColor),
                           // backgroundColor: Theme.of(context).primaryColor,
                           onPressed: () => context
-                              .read<AddSittingTimesBloc>()
+                              .read<AddSittingTimesListBloc>()
                               .add(Add1HourSittingTime()),
                         ),
                         /*ActionChip(
@@ -243,7 +310,7 @@ class AddSittingTimes extends HookWidget {
                                     minute: result.endTime.minute,
                                   );
 
-                                  context.read<AddSittingTimesBloc>().add(
+                                  context.read<AddSittingTimesListBloc>().add(
                                       CustomSittingTimeAdded(
                                           startTime: startTime,
                                           endTime: endTime));
@@ -278,12 +345,12 @@ class AddSittingTimes extends HookWidget {
                             icon: const Icon(PhosphorIconsRegular.trash),
                             iconSize: 18,
                             onPressed: () => context
-                                .read<AddSittingTimesBloc>()
+                                .read<AddSittingTimesListBloc>()
                                 .add(ClearSittingTimes()),
                           ),
                         ),
                       ],
-                    ),
+                    ),*/
                   ],
                 ),
               )

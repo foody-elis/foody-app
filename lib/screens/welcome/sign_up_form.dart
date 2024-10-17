@@ -75,15 +75,9 @@ class SignUpForm extends StatelessWidget {
               ),
               const SizedBox(height: 16),
               FoodyDatePicker(
-                // firstDate: DateTime(1900),
-                // lastDate: DateTime.now(),
-
                 onChanged: (birthDate) => context
                     .read<SignUpBloc>()
                     .add(BirthDateChanged(birthDate: birthDate.toString())),
-                //backgroundColorBottomSheet: Colors.white,
-                //icon: Icon(PhosphorIcons.calendarDots()),
-                // selectedDate: selectedDate,
               ),
             ],
           ),

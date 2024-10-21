@@ -1,16 +1,21 @@
 import 'package:bloc_concurrency/bloc_concurrency.dart';
 import 'package:email_validator/email_validator.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:foody_app/dto/request/user_registration_request_dto.dart';
+import 'package:foody_app/dto/response/user_registration_response_dto.dart';
+import 'package:foody_app/repository/interface/foody_api_repository.dart';
 import 'package:foody_app/routing/constants.dart';
 
 import '../../routing/navigation_service.dart';
+import '../../utils/call_api.dart';
 import 'sign_up_event.dart';
 import 'sign_up_state.dart';
 
 class SignUpBloc extends Bloc<SignUpEvent, SignUpState> {
   final NavigationService _navigationService = NavigationService();
+  final FoodyApiRepository foodyApiRepository;
 
-  SignUpBloc() : super(const SignUpState.initial()) {
+  SignUpBloc({required this.foodyApiRepository}) : super(const SignUpState.initial()) {
     on<SignUpConsumer>(_onSignUpConsumer, transformer: droppable());
     on<SignUpRestaurateur>(_onSignUpRestaurateur, transformer: droppable());
     on<NameChanged>(_onNameChanged);
@@ -34,7 +39,7 @@ class SignUpBloc extends Bloc<SignUpEvent, SignUpState> {
       isValid = false;
     }
 
-    if (state.surname != null && state.surname!.length > 30) {
+    if (state.surname.length > 30) {
       emit(state.copyWith(
           surnameError: "Il cognome non può contenere più di 30 caratteri"));
       isValid = false;
@@ -63,10 +68,38 @@ class SignUpBloc extends Bloc<SignUpEvent, SignUpState> {
     return isValid;
   }
 
-  void _onSignUpConsumer(SignUpConsumer event, Emitter<SignUpState> emit) {
+  void _onSignUpConsumer(SignUpConsumer event, Emitter<SignUpState> emit) async {
     //if (_isFormValid(emit)) {
-      _navigationService.replaceScreen(homeRoute);
+    //   _navigationService.replaceScreen(homeRoute);
     //}
+
+    await callApi<UserRegistrationResponseDto>(
+      api: foodyApiRepository.auth.registerCustomer,
+      data: UserRegistrationRequestDto(
+        name: "aa",
+        surname: "bb",
+        email: "cc@gmail.com",
+        password: "dd",
+        phoneNumber: "",
+        // birthDate: DateTime.parse(state.birthDate),
+        birthDate: DateTime.now(),
+        avatar: " ",
+      ),
+      onComplete: (response) => print(response),
+      onFailed: (errors, statusCode) {
+        for (String error in errors) {
+          emit(state.copyWith(apiError: error));
+        }
+
+        emit(state.copyWith(apiError: ""));
+      },
+      onError: () {
+        emit(state.copyWith(
+          apiError: "There was an error while logging in. Try again in a while.",
+        ));
+        emit(state.copyWith(apiError: ""));
+      },
+    );
   }
 
   void _onSignUpRestaurateur(

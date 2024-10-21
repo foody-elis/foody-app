@@ -29,6 +29,7 @@ class SignUpForm extends StatelessWidget {
                 errorText: state.nameError,
               ),
               FoodyTextField(
+                required: true,
                 title: 'Cognome',
                 margin: const EdgeInsets.only(top: 16),
                 onChanged: (surname) => context

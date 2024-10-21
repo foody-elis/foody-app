@@ -3,8 +3,9 @@ import 'package:foody_app/bloc/add_sitting_times_list/add_sitting_times_state.da
 
 class AddSittingTimesListState extends Equatable {
   final Map<String, AddSittingTimesState> weekDays;
+  final String error;
 
-  const AddSittingTimesListState({required this.weekDays});
+  const AddSittingTimesListState({required this.weekDays, required this.error});
 
   AddSittingTimesListState.initial()
       : weekDays = {
@@ -15,14 +16,19 @@ class AddSittingTimesListState extends Equatable {
           "Venerdì": const AddSittingTimesState.initial(),
           "Sabato": const AddSittingTimesState.initial(),
           "Domenica": const AddSittingTimesState.initial()
-        };
+        },
+        error = "";
 
   AddSittingTimesListState copyWith({
     Map<String, AddSittingTimesState>? weekDays,
+    String? error,
   }) {
-    return AddSittingTimesListState(weekDays: weekDays ?? this.weekDays);
+    return AddSittingTimesListState(
+      weekDays: weekDays ?? this.weekDays,
+      error: error ?? this.error,
+    );
   }
 
   @override
-  List<Object?> get props => [weekDays];
+  List<Object?> get props => [weekDays, error];
 }

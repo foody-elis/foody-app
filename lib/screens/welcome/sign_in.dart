@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:foody_app/bloc/sign_in/sign_in_bloc.dart';
 import 'package:foody_app/bloc/sign_in/sign_in_event.dart';
 import 'package:foody_app/bloc/sign_in/sign_in_state.dart';
+import 'package:foody_app/repository/interface/foody_api_repository.dart';
 import 'package:foody_app/screens/welcome/sign_up.dart';
 import 'package:phosphor_flutter/phosphor_flutter.dart';
 
@@ -93,7 +94,9 @@ class SignIn extends StatelessWidget {
                     isScrollControlled: true,
                     builder: (context) {
                       return BlocProvider<SignUpBloc>(
-                        create: (context) => SignUpBloc(),
+                        create: (context) => SignUpBloc(
+                            foodyApiRepository:
+                                context.read<FoodyApiRepository>()),
                         child: const SignUp(),
                       );
                     },

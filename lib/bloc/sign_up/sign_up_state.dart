@@ -2,17 +2,18 @@ import 'package:equatable/equatable.dart';
 
 class SignUpState extends Equatable {
   final String name;
-  final String? surname;
+  final String surname;
   final String email;
   final String password;
   final String confirmPassword;
-  final String? birthDate;
+  final String birthDate;
   final String? nameError;
   final String? surnameError;
   final String? emailError;
   final String? passwordError;
   final String? confirmPasswordError;
   final int activeIndex;
+  final String apiError;
 
   const SignUpState({
     required this.name,
@@ -27,21 +28,23 @@ class SignUpState extends Equatable {
     required this.passwordError,
     required this.confirmPasswordError,
     required this.activeIndex,
+    required this.apiError,
   });
 
   const SignUpState.initial()
       : name = "",
-        surname = null,
+        surname = "",
         email = "",
         password = "",
         confirmPassword = "",
-        birthDate = null,
+        birthDate = "",
         nameError = null,
         surnameError = null,
         emailError = null,
         passwordError = null,
         confirmPasswordError = null,
-        activeIndex = 0;
+        activeIndex = 0,
+        apiError = "";
 
   SignUpState copyWith({
     String? name,
@@ -56,14 +59,15 @@ class SignUpState extends Equatable {
     String? passwordError,
     String? confirmPasswordError,
     int? activeIndex,
+    String? apiError,
   }) {
     return SignUpState(
       name: name ?? this.name,
-      surname: surname == "null" ? null : surname ?? this.surname,
+      surname: surname ?? this.surname,
       email: email ?? this.email,
       password: password ?? this.password,
       confirmPassword: confirmPassword ?? this.confirmPassword,
-      birthDate: birthDate == "null" ? null : birthDate ?? this.birthDate,
+      birthDate: birthDate ?? this.birthDate,
       nameError: nameError == "null" ? null : nameError ?? this.nameError,
       surnameError:
           surnameError == "null" ? null : surnameError ?? this.surnameError,
@@ -74,6 +78,7 @@ class SignUpState extends Equatable {
           ? null
           : confirmPasswordError ?? this.confirmPasswordError,
       activeIndex: activeIndex ?? this.activeIndex,
+      apiError: apiError ?? this.apiError,
     );
   }
 
@@ -91,5 +96,6 @@ class SignUpState extends Equatable {
         passwordError,
         confirmPasswordError,
         activeIndex,
+        apiError,
       ];
 }

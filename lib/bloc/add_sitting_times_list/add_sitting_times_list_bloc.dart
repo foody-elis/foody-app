@@ -1,7 +1,6 @@
 import 'package:bloc_concurrency/bloc_concurrency.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:foody_app/bloc/add_sitting_times_list/add_sitting_times_state.dart';
-import 'package:foody_app/dto/sitting_time.dart';
 import 'package:foody_app/routing/constants.dart';
 
 import '../../routing/navigation_service.dart';
@@ -21,12 +20,18 @@ class AddSittingTimesListBloc
   }
 
   void _onFormSubmit(FormSubmit event, Emitter<AddSittingTimesListState> emit) {
-    //if (_isFormValid(emit)) {
-    // _navigationService.resetToScreen(homeRoute);
-    //}
-    state.weekDays.forEach((weekDay, state) {
-      // ??????????????
-    });
+    for (String weekDay in state.weekDays.keys) {
+      final weekDayState = state.weekDays[weekDay]!;
+
+      if (weekDayState.accordionsState == null) {
+        emit(state.copyWith(
+            error: "Per andare avanti devi prima visualizzare: $weekDay"));
+        emit(state.copyWith(error: ""));
+        return;
+      }
+    }
+
+    _navigationService.resetToScreen(homeRoute);
   }
 
   void _onLunchTimeChanged(

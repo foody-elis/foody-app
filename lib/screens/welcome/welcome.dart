@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:foody_app/bloc/sign_in/sign_in_bloc.dart';
 import 'package:foody_app/bloc/sign_up/sign_up_bloc.dart';
+import 'package:foody_app/repository/interface/foody_api_repository.dart';
 import 'package:foody_app/screens/welcome/sign_in.dart';
 import 'package:foody_app/screens/welcome/sign_up.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -95,7 +96,7 @@ class Welcome extends StatelessWidget {
                             ),*/
                           builder: (context) {
                             return BlocProvider<SignUpBloc>(
-                              create: (context) => SignUpBloc(),
+                              create: (context) => SignUpBloc(foodyApiRepository: context.read<FoodyApiRepository>()),
                               child: const SignUp(),
                             );
                           },

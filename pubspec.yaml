@@ -52,6 +52,11 @@ dependencies:
   flutter_hooks: ^0.20.5
   skeletonizer: ^1.4.2
   time_range_picker: ^2.3.0
+  retrofit: ^4.4.1
+  objectbox: ^4.0.3
+  objectbox_flutter_libs: any
+  dio: ^5.7.0
+  json_annotation: ^4.9.0
 
 dev_dependencies:
   flutter_test:
@@ -63,6 +68,10 @@ dev_dependencies:
   # package. See that file for information about deactivating specific lint
   # rules and activating additional ones.
   flutter_lints: ^4.0.0
+  build_runner: ^2.4.13
+  objectbox_generator: any
+  retrofit_generator: '>=7.0.0 <8.0.0'
+  json_serializable: ^6.8.0
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
@@ -109,3 +118,6 @@ flutter:
   #
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/to/font-from-package
+
+objectbox:
+  output_dir: object_box

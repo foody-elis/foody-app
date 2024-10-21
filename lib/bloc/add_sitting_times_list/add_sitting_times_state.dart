@@ -1,5 +1,4 @@
 import 'package:equatable/equatable.dart';
-import 'package:foody_app/dto/sitting_time.dart';
 
 class AddSittingTimesState extends Equatable {
   final DateTime? lunchStartTime;

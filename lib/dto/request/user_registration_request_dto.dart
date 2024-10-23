@@ -1,5 +1,7 @@
 import 'package:json_annotation/json_annotation.dart';
 
+import '../../utils/datetime_json_serializer.dart';
+
 part '../mapper/request/user_registration_request_dto.g.dart';
 
 @JsonSerializable()
@@ -21,9 +23,13 @@ class UserRegistrationRequestDto {
   final String password;
   final String name;
   final String surname;
-  final DateTime birthDate;
   final String phoneNumber;
   final String avatar;
 
+  @JsonKey(fromJson: dateTimeFromJson, toJson: dateTimeToJson)
+  final DateTime birthDate;
+
   Map<String, dynamic> toJson() => _$UserRegistrationRequestDtoToJson(this);
 }
+
+

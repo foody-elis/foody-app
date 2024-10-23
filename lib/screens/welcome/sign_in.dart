@@ -4,10 +4,12 @@ import 'package:foody_app/bloc/sign_in/sign_in_bloc.dart';
 import 'package:foody_app/bloc/sign_in/sign_in_event.dart';
 import 'package:foody_app/bloc/sign_in/sign_in_state.dart';
 import 'package:foody_app/repository/interface/foody_api_repository.dart';
+import 'package:foody_app/repository/interface/user_repository.dart';
 import 'package:foody_app/screens/welcome/sign_up.dart';
 import 'package:phosphor_flutter/phosphor_flutter.dart';
 
 import '../../bloc/sign_up/sign_up_bloc.dart';
+import '../../utils/show_foody_modal_bottom_sheet.dart';
 import '../../widgets/foody_text_field.dart';
 
 class SignIn extends StatelessWidget {
@@ -15,9 +17,7 @@ class SignIn extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-        width: MediaQuery.of(context).size.width,
-        height: MediaQuery.of(context).size.height * 85 / 100,
+    return Padding(
         padding:
             const EdgeInsets.only(left: 16, right: 16, bottom: 32, top: 16),
         child: BlocBuilder<SignInBloc, SignInState>(builder: (context, state) {
@@ -30,8 +30,9 @@ class SignIn extends StatelessWidget {
                   margin: const EdgeInsets.only(bottom: 20),
                   height: 6,
                   decoration: BoxDecoration(
-                      color: Colors.grey[300],
-                      borderRadius: BorderRadius.circular(20)),
+                    color: Colors.grey[300],
+                    borderRadius: BorderRadius.circular(20),
+                  ),
                 ),
               ),
               // header
@@ -88,18 +89,13 @@ class SignIn extends StatelessWidget {
               TextButton(
                 onPressed: () {
                   Navigator.of(context).pop();
-                  showModalBottomSheet(
+                  showFoodyModalBottomSheetWithBloc<SignUpBloc>(
                     context: context,
-                    backgroundColor: Colors.white,
-                    isScrollControlled: true,
-                    builder: (context) {
-                      return BlocProvider<SignUpBloc>(
-                        create: (context) => SignUpBloc(
-                            foodyApiRepository:
-                                context.read<FoodyApiRepository>()),
-                        child: const SignUp(),
-                      );
-                    },
+                    createBloc: (context) => SignUpBloc(
+                      foodyApiRepository: context.read<FoodyApiRepository>(),
+                      userRepository: context.read<UserRepository>(),
+                    ),
+                    child: const SignUp(),
                   );
                 },
                 child: RichText(

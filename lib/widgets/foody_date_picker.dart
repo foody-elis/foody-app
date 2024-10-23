@@ -1,86 +1,81 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:foody_app/widgets/foody_button.dart';
 import 'package:foody_app/widgets/foody_outlined_button.dart';
 import 'package:foody_app/widgets/foody_text_field.dart';
 import 'package:intl/intl.dart';
 import 'package:phosphor_flutter/phosphor_flutter.dart';
 
-class FoodyDatePicker extends StatefulWidget {
-  /// The currently selected date.
-  final DateTime currentDate;
+import '../utils/fixed_extent_scroll_controller_hook.dart';
 
-  /// Minimum year that the picker can be scrolled.
+class FoodyDatePicker extends HookWidget {
+  final DateTime initialDate;
   final DateTime firstDate;
-
-  /// Maximum year that the picker an be scrolled.
   final DateTime lastDate;
-
-  /// Get date from user selects a date in the picker.
   final void Function(DateTime dateTime)? onChanged;
+  final bool required;
+  final EdgeInsetsGeometry? padding, margin;
+  final String? errorText;
 
   FoodyDatePicker({
     super.key,
     DateTime? firstDate,
     DateTime? lastDate,
-    DateTime? currentDate,
+    DateTime? initialDate,
     this.onChanged,
+    this.required = false,
+    this.margin,
+    this.padding,
+    this.errorText,
   })  : firstDate = firstDate ?? DateTime(1900, 1, 1),
         lastDate = lastDate ??= DateTime.now(),
-        currentDate = currentDate ?? lastDate,
-        super();
-
-  @override
-  State<FoodyDatePicker> createState() => _FoodyDatePickerState();
-}
-
-class _FoodyDatePickerState extends State<FoodyDatePicker>
-    with TickerProviderStateMixin {
-  TextEditingController controller = TextEditingController();
-  late DateTime currentDate;
-
-  @override
-  void initState() {
-    currentDate = widget.currentDate;
-
-    super.initState();
-  }
+        initialDate = initialDate ?? lastDate;
 
   @override
   Widget build(BuildContext context) {
-    return FoodyTextField(
-      title: "Data di nascita",
-      hint: "-- / -- / ----",
-      controller: controller,
-      onTap: onShowCalendarClick,
-      suffixIcon: const Icon(PhosphorIconsRegular.calendarDots),
-      showCursor: false,
-      readOnly: true,
-    );
-  }
+    final controller = useTextEditingController();
+    final selectedDate = useState<DateTime>(initialDate);
 
-  void onShowCalendarClick() async {
-    final res = await showModalBottomSheet(
-      backgroundColor: Colors.white,
-      context: context,
-      builder: (BuildContext context) {
-        return _CalendarView(
-          selectedDate: currentDate,
-          firstDate: widget.firstDate,
-          lastDate: widget.lastDate,
-        );
-      },
-    );
+    void onShowCalendarClick() async {
+      final res = await showModalBottomSheet(
+        backgroundColor: Colors.white,
+        context: context,
+        builder: (BuildContext context) {
+          return _CalendarView(
+            selectedDate: selectedDate.value,
+            firstDate: firstDate,
+            lastDate: lastDate,
+          );
+        },
+      );
 
-    if (res is DateTime) {
-      currentDate = res;
-      controller.text = currentDate.toString().split(' ')[0];
-      widget.onChanged?.call(currentDate);
+      if (res is DateTime) {
+        selectedDate.value = res;
+        controller.text = DateFormat('dd/MM/yyyy').format(res);
+        onChanged?.call(res);
+      }
     }
+
+    return Container(
+      padding: padding,
+      margin: margin,
+      child: FoodyTextField(
+        title: "Data di nascita",
+        hint: "-- / -- / ----",
+        controller: controller,
+        onTap: onShowCalendarClick,
+        suffixIcon: const Icon(PhosphorIconsRegular.calendarDots),
+        showCursor: false,
+        readOnly: true,
+        required: required,
+        errorText: errorText,
+      ),
+    );
   }
 }
 
-class _CalendarView extends StatefulWidget {
+class _CalendarView extends HookWidget {
   final DateTime selectedDate;
   final DateTime firstDate;
   final DateTime lastDate;
@@ -92,37 +87,57 @@ class _CalendarView extends StatefulWidget {
   });
 
   @override
-  State<_CalendarView> createState() => _CalendarViewState();
-}
-
-class _CalendarViewState extends State<_CalendarView> {
-  late FixedExtentScrollController yearController;
-  late FixedExtentScrollController monthController;
-  late FixedExtentScrollController dayController;
-  late DateTime currentDate;
-
-  @override
-  void initState() {
-    super.initState();
-
-    currentDate = widget.selectedDate;
-
-    yearController = FixedExtentScrollController(
-        initialItem: _getYears().indexOf(currentDate.year));
-
-    final months = _getMonths();
-    monthController = FixedExtentScrollController(
-        initialItem: months.indexOf(months[currentDate.month - 1]));
-
-    dayController =
-        FixedExtentScrollController(initialItem: currentDate.day - 1);
-  }
-
-  @override
   Widget build(BuildContext context) {
-    final days = _getDaysInMonth(currentDate.year, currentDate.month);
-    final months = _getMonths();
+    final currentDate = useState<DateTime>(selectedDate);
+
+    List<int> getDaysInMonth(int year, int month) {
+      if (lastDate.year == currentDate.value.year &&
+          lastDate.month == currentDate.value.month) {
+        return List.generate(lastDate.day, (index) => index + 1);
+      } else {
+        int numDays = switch (month) {
+          1 || 3 || 5 || 7 || 8 || 10 || 12 => 31,
+          2 => (year % 4 == 0 && year % 100 != 0) || year % 400 == 0 ? 29 : 28,
+          _ => 30
+        };
+        return List.generate(numDays, (index) => index + 1);
+      }
+    }
+
+    List<String> getMonths() {
+      final months = [
+        'Gennaio',
+        'Febbraio',
+        'Marzo',
+        'Aprile',
+        'Maggio',
+        'Giugno',
+        'Luglio',
+        'Agosto',
+        'Settembre',
+        'Ottobre',
+        'Novembre',
+        'Dicembre'
+      ];
+
+      if (lastDate.year == currentDate.value.year) {
+        return months.sublist(0, lastDate.month);
+      } else {
+        return months;
+      }
+    }
+
+    final days =
+        getDaysInMonth(currentDate.value.year, currentDate.value.month);
+    final months = getMonths();
     final years = _getYears();
+
+    final yearController = useFixedExtentScrollController(
+        initialItem: _getYears().indexOf(currentDate.value.year));
+    final monthController = useFixedExtentScrollController(
+        initialItem: months.indexOf(months[currentDate.value.month - 1]));
+    final dayController =
+        useFixedExtentScrollController(initialItem: currentDate.value.day - 1);
 
     return Padding(
       padding: const EdgeInsets.only(left: 16, right: 16, bottom: 32, top: 16),
@@ -138,7 +153,7 @@ class _CalendarViewState extends State<_CalendarView> {
             ),
           ),
           Text(
-            DateFormat('dd / MM / yyyy').format(currentDate.toLocal()),
+            DateFormat('dd / MM / yyyy').format(currentDate.value.toLocal()),
             style: const TextStyle(fontSize: 24.0, fontWeight: FontWeight.w600),
           ),
           const SizedBox(height: 15),
@@ -153,8 +168,9 @@ class _CalendarViewState extends State<_CalendarView> {
                     diameterRatio: 1.0,
                     itemExtent: 60,
                     onSelectedItemChanged: (value) {
-                      currentDate = currentDate.copyWith(day: value + 1);
-                      setState(() {});
+                      currentDate.value =
+                          currentDate.value.copyWith(day: value + 1);
+                      // setState(() {});
                     },
                     itemBuilder: (context, index) {
                       return Container(
@@ -174,19 +190,20 @@ class _CalendarViewState extends State<_CalendarView> {
                     diameterRatio: 1.0,
                     itemExtent: 60,
                     onSelectedItemChanged: (value) {
-                      final daysInMonth = _getDaysInMonth(
-                        currentDate.year,
+                      final daysInMonth = getDaysInMonth(
+                        currentDate.value.year,
                         value + 1,
                       );
 
-                      if (currentDate.day > daysInMonth.length) {
-                        currentDate =
-                            currentDate.copyWith(day: daysInMonth.length);
+                      if (currentDate.value.day > daysInMonth.length) {
+                        currentDate.value =
+                            currentDate.value.copyWith(day: daysInMonth.length);
                       }
 
-                      currentDate = currentDate.copyWith(month: value + 1);
+                      currentDate.value =
+                          currentDate.value.copyWith(month: value + 1);
 
-                      setState(() {});
+                      // setState(() {});
                     },
                     itemBuilder: (context, index) {
                       return Container(
@@ -206,23 +223,23 @@ class _CalendarViewState extends State<_CalendarView> {
                     diameterRatio: 1.0,
                     itemExtent: 60,
                     onSelectedItemChanged: (value) {
-                      currentDate =
-                          currentDate.copyWith(year: _getYears()[value]);
+                      currentDate.value =
+                          currentDate.value.copyWith(year: _getYears()[value]);
 
-                      if (currentDate.month > widget.lastDate.month) {
-                        currentDate =
-                            currentDate.copyWith(month: _getMonths().length);
+                      if (currentDate.value.month > lastDate.month) {
+                        currentDate.value = currentDate.value
+                            .copyWith(month: getMonths().length);
                       }
 
-                      List<int> daysInMonth =
-                          _getDaysInMonth(currentDate.year, currentDate.month);
+                      List<int> daysInMonth = getDaysInMonth(
+                          currentDate.value.year, currentDate.value.month);
 
-                      if (currentDate.day > daysInMonth.length) {
-                        currentDate =
-                            currentDate.copyWith(day: daysInMonth.last);
+                      if (currentDate.value.day > daysInMonth.length) {
+                        currentDate.value =
+                            currentDate.value.copyWith(day: daysInMonth.last);
                       }
 
-                      setState(() {});
+                      // setState(() {});
                     },
                     itemBuilder: (context, index) {
                       return Container(
@@ -254,7 +271,7 @@ class _CalendarViewState extends State<_CalendarView> {
               Expanded(
                 child: FoodyButton(
                   label: 'Seleziona',
-                  onPressed: () => Navigator.pop(context, currentDate),
+                  onPressed: () => Navigator.pop(context, currentDate.value),
                 ),
               ),
             ],
@@ -264,47 +281,10 @@ class _CalendarViewState extends State<_CalendarView> {
     );
   }
 
-  List<int> _getDaysInMonth(int year, int month) {
-    if (widget.lastDate.year == currentDate.year &&
-        widget.lastDate.month == currentDate.month) {
-      return List.generate(widget.lastDate.day, (index) => index + 1);
-    } else {
-      int numDays = switch (month) {
-        1 || 3 || 5 || 7 || 8 || 10 || 12 => 31,
-        2 => (year % 4 == 0 && year % 100 != 0) || year % 400 == 0 ? 29 : 28,
-        _ => 30
-      };
-      return List.generate(numDays, (index) => index + 1);
-    }
-  }
-
   List<int> _getYears() {
-    final startYear = widget.firstDate.year;
-    final endYear = widget.lastDate.year;
+    final startYear = firstDate.year;
+    final endYear = lastDate.year;
 
     return List.generate(endYear - startYear + 1, (index) => startYear + index);
-  }
-
-  List<String> _getMonths() {
-    final months = [
-      'Gennaio',
-      'Febbraio',
-      'Marzo',
-      'Aprile',
-      'Maggio',
-      'Giugno',
-      'Luglio',
-      'Agosto',
-      'Settembre',
-      'Ottobre',
-      'Novembre',
-      'Dicembre'
-    ];
-
-    if (widget.lastDate.year == currentDate.year) {
-      return months.sublist(0, widget.lastDate.month);
-    } else {
-      return months;
-    }
   }
 }

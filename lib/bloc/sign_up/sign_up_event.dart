@@ -73,3 +73,12 @@ class ActiveIndexChanged extends SignUpEvent {
   @override
   List<Object> get props => [activeIndex];
 }
+
+class PhoneNumberChanged extends SignUpEvent {
+  const PhoneNumberChanged({required this.phoneNumber});
+
+  final String phoneNumber;
+
+  @override
+  List<Object> get props => [phoneNumber];
+}

@@ -6,8 +6,11 @@ import 'package:foody_app/bloc/sign_up/sign_up_bloc.dart';
 import 'package:foody_app/repository/interface/foody_api_repository.dart';
 import 'package:foody_app/screens/welcome/sign_in.dart';
 import 'package:foody_app/screens/welcome/sign_up.dart';
+import 'package:foody_app/utils/show_foody_modal_bottom_sheet.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:lottie/lottie.dart';
+
+import '../../repository/interface/user_repository.dart';
 
 class Welcome extends StatelessWidget {
   const Welcome({super.key});
@@ -17,8 +20,6 @@ class Welcome extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      resizeToAvoidBottomInset: false,
-      // backgroundColor: Colors.white,
       body: Stack(
         fit: StackFit.expand,
         alignment: Alignment.center,
@@ -49,12 +50,6 @@ class Welcome extends StatelessWidget {
                   'Foody',
                   style: GoogleFonts.palanquinDark(
                       fontSize: 36, fontWeight: FontWeight.w600),
-                  /*style: TextStyle(
-                    fontWeight: FontWeight.w900,
-                    fontSize: 36,
-                    fontFamily:
-                    //color: Colors.white,
-                  ),*/
                 ),
               ),
               const SizedBox(height: 5),
@@ -83,23 +78,14 @@ class Welcome extends StatelessWidget {
                     height: 60,
                     child: ElevatedButton(
                       onPressed: () {
-                        showModalBottomSheet(
+                        showFoodyModalBottomSheetWithBloc<SignUpBloc>(
                           context: context,
-                          //showDragHandle: true,
-                          isScrollControlled: true,
-                          backgroundColor: Colors.white,
-                          /*shape: const RoundedRectangleBorder(
-                              borderRadius: BorderRadius.only(
-                                topLeft: Radius.circular(20),
-                                topRight: Radius.circular(20),
-                              ),
-                            ),*/
-                          builder: (context) {
-                            return BlocProvider<SignUpBloc>(
-                              create: (context) => SignUpBloc(foodyApiRepository: context.read<FoodyApiRepository>()),
-                              child: const SignUp(),
-                            );
-                          },
+                          createBloc: (context) => SignUpBloc(
+                            foodyApiRepository:
+                                context.read<FoodyApiRepository>(),
+                            userRepository: context.read<UserRepository>(),
+                          ),
+                          child: const SignUp(),
                         );
                       },
                       style: ElevatedButton.styleFrom(
@@ -127,16 +113,10 @@ class Welcome extends StatelessWidget {
                     height: 60,
                     child: OutlinedButton(
                       onPressed: () {
-                        showModalBottomSheet(
+                        showFoodyModalBottomSheetWithBloc<SignInBloc>(
                           context: context,
-                          backgroundColor: Colors.white,
-                          isScrollControlled: true,
-                          builder: (context) {
-                            return BlocProvider<SignInBloc>(
-                              create: (context) => SignInBloc(),
-                              child: const SignIn(),
-                            );
-                          },
+                          createBloc: (context) => SignInBloc(),
+                          child: const SignIn(),
                         );
                       },
                       style: OutlinedButton.styleFrom(

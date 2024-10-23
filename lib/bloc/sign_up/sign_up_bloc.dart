@@ -4,7 +4,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:foody_app/dto/request/user_registration_request_dto.dart';
 import 'package:foody_app/dto/response/user_registration_response_dto.dart';
 import 'package:foody_app/repository/interface/foody_api_repository.dart';
+import 'package:foody_app/repository/interface/user_repository.dart';
 import 'package:foody_app/routing/constants.dart';
+import 'package:intl/intl.dart';
 
 import '../../routing/navigation_service.dart';
 import '../../utils/call_api.dart';
@@ -14,8 +16,10 @@ import 'sign_up_state.dart';
 class SignUpBloc extends Bloc<SignUpEvent, SignUpState> {
   final NavigationService _navigationService = NavigationService();
   final FoodyApiRepository foodyApiRepository;
+  final UserRepository userRepository;
 
-  SignUpBloc({required this.foodyApiRepository}) : super(const SignUpState.initial()) {
+  SignUpBloc({required this.foodyApiRepository, required this.userRepository})
+      : super(const SignUpState.initial()) {
     on<SignUpConsumer>(_onSignUpConsumer, transformer: droppable());
     on<SignUpRestaurateur>(_onSignUpRestaurateur, transformer: droppable());
     on<NameChanged>(_onNameChanged);
@@ -25,6 +29,7 @@ class SignUpBloc extends Bloc<SignUpEvent, SignUpState> {
     on<ConfirmPasswordChanged>(_onConfirmPasswordChanged);
     on<BirthDateChanged>(_onBirthDateChanged);
     on<ActiveIndexChanged>(_onActiveIndexChanged);
+    on<PhoneNumberChanged>(_onPhoneNumberChanged);
   }
 
   bool _isFormValid(Emitter<SignUpState> emit) {
@@ -39,7 +44,10 @@ class SignUpBloc extends Bloc<SignUpEvent, SignUpState> {
       isValid = false;
     }
 
-    if (state.surname.length > 30) {
+    if (state.surname.isEmpty) {
+      emit(state.copyWith(surnameError: "Il cognome è obbligatorio"));
+      isValid = false;
+    } else if (state.surname.length > 30) {
       emit(state.copyWith(
           surnameError: "Il cognome non può contenere più di 30 caratteri"));
       isValid = false;
@@ -56,57 +64,65 @@ class SignUpBloc extends Bloc<SignUpEvent, SignUpState> {
     if (state.password.isEmpty) {
       emit(state.copyWith(passwordError: "La password è obbligatoria"));
       isValid = false;
+    } else if (state.password.length < 8) {
+      emit(state.copyWith(
+          passwordError: "La password deve essere almeno di 8 caratteri"));
+      isValid = false;
+    } else if (state.password.length > 100) {
+      emit(state.copyWith(
+          passwordError:
+              "La password non può essere più lunga di 100 caratteri"));
+      isValid = false;
     }
 
     if (state.confirmPassword != state.password) {
-      emit(state.copyWith(
-          confirmPasswordError:
-              "Le password non coincidono"));
+      emit(state.copyWith(confirmPasswordError: "Le password non sono uguali"));
+      isValid = false;
+    }
+
+    if (state.phoneNumber.isEmpty) {
+      emit(state.copyWith(phoneNumberError: "Il cellulare è obbligatorio"));
+      isValid = false;
+    }
+
+    if (state.birthDate.isEmpty) {
+      emit(state.copyWith(birthDateError: "La data di nascita è obbligatoria"));
       isValid = false;
     }
 
     return isValid;
   }
 
-  void _onSignUpConsumer(SignUpConsumer event, Emitter<SignUpState> emit) async {
-    //if (_isFormValid(emit)) {
-    //   _navigationService.replaceScreen(homeRoute);
-    //}
-
-    await callApi<UserRegistrationResponseDto>(
-      api: foodyApiRepository.auth.registerCustomer,
-      data: UserRegistrationRequestDto(
-        name: "aa",
-        surname: "bb",
-        email: "cc@gmail.com",
-        password: "dd",
-        phoneNumber: "",
-        // birthDate: DateTime.parse(state.birthDate),
-        birthDate: DateTime.now(),
-        avatar: " ",
-      ),
-      onComplete: (response) => print(response),
-      onFailed: (errors, statusCode) {
-        for (String error in errors) {
-          emit(state.copyWith(apiError: error));
-        }
-
-        emit(state.copyWith(apiError: ""));
-      },
-      onError: () {
-        emit(state.copyWith(
-          apiError: "There was an error while logging in. Try again in a while.",
-        ));
-        emit(state.copyWith(apiError: ""));
-      },
-    );
+  void _onSignUpConsumer(
+      SignUpConsumer event, Emitter<SignUpState> emit) async {
+    if (_isFormValid(emit)) {
+      await callApi<UserRegistrationResponseDto>(
+        api: foodyApiRepository.auth.registerCustomer,
+        data: UserRegistrationRequestDto(
+          name: state.name,
+          surname: state.surname,
+          email: state.email,
+          password: state.password,
+          phoneNumber: state.phoneNumber,
+          birthDate: DateFormat("dd/MM/yyyy").parse(state.birthDate),
+          avatar: "avatar.png",
+        ),
+        onComplete: (response) {
+          emit(state.copyWith(
+            apiError: "Registazione effettuata con successo",
+          ));
+          _navigationService.goBack();
+        },
+        errorToEmit: (msg) => emit(state.copyWith(apiError: msg)),
+      );
+    }
   }
 
   void _onSignUpRestaurateur(
       SignUpRestaurateur event, Emitter<SignUpState> emit) {
     //if (_isFormValid(emit)) {
-      _navigationService.navigateTo(addRestaurant);
-   // }
+    _navigationService.navigateTo(addRestaurant);
+    // }
   }
 
   void _onNameChanged(NameChanged event, Emitter<SignUpState> emit) {
@@ -132,11 +148,17 @@ class SignUpBloc extends Bloc<SignUpEvent, SignUpState> {
   }
 
   void _onBirthDateChanged(BirthDateChanged event, Emitter<SignUpState> emit) {
-    emit(state.copyWith(birthDate: event.birthDate));
+    emit(state.copyWith(birthDate: event.birthDate, birthDateError: "null"));
   }
 
   void _onActiveIndexChanged(
       ActiveIndexChanged event, Emitter<SignUpState> emit) {
     emit(state.copyWith(activeIndex: event.activeIndex));
+  }
+
+  void _onPhoneNumberChanged(
+      PhoneNumberChanged event, Emitter<SignUpState> emit) {
+    emit(state.copyWith(
+        phoneNumber: event.phoneNumber, phoneNumberError: "null"));
   }
 }

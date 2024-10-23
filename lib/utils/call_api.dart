@@ -1,12 +1,17 @@
 import 'package:dio/dio.dart';
+import 'package:foody_app/dto/error_dto.dart';
 
 Future<void> callApi<T>({
   required Function api,
   Object? data,
   void Function(T)? onComplete,
-  void Function(List, int)? onFailed,
+  void Function(ErrorDto)? onFailed,
   void Function()? onError,
+  void Function(String)? errorToEmit,
 }) async {
+  assert((errorToEmit == null) || (onFailed == null && onError == null),
+      "You can't use at the same time errorToEmit and onFailed or onError");
+
   await (data == null ? api() : api(data))
       .then((T response) => onComplete?.call(response))
       .catchError((e, stackTrace) {
@@ -14,17 +19,35 @@ Future<void> callApi<T>({
         e.response != null &&
         e.response?.data != null &&
         e.response?.data is Map) {
-      print(e.response?.data);
-        if (e.response?.data.containsKey("errors")) {
-          onFailed?.call(e.response?.data["errors"], e.response!.statusCode!);
-        } else if (e.response?.data.containsKey("error")) {
-          onFailed?.call([e.response?.data["error"]], e.response!.statusCode!);
+
+      try {
+        final errorDto = ErrorDto.fromJson(e.response?.data);
+
+        if(errorToEmit != null) {
+          final message = errorDto.message;
+
+          if(message is Map) {
+            for (String m in message.values) {
+              errorToEmit(m);
+            }
+          } else if(message is String) {
+            errorToEmit(message);
+          }
+
+          errorToEmit("");
         } else {
-          onError?.call();
+          onFailed?.call(errorDto);
         }
+      } catch (e) {
+        onError?.call();
+      }
     } else {
-      print(e);
-      onError?.call();
+      if(errorToEmit != null) {
+        errorToEmit("There was a generic error while calling the server.");
+        errorToEmit("");
+      } else {
+        onError?.call();
+      }
     }
   });
 }

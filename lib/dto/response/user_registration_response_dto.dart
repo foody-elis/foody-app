@@ -5,7 +5,7 @@ import '../error_dto.dart';
 part '../mapper/response/user_registration_response_dto.g.dart';
 
 @JsonSerializable()
-class UserRegistrationResponseDto extends ErrorDto {
+class UserRegistrationResponseDto {
   const UserRegistrationResponseDto({
     required this.id,
     required this.email,
@@ -18,7 +18,7 @@ class UserRegistrationResponseDto extends ErrorDto {
     required this.role,
     required this.active,
     this.creditCardId,
-    super.errors,
+
   });
 
   factory UserRegistrationResponseDto.fromJson(Map<String, dynamic> json) =>

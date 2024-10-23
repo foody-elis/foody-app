@@ -3,9 +3,13 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:foody_app/bloc/sign_up/sign_up_bloc.dart';
 import 'package:foody_app/bloc/sign_up/sign_up_event.dart';
 import 'package:foody_app/bloc/sign_up/sign_up_state.dart';
+import 'package:foody_app/utils/show_snackbar.dart';
 import 'package:foody_app/widgets/foody_date_picker.dart';
+import 'package:intl/intl.dart';
+import 'package:intl_phone_number_input/intl_phone_number_input.dart';
 import 'package:phosphor_flutter/phosphor_flutter.dart';
 
+import '../../widgets/foody_phone_number_field.dart';
 import '../../widgets/foody_text_field.dart';
 
 class SignUpForm extends StatelessWidget {
@@ -27,6 +31,7 @@ class SignUpForm extends StatelessWidget {
                 onChanged: (name) =>
                     context.read<SignUpBloc>().add(NameChanged(name: name)),
                 errorText: state.nameError,
+                label: state.nameError,
               ),
               FoodyTextField(
                 required: true,
@@ -74,11 +79,25 @@ class SignUpForm extends StatelessWidget {
                     ConfirmPasswordChanged(confirmPassword: confirmPassword)),
                 errorText: state.confirmPasswordError,
               ),
-              const SizedBox(height: 16),
+              FoodyPhoneNumberField(
+                title: 'Cellulare',
+                required: true,
+                padding: const EdgeInsets.only(top: 16),
+                onInputChanged: (PhoneNumber value) {
+                  if (value.phoneNumber != null) {
+                    context.read<SignUpBloc>().add(
+                        PhoneNumberChanged(phoneNumber: value.phoneNumber!));
+                  }
+                },
+                errorText: state.phoneNumberError,
+              ),
               FoodyDatePicker(
-                onChanged: (birthDate) => context
-                    .read<SignUpBloc>()
-                    .add(BirthDateChanged(birthDate: birthDate.toString())),
+                required: true,
+                padding: const EdgeInsets.only(top: 16),
+                onChanged: (birthDate) => context.read<SignUpBloc>().add(
+                    BirthDateChanged(
+                        birthDate: DateFormat('dd/MM/yyyy').format(birthDate))),
+                errorText: state.birthDateError,
               ),
             ],
           ),

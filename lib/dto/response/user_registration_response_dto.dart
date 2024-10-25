@@ -1,7 +1,5 @@
 import 'package:json_annotation/json_annotation.dart';
 
-import '../error_dto.dart';
-
 part '../mapper/response/user_registration_response_dto.g.dart';
 
 @JsonSerializable()
@@ -18,7 +16,6 @@ class UserRegistrationResponseDto {
     required this.role,
     required this.active,
     this.creditCardId,
-
   });
 
   factory UserRegistrationResponseDto.fromJson(Map<String, dynamic> json) =>

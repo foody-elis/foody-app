@@ -6,6 +6,7 @@ import 'package:foody_app/bloc/add_sitting_times_list/add_sitting_times_list_blo
 import 'package:foody_app/bloc/bottom_nav_bar/bottom_nav_bar_bloc.dart';
 import 'package:foody_app/bloc/home/home_bloc.dart';
 import 'package:foody_app/bloc/welcome/welcome_bloc.dart';
+import 'package:foody_app/repository/interface/foody_api_repository.dart';
 import 'package:foody_app/screens/add_restaurant.dart';
 import 'package:foody_app/screens/add_sitting_times/add_sitting_times.dart';
 import 'package:foody_app/screens/add_sitting_times/add_sitting_times_list.dart';
@@ -31,8 +32,10 @@ class Router {
       case addRestaurant:
         return CupertinoPageRoute(
           builder: (_) => BlocProvider<AddRestaurantBloc>(
-            create: (context) => AddRestaurantBloc(),
-            child: const AddRestaurant(),
+            create: (context) => AddRestaurantBloc(
+              foodyApiRepository: context.read<FoodyApiRepository>(),
+            ),
+            child: AddRestaurant(),
           ),
         );
       case addSittingTimes:

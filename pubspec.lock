@@ -573,6 +573,13 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.0.0"
+  multi_dropdown:
+    dependency: "direct main"
+    description:
+      path: "../multiselect-dropdown"
+      relative: true
+    source: path
+    version: "3.0.1"
   nested:
     dependency: transitive
     description:

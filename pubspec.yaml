@@ -57,6 +57,8 @@ dependencies:
   objectbox_flutter_libs: any
   dio: ^5.7.0
   json_annotation: ^4.9.0
+  multi_dropdown:
+    path: ../multiselect-dropdown/
 
 dev_dependencies:
   flutter_test:

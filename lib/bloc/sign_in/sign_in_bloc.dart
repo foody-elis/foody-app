@@ -1,16 +1,25 @@
 import 'package:bloc_concurrency/bloc_concurrency.dart';
 import 'package:email_validator/email_validator.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:foody_app/dto/request/user_login_request_dto.dart';
+import 'package:foody_app/dto/response/user_login_response_dto.dart';
+import 'package:foody_app/repository/interface/user_repository.dart';
 import 'package:foody_app/routing/constants.dart';
+import 'package:foody_app/utils/get_foody_dio.dart';
 
+import '../../repository/interface/foody_api_repository.dart';
 import '../../routing/navigation_service.dart';
+import '../../utils/call_api.dart';
 import 'sign_in_event.dart';
 import 'sign_in_state.dart';
 
 class SignInBloc extends Bloc<SignInEvent, SignInState> {
   final NavigationService _navigationService = NavigationService();
+  final FoodyApiRepository foodyApiRepository;
+  final UserRepository userRepository;
 
-  SignInBloc() : super(const SignInState.initial()) {
+  SignInBloc({required this.foodyApiRepository, required this.userRepository})
+      : super(const SignInState.initial()) {
     on<LoginSubmit>(_onLoginSubmit, transformer: droppable());
     on<EmailChanged>(_onEmailChanged);
     on<PasswordChanged>(_onPasswordChanged);
@@ -30,19 +39,24 @@ class SignInBloc extends Bloc<SignInEvent, SignInState> {
     if (state.password.isEmpty) {
       emit(state.copyWith(passwordError: "La password è obbligatoria"));
       isValid = false;
-    }/* else if (state.password.length > 100) {
-      emit(state.copyWith(
-          email: "The account name cannot be longer than 256 characters"));
-      isValid = false;
-    }*/
+    }
 
     return isValid;
   }
 
-  void _onLoginSubmit(LoginSubmit event, Emitter<SignInState> emit) {
-    //if (_isFormValid(emit)) {
-      _navigationService.resetToScreen(homeRoute);
-    //}
+  void _onLoginSubmit(LoginSubmit event, Emitter<SignInState> emit) async {
+    if (_isFormValid(emit)) {
+      await callApi<UserLoginResponseDto>(
+        api: foodyApiRepository.auth.login,
+        data: UserLoginRequestDto(email: state.email, password: state.password),
+        onComplete: (response) {
+          emit(state.copyWith(apiError: "Accesso effettuato con successo"));
+          foodyApiRepository.dio = getFoodyDio(token: response.accessToken);
+          _navigationService.resetToScreen(homeRoute);
+        },
+        errorToEmit: (msg) => emit(state.copyWith(apiError: msg)),
+      );
+    }
   }
 
   void _onEmailChanged(EmailChanged event, Emitter<SignInState> emit) {

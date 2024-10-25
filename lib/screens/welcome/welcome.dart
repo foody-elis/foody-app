@@ -20,6 +20,7 @@ class Welcome extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       body: Stack(
         fit: StackFit.expand,
         alignment: Alignment.center,
@@ -57,11 +58,12 @@ class Welcome extends StatelessWidget {
                 duration: duration,
                 delay: const Duration(milliseconds: 800),
                 child: const Text(
-                  "Hai fame? Scrolla, prenota e mangia!",
+                  "Hai fame? Scorri, prenota e mangia!",
                   style: TextStyle(
-                      fontStyle: FontStyle.italic,
-                      color: Colors.grey,
-                      fontSize: 16),
+                    fontStyle: FontStyle.italic,
+                    color: Colors.grey,
+                    fontSize: 16,
+                  ),
                 ),
               ),
             ],
@@ -115,7 +117,11 @@ class Welcome extends StatelessWidget {
                       onPressed: () {
                         showFoodyModalBottomSheetWithBloc<SignInBloc>(
                           context: context,
-                          createBloc: (context) => SignInBloc(),
+                          createBloc: (context) => SignInBloc(
+                            foodyApiRepository:
+                                context.read<FoodyApiRepository>(),
+                            userRepository: context.read<UserRepository>(),
+                          ),
                           child: const SignIn(),
                         );
                       },

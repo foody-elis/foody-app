@@ -12,6 +12,15 @@ Future<void> callApi<T>({
   assert((errorToEmit == null) || (onFailed == null && onError == null),
       "You can't use at the same time errorToEmit and onFailed or onError");
 
+  void callOnError() {
+    if (errorToEmit != null) {
+      errorToEmit("There was a generic error while calling the server");
+      errorToEmit("");
+    } else {
+      onError?.call();
+    }
+  }
+
   await (data == null ? api() : api(data))
       .then((T response) => onComplete?.call(response))
       .catchError((e, stackTrace) {
@@ -19,18 +28,17 @@ Future<void> callApi<T>({
         e.response != null &&
         e.response?.data != null &&
         e.response?.data is Map) {
-
       try {
         final errorDto = ErrorDto.fromJson(e.response?.data);
 
-        if(errorToEmit != null) {
+        if (errorToEmit != null) {
           final message = errorDto.message;
 
-          if(message is Map) {
+          if (message is Map) {
             for (String m in message.values) {
               errorToEmit(m);
             }
-          } else if(message is String) {
+          } else if (message is String) {
             errorToEmit(message);
           }
 
@@ -39,15 +47,10 @@ Future<void> callApi<T>({
           onFailed?.call(errorDto);
         }
       } catch (e) {
-        onError?.call();
+        callOnError();
       }
     } else {
-      if(errorToEmit != null) {
-        errorToEmit("There was a generic error while calling the server.");
-        errorToEmit("");
-      } else {
-        onError?.call();
-      }
+      callOnError();
     }
   });
 }

@@ -6,6 +6,7 @@ import 'package:foody_app/bloc/sign_in/sign_in_state.dart';
 import 'package:foody_app/repository/interface/foody_api_repository.dart';
 import 'package:foody_app/repository/interface/user_repository.dart';
 import 'package:foody_app/screens/welcome/sign_up.dart';
+import 'package:foody_app/utils/show_snackbar.dart';
 import 'package:phosphor_flutter/phosphor_flutter.dart';
 
 import '../../bloc/sign_up/sign_up_bloc.dart';
@@ -18,9 +19,14 @@ class SignIn extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-        padding:
-            const EdgeInsets.only(left: 16, right: 16, bottom: 32, top: 16),
-        child: BlocBuilder<SignInBloc, SignInState>(builder: (context, state) {
+      padding: const EdgeInsets.only(left: 16, right: 16, bottom: 32, top: 16),
+      child: BlocConsumer<SignInBloc, SignInState>(
+        listener: (context, state) {
+          if (state.apiError != "") {
+            showSnackBar(context: context, msg: state.apiError);
+          }
+        },
+        builder: (context, state) {
           return Column(
             children: [
               Align(
@@ -117,6 +123,8 @@ class SignIn extends StatelessWidget {
               ),
             ],
           );
-        }));
+        },
+      ),
+    );
   }
 }

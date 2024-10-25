@@ -1,22 +1,39 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:foody_app/bloc/add_restaurant/add_restaurant_bloc.dart';
 import 'package:foody_app/bloc/add_restaurant/add_restaurant_event.dart';
 import 'package:foody_app/bloc/add_restaurant/add_restaurant_state.dart';
-import 'package:foody_app/widgets/foody_draggable_home.dart';
+import 'package:foody_app/dto/response/category_response_dto.dart';
+import 'package:foody_app/utils/show_snackbar.dart';
+import 'package:foody_app/widgets/foody_multi_dropdown.dart';
 import 'package:foody_app/widgets/foody_number_field.dart';
 import 'package:foody_app/widgets/foody_phone_number_field.dart';
 import 'package:foody_app/widgets/foody_secondary_layout.dart';
 import 'package:foody_app/widgets/foody_text_field.dart';
 import 'package:intl_phone_number_input/intl_phone_number_input.dart';
+import 'package:multi_dropdown/multi_dropdown.dart';
 import 'package:phosphor_flutter/phosphor_flutter.dart';
 
-class AddRestaurant extends StatelessWidget {
-  const AddRestaurant({super.key});
+class AddRestaurant extends HookWidget {
+  AddRestaurant({super.key});
+
+  final _completer = Completer<List<CategoryResponseDto>>();
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<AddRestaurantBloc, AddRestaurantState>(
+    return BlocConsumer<AddRestaurantBloc, AddRestaurantState>(
+      listener: (context, state) {
+        if (state.apiError != "") {
+          showSnackBar(context: context, msg: state.apiError);
+        }
+
+        if (!_completer.isCompleted && !state.isFetchingCategories) {
+          _completer.complete(state.allCategories);
+        }
+      },
       builder: (context, state) {
         return Scaffold(
           body: FoodySecondaryLayout(
@@ -29,6 +46,9 @@ class AddRestaurant extends StatelessWidget {
                 title: "Nome",
                 required: true,
                 margin: const EdgeInsets.only(top: 16),
+                onChanged: (value) => context
+                    .read<AddRestaurantBloc>()
+                    .add(NameChanged(name: value)),
                 errorText: state.nameError,
               ),
               FoodyTextField(
@@ -36,6 +56,9 @@ class AddRestaurant extends StatelessWidget {
                 required: true,
                 margin: const EdgeInsets.only(top: 16),
                 textArea: true,
+                onChanged: (value) => context
+                    .read<AddRestaurantBloc>()
+                    .add(DescriptionChanged(description: value)),
                 errorText: state.descriptionError,
               ),
               FoodyPhoneNumberField(
@@ -50,56 +73,76 @@ class AddRestaurant extends StatelessWidget {
                 },
                 errorText: state.phoneNumberError,
               ),
-              const Row(
+              Row(
                 children: [
                   Flexible(
                     flex: 2,
                     child: FoodyTextField(
                       required: true,
                       title: "Via/Indirizzo",
-                      margin: EdgeInsets.only(top: 16),
+                      margin: const EdgeInsets.only(top: 16),
+                      onChanged: (value) => context
+                          .read<AddRestaurantBloc>()
+                          .add(AddressChanged(address: value)),
+                      errorText: state.addressError,
                     ),
                   ),
-                  SizedBox(width: 10),
+                  const SizedBox(width: 10),
                   Flexible(
                     flex: 1,
                     child: FoodyTextField(
                       required: true,
                       title: "Numero Civico",
-                      margin: EdgeInsets.only(top: 16),
-                    ),
-                  ),
-                ],
-              ),
-              const Row(
-                children: [
-                  Flexible(
-                    flex: 2,
-                    child: FoodyTextField(
-                      required: true,
-                      title: "Città",
-                      margin: EdgeInsets.only(top: 16),
-                    ),
-                  ),
-                  SizedBox(width: 10),
-                  Flexible(
-                    flex: 2,
-                    child: FoodyTextField(
-                      required: true,
-                      title: "Provincia",
-                      margin: EdgeInsets.only(top: 16),
+                      margin: const EdgeInsets.only(top: 16),
+                      onChanged: (value) => context
+                          .read<AddRestaurantBloc>()
+                          .add(CivicNumberChanged(civicNumber: value)),
+                      errorText: state.civicNumberError,
                     ),
                   ),
                 ],
               ),
               Row(
                 children: [
-                  const Flexible(
+                  Flexible(
+                    flex: 2,
+                    child: FoodyTextField(
+                      required: true,
+                      title: "Città",
+                      margin: const EdgeInsets.only(top: 16),
+                      onChanged: (value) => context
+                          .read<AddRestaurantBloc>()
+                          .add(CityChanged(city: value)),
+                      errorText: state.cityError,
+                    ),
+                  ),
+                  const SizedBox(width: 10),
+                  Flexible(
+                    flex: 2,
+                    child: FoodyTextField(
+                      required: true,
+                      title: "Provincia",
+                      margin: const EdgeInsets.only(top: 16),
+                      onChanged: (value) => context
+                          .read<AddRestaurantBloc>()
+                          .add(ProvinceChanged(province: value)),
+                      errorText: state.provinceError,
+                    ),
+                  ),
+                ],
+              ),
+              Row(
+                children: [
+                  Flexible(
                     flex: 2,
                     child: FoodyTextField(
                       required: true,
                       title: "CAP",
-                      margin: EdgeInsets.only(top: 16),
+                      margin: const EdgeInsets.only(top: 16),
+                      onChanged: (value) => context
+                          .read<AddRestaurantBloc>()
+                          .add(CapChanged(cap: value)),
+                      errorText: state.capError,
                     ),
                   ),
                   const SizedBox(width: 10),
@@ -116,6 +159,29 @@ class AddRestaurant extends StatelessWidget {
                   ),
                 ],
               ),
+              const SizedBox(height: 16),
+              const Align(
+                alignment: Alignment.centerLeft,
+                child: Text(
+                  "Categorie",
+                  style: TextStyle(color: Colors.grey),
+                  textAlign: TextAlign.start,
+                ),
+              ),
+              const SizedBox(height: 8),
+              FoodyMultiDropdown<int>(
+                future: () async => (await _completer.future)
+                    .map((category) =>
+                        DropdownItem(label: category.name, value: category.id))
+                    .toList(),
+                hintText: "Seleziona le categorie",
+                noItemsFoundMessage: "Categoria non trovata",
+                onSelectionChange: (List<int> selected) => context
+                    .read<AddRestaurantBloc>()
+                    .add(SelectedCategoriesChanged(
+                        selectedCategories: selected)),
+              ),
+              const SizedBox(height: 100),
             ],
           ),
           floatingActionButton: FloatingActionButton(

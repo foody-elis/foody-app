@@ -8,7 +8,7 @@ import '../../dto/request/user_registration_request_dto.dart';
 
 part '../generated/interface/auth_api_repository.g.dart';
 
-@RestApi(baseUrl: "auth")
+@RestApi()
 abstract class AuthApiRepository {
   factory AuthApiRepository(Dio dio, {String? baseUrl}) = _AuthApiRepository;
 

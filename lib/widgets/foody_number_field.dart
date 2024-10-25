@@ -9,6 +9,7 @@ class FoodyNumberField extends StatelessWidget {
     this.margin,
     this.onChanged,
     this.required = false,
+    this.startValue = 1,
   });
 
   final String title;
@@ -18,6 +19,7 @@ class FoodyNumberField extends StatelessWidget {
   // final bool showCursor;
   // final bool readOnly;
   final bool required;
+  final double startValue;
 
   @override
   Widget build(BuildContext context) {
@@ -54,7 +56,7 @@ class FoodyNumberField extends StatelessWidget {
             child: SpinBox(
               min: 1,
               max: 999,
-              // value: 50,
+              value: startValue,
               decoration: const InputDecoration(border: InputBorder.none),
               onChanged: onChanged,
             ),

@@ -3,8 +3,10 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:foody_app/bloc/sign_up/sign_up_bloc.dart';
 import 'package:foody_app/bloc/sign_up/sign_up_event.dart';
 import 'package:foody_app/bloc/sign_up/sign_up_state.dart';
-import 'package:foody_app/screens/welcome/sign_up_form.dart';
+import 'package:foody_app/repository/interface/foody_api_repository.dart';
+import 'package:foody_app/repository/interface/user_repository.dart';
 import 'package:foody_app/screens/welcome/sign_in.dart';
+import 'package:foody_app/screens/welcome/sign_up_form.dart';
 import 'package:foody_app/utils/show_snackbar.dart';
 import 'package:foody_app/widgets/foody_segmented_control.dart';
 import 'package:phosphor_flutter/phosphor_flutter.dart';
@@ -90,7 +92,10 @@ class SignUp extends StatelessWidget {
 
                   showFoodyModalBottomSheetWithBloc<SignInBloc>(
                     context: context,
-                    createBloc: (context) => SignInBloc(),
+                    createBloc: (context) => SignInBloc(
+                      foodyApiRepository: context.read<FoodyApiRepository>(),
+                      userRepository: context.read<UserRepository>(),
+                    ),
                     child: const SignIn(),
                   );
                 },

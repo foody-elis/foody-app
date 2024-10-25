@@ -10,6 +10,7 @@ import 'package:intl/intl.dart';
 
 import '../../routing/navigation_service.dart';
 import '../../utils/call_api.dart';
+import '../../utils/get_foody_dio.dart';
 import 'sign_up_event.dart';
 import 'sign_up_state.dart';
 
@@ -93,36 +94,54 @@ class SignUpBloc extends Bloc<SignUpEvent, SignUpState> {
     return isValid;
   }
 
+  Future<void> _signUp({
+    required Emitter<SignUpState> emit,
+    required Function api,
+    required void Function() onComplete,
+  }) async {
+    await callApi<UserRegistrationResponseDto>(
+      api: api,
+      data: UserRegistrationRequestDto(
+        name: state.name,
+        surname: state.surname,
+        email: state.email,
+        password: state.password,
+        phoneNumber: state.phoneNumber,
+        birthDate: DateFormat("dd/MM/yyyy").parse(state.birthDate),
+        avatar: "avatar.png",
+      ),
+      onComplete: (response) {
+        emit(state.copyWith(
+          apiError: "Registazione effettuata con successo",
+        ));
+        onComplete();
+      },
+      errorToEmit: (msg) => emit(state.copyWith(apiError: msg)),
+    );
+  }
+
   void _onSignUpConsumer(
       SignUpConsumer event, Emitter<SignUpState> emit) async {
     if (_isFormValid(emit)) {
-      await callApi<UserRegistrationResponseDto>(
+      await _signUp(
+        emit: emit,
         api: foodyApiRepository.auth.registerCustomer,
-        data: UserRegistrationRequestDto(
-          name: state.name,
-          surname: state.surname,
-          email: state.email,
-          password: state.password,
-          phoneNumber: state.phoneNumber,
-          birthDate: DateFormat("dd/MM/yyyy").parse(state.birthDate),
-          avatar: "avatar.png",
-        ),
-        onComplete: (response) {
-          emit(state.copyWith(
-            apiError: "Registazione effettuata con successo",
-          ));
-          _navigationService.goBack();
-        },
-        errorToEmit: (msg) => emit(state.copyWith(apiError: msg)),
+        onComplete: () => _navigationService.goBack(),
       );
     }
   }
 
   void _onSignUpRestaurateur(
-      SignUpRestaurateur event, Emitter<SignUpState> emit) {
-    //if (_isFormValid(emit)) {
+      SignUpRestaurateur event, Emitter<SignUpState> emit) async {
+    foodyApiRepository.dio = getFoodyDio(token: "eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiJndWlkb2xhdmVzcGFAZ21haWwuY29tIiwiaWF0IjoxNzI5NzA0OTc2LCJleHAiOjE3NjU3MDQ5NzZ9.Os0nFOwaqYM2Vv4mzgQu5Cvi_c-qI6FnaXleJC12HDGoyyogxqzCdmID2_EpnzYr");
     _navigationService.navigateTo(addRestaurant);
-    // }
+    /*if (_isFormValid(emit)) {
+      await _signUp(
+        emit: emit,
+        api: foodyApiRepository.auth.registerRestaurateur,
+        onComplete: () => _navigationService.navigateTo(addRestaurant),
+      );
+    }*/
   }
 
   void _onNameChanged(NameChanged event, Emitter<SignUpState> emit) {

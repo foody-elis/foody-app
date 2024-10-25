@@ -7,7 +7,7 @@ import 'package:foody_app/widgets/foody_text_field.dart';
 import 'package:intl/intl.dart';
 import 'package:phosphor_flutter/phosphor_flutter.dart';
 
-import '../utils/fixed_extent_scroll_controller_hook.dart';
+import '../hooks/fixed_extent_scroll_controller_hook.dart';
 
 class FoodyDatePicker extends HookWidget {
   final DateTime initialDate;

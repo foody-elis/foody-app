@@ -58,7 +58,9 @@ dependencies:
   dio: ^5.7.0
   json_annotation: ^4.9.0
   multi_dropdown:
-    path: ../multiselect-dropdown/
+    git:
+      url: git@github.com:matteo-convertino/multiselect-dropdown.git
+      ref: main
 
 dev_dependencies:
   flutter_test:

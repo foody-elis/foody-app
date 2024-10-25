@@ -10,7 +10,6 @@ import 'package:intl/intl.dart';
 
 import '../../routing/navigation_service.dart';
 import '../../utils/call_api.dart';
-import '../../utils/get_foody_dio.dart';
 import 'sign_up_event.dart';
 import 'sign_up_state.dart';
 
@@ -133,15 +132,13 @@ class SignUpBloc extends Bloc<SignUpEvent, SignUpState> {
 
   void _onSignUpRestaurateur(
       SignUpRestaurateur event, Emitter<SignUpState> emit) async {
-    foodyApiRepository.dio = getFoodyDio(token: "eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiJndWlkb2xhdmVzcGFAZ21haWwuY29tIiwiaWF0IjoxNzI5NzA0OTc2LCJleHAiOjE3NjU3MDQ5NzZ9.Os0nFOwaqYM2Vv4mzgQu5Cvi_c-qI6FnaXleJC12HDGoyyogxqzCdmID2_EpnzYr");
-    _navigationService.navigateTo(addRestaurant);
-    /*if (_isFormValid(emit)) {
+    if (_isFormValid(emit)) {
       await _signUp(
         emit: emit,
         api: foodyApiRepository.auth.registerRestaurateur,
         onComplete: () => _navigationService.navigateTo(addRestaurant),
       );
-    }*/
+    }
   }
 
   void _onNameChanged(NameChanged event, Emitter<SignUpState> emit) {

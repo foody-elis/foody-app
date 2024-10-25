@@ -576,9 +576,11 @@ packages:
   multi_dropdown:
     dependency: "direct main"
     description:
-      path: "../multiselect-dropdown"
-      relative: true
-    source: path
+      path: "."
+      ref: main
+      resolved-ref: "079987962761212b3afbf4b0f2b750f3ffc4d0f1"
+      url: "git@github.com:matteo-convertino/multiselect-dropdown.git"
+    source: git
     version: "3.0.1"
   nested:
     dependency: transitive

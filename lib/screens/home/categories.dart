@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:foody_app/bloc/home/home_bloc.dart';
 import 'package:foody_app/bloc/home/home_state.dart';
-import 'package:foody_app/widgets/foody_tag.dart';
 import 'package:foody_app/widgets/foody_tag_outlined.dart';
 import 'package:skeletonizer/skeletonizer.dart';
 
@@ -24,38 +23,20 @@ class Categories extends StatelessWidget {
               height: 40,
               child: Skeletonizer(
                 containersColor: Colors.grey.shade100,
-                enabled: false,
+                enabled: state.isFetching,
                 child: ListView.builder(
                   padding: const EdgeInsets.only(top: 10),
                   scrollDirection: Axis.horizontal,
                   itemCount: state.categories.length,
                   itemBuilder: (context, index) {
                     final category = state.categories[index];
+
                     return FoodyTagOutlined(
                       height: null,
                       width: null,
                       margin: const EdgeInsets.only(right: 5),
-                      label: category,
+                      label: category.name,
                     );
-                    /*return Card(
-                      elevation: 0,
-                      /*shape: RoundedRectangleBorder(
-                        side: const BorderSide(color: Colors.grey, width: 1.0),
-                        borderRadius: BorderRadius.circular(10.0),
-                      ),*/
-                      margin: const EdgeInsets.only(top: 8, right: 5),
-                      child: Center(
-                        child: InkWell(
-                          borderRadius: BorderRadius.circular(10),
-                          onTap: () {},
-                          child: Padding(
-                            padding: const EdgeInsets.fromLTRB(10, 5, 10, 5),
-                            // padding: EdgeInsets.all(0),
-                            child: Text(category),
-                          ),
-                        ),
-                      ),
-                    );*/
                   },
                 ),
               ),

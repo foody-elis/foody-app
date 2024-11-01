@@ -7,7 +7,6 @@ import 'package:foody_app/bloc/bottom_nav_bar/bottom_nav_bar_state.dart';
 import 'package:foody_app/widgets/foody_bottom_nav_bar.dart';
 
 class FoodyPageView extends HookWidget {
-  //late PageController _controller;
   final _duration = const Duration(milliseconds: 600);
 
   final Widget home;
@@ -38,13 +37,9 @@ class FoodyPageView extends HookWidget {
       builder: (context, state) {
         return Scaffold(
           extendBody: true,
-          /*backgroundColor: // customAppBar
-            ? Theme.of(context).scaffoldBackgroundColor
-            : null,*/
           body: PageView(
             controller: pageController,
             physics: const NeverScrollableScrollPhysics(),
-            // index: widget.index,
             children: [
               home,
               chats,

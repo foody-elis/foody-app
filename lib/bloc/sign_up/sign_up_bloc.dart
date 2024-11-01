@@ -2,12 +2,13 @@ import 'package:bloc_concurrency/bloc_concurrency.dart';
 import 'package:email_validator/email_validator.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:foody_app/dto/request/user_registration_request_dto.dart';
-import 'package:foody_app/dto/response/user_registration_response_dto.dart';
+import 'package:foody_app/dto/response/auth_response_dto.dart';
 import 'package:foody_app/repository/interface/foody_api_repository.dart';
 import 'package:foody_app/repository/interface/user_repository.dart';
 import 'package:foody_app/routing/constants.dart';
 import 'package:intl/intl.dart';
 
+import '../../models/user.dart';
 import '../../routing/navigation_service.dart';
 import '../../utils/call_api.dart';
 import 'sign_up_event.dart';
@@ -98,7 +99,7 @@ class SignUpBloc extends Bloc<SignUpEvent, SignUpState> {
     required Function api,
     required void Function() onComplete,
   }) async {
-    await callApi<UserRegistrationResponseDto>(
+    await callApi<AuthResponseDto>(
       api: api,
       data: UserRegistrationRequestDto(
         name: state.name,
@@ -110,9 +111,8 @@ class SignUpBloc extends Bloc<SignUpEvent, SignUpState> {
         avatar: "avatar.png",
       ),
       onComplete: (response) {
-        emit(state.copyWith(
-          apiError: "Registazione effettuata con successo",
-        ));
+        userRepository.add(User(jwt: response.accessToken));
+        emit(state.copyWith(apiError: "Registazione effettuata con successo"));
         onComplete();
       },
       errorToEmit: (msg) => emit(state.copyWith(apiError: msg)),

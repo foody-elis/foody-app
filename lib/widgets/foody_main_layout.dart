@@ -7,9 +7,10 @@ import 'package:foody_app/bloc/bottom_nav_bar/bottom_nav_bar_event.dart';
 import 'package:foody_app/widgets/foody_app_bar.dart';
 
 class FoodyMainLayout extends HookWidget {
-  const FoodyMainLayout({super.key, required this.child});
+  const FoodyMainLayout({super.key, required this.child, this.onRefresh});
 
   final Widget child;
+  final Future<void> Function()? onRefresh;
 
   @override
   Widget build(BuildContext context) {
@@ -24,13 +25,17 @@ class FoodyMainLayout extends HookWidget {
       return () => scrollController.removeListener(onScroll);
     }, [scrollController]);
 
-    return CustomScrollView(
-      // shrinkWrap: true,
+    final customScrollView = CustomScrollView(
+      physics: const AlwaysScrollableScrollPhysics(),
       controller: scrollController,
       slivers: [
         SliverPersistentHeader(delegate: FoodyAppBar(), pinned: true),
         SliverToBoxAdapter(child: child),
       ],
     );
+
+    return onRefresh == null
+        ? customScrollView
+        : RefreshIndicator(onRefresh: onRefresh!, child: customScrollView);
   }
 }

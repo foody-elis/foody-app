@@ -31,7 +31,7 @@ class AddSittingTimesListBloc
       }
     }
 
-    _navigationService.resetToScreen(homeRoute);
+    _navigationService.resetToScreen(authenticatedRoute);
   }
 
   void _onLunchTimeChanged(

@@ -131,7 +131,7 @@ class AddRestaurantBloc extends Bloc<AddRestaurantEvent, AddRestaurantState> {
         ),
         onComplete: (response) {
           emit(state.copyWith(apiError: "Creazione del ristorante successo"));
-          _navigationService.resetToScreen(homeRoute);
+          _navigationService.resetToScreen(authenticatedRoute);
         },
         errorToEmit: (msg) => emit(state.copyWith(apiError: msg)),
       );

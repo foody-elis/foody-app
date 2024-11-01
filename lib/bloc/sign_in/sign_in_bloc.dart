@@ -2,11 +2,13 @@ import 'package:bloc_concurrency/bloc_concurrency.dart';
 import 'package:email_validator/email_validator.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:foody_app/dto/request/user_login_request_dto.dart';
-import 'package:foody_app/dto/response/user_login_response_dto.dart';
+import 'package:foody_app/dto/response/auth_response_dto.dart';
 import 'package:foody_app/repository/interface/user_repository.dart';
 import 'package:foody_app/routing/constants.dart';
 import 'package:foody_app/utils/get_foody_dio.dart';
+import 'package:jwt_decoder/jwt_decoder.dart';
 
+import '../../models/user.dart';
 import '../../repository/interface/foody_api_repository.dart';
 import '../../routing/navigation_service.dart';
 import '../../utils/call_api.dart';
@@ -46,13 +48,14 @@ class SignInBloc extends Bloc<SignInEvent, SignInState> {
 
   void _onLoginSubmit(LoginSubmit event, Emitter<SignInState> emit) async {
     if (_isFormValid(emit)) {
-      await callApi<UserLoginResponseDto>(
+      await callApi<AuthResponseDto>(
         api: foodyApiRepository.auth.login,
         data: UserLoginRequestDto(email: state.email, password: state.password),
         onComplete: (response) {
           emit(state.copyWith(apiError: "Accesso effettuato con successo"));
           foodyApiRepository.dio = getFoodyDio(token: response.accessToken);
-          _navigationService.resetToScreen(homeRoute);
+          userRepository.add(User(jwt: response.accessToken));
+          _navigationService.resetToScreen(authenticatedRoute);
         },
         errorToEmit: (msg) => emit(state.copyWith(apiError: msg)),
       );

@@ -12,4 +12,7 @@ abstract class RestaurantsApiRepository {
   @POST('')
   Future<RestaurantResponseDto> save(@Body() RestaurantRequestDto _);
 
+  @GET('')
+  Future<List<RestaurantResponseDto>> getAll();
+
 }

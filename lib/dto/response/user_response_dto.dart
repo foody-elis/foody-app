@@ -1,13 +1,14 @@
 import 'package:json_annotation/json_annotation.dart';
 
-part '../mapper/response/user_registration_response_dto.g.dart';
+import '../../utils/roles.dart';
+
+part '../mapper/response/user_response_dto.g.dart';
 
 @JsonSerializable()
-class UserRegistrationResponseDto {
-  const UserRegistrationResponseDto({
+class UserResponseDto {
+  const UserResponseDto({
     required this.id,
     required this.email,
-    required this.password,
     required this.name,
     required this.surname,
     required this.birthDate,
@@ -15,23 +16,20 @@ class UserRegistrationResponseDto {
     required this.avatar,
     required this.role,
     required this.active,
-    this.creditCardId,
   });
 
-  factory UserRegistrationResponseDto.fromJson(Map<String, dynamic> json) =>
-      _$UserRegistrationResponseDtoFromJson(json);
+  factory UserResponseDto.fromJson(Map<String, dynamic> json) =>
+      _$UserResponseDtoFromJson(json);
 
   final int id;
   final String email;
-  final String password;
   final String name;
   final String surname;
   final DateTime birthDate;
   final String phoneNumber;
   final String avatar;
-  final String role;
+  final Role role;
   final bool active;
-  final int? creditCardId;
 
-  Map<String, dynamic> toJson() => _$UserRegistrationResponseDtoToJson(this);
+  Map<String, dynamic> toJson() => _$UserResponseDtoToJson(this);
 }

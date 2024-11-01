@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:foody_app/bloc/home/home_bloc.dart';
 import 'package:foody_app/bloc/home/home_state.dart';
 import 'package:foody_app/widgets/foody_card_restaurant.dart';
+import 'package:foody_app/widgets/foody_empty_data.dart';
 import 'package:skeletonizer/skeletonizer.dart';
 
 class Restaurants extends StatelessWidget {
@@ -13,35 +14,40 @@ class Restaurants extends StatelessWidget {
     return BlocBuilder<HomeBloc, HomeState>(
       builder: (context, state) {
         return Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            const Text(
-              "Ristoranti",
-              style: TextStyle(fontWeight: FontWeight.bold),
+            const Align(
+              alignment: Alignment.centerLeft,
+              child:  Text(
+                "Ristoranti",
+                style: TextStyle(fontWeight: FontWeight.bold),
+              ),
             ),
             Skeletonizer(
               containersColor: Colors.grey.shade100,
-              enabled: false,
-              child: ListView.builder(
-                padding: const EdgeInsets.only(top: 10),
-                // primary: false,
-                shrinkWrap: true,
-                physics: const NeverScrollableScrollPhysics(),
-                // scrollDirection: Axis.horizontal,
-                itemCount: 3,
-                itemBuilder: (context, index) {
-                  final restaurant = state.restaurants[index];
+              enabled: state.isFetching,
+              child: state.restaurants.isEmpty
+                  ? const FoodyEmptyData(title: "Nessun ristorante trovato")
+                  : ListView.builder(
+                      padding: const EdgeInsets.only(top: 10),
+                      // primary: false,
+                      shrinkWrap: true,
+                      physics: const NeverScrollableScrollPhysics(),
+                      // scrollDirection: Axis.horizontal,
+                      itemCount: state.restaurants.length,
+                      itemBuilder: (context, index) {
+                        final restaurant = state.restaurants[index];
 
-                  return const FoodyCardRestaurant(
-                    imagePath: "assets/images/pasta.jpeg",
-                    category: "Categoria",
-                    rating: 4.5,
-                    name: "NOME DEL RISTORANTE",
-                    address: "Via Milazzo, 74000, Milano",
-                    sittingTimes: ["12:30", "13:00", "13:30"],
-                  );
-                },
-              ),
+                        return FoodyCardRestaurant(
+                          imagePath: "assets/images/ristorante.jpg",
+                          category: restaurant.categories.isEmpty ? "" : restaurant.categories.first.name,
+                          rating: 4.5,
+                          name: restaurant.name,
+                          address: "${restaurant.street}, ${restaurant.postalCode}, ${restaurant.city}",
+                          sittingTimes: ["12:30", "13:00", "13:30"],
+                        );
+                      },
+                    ),
             ),
           ],
         );

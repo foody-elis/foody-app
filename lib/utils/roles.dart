@@ -1,8 +1,8 @@
 enum Role {
-  admin,
-  moderator,
-  restaurateur,
-  cook,
-  waiter,
-  customer,
+  ADMIN,
+  MODERATOR,
+  RESTAURATEUR,
+  COOK,
+  WAITER,
+  CUSTOMER
 }

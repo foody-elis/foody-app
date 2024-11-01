@@ -19,6 +19,7 @@ Future<void> main() async {
   objectBox = await ObjectBox.create();
 
   final userRepository = UserRepositoryImpl();
+  // userRepository.removeAll();
 
   runApp(
     MultiRepositoryProvider(

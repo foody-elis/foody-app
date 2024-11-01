@@ -3,20 +3,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:foody_app/bloc/add_restaurant/add_restaurant_bloc.dart';
 import 'package:foody_app/bloc/add_sitting_times_list/add_sitting_times_list_bloc.dart';
+import 'package:foody_app/bloc/auth/auth_bloc.dart';
 import 'package:foody_app/bloc/bottom_nav_bar/bottom_nav_bar_bloc.dart';
-import 'package:foody_app/bloc/home/home_bloc.dart';
 import 'package:foody_app/bloc/welcome/welcome_bloc.dart';
 import 'package:foody_app/repository/interface/foody_api_repository.dart';
 import 'package:foody_app/screens/add_restaurant.dart';
-import 'package:foody_app/screens/add_sitting_times/add_sitting_times.dart';
 import 'package:foody_app/screens/add_sitting_times/add_sitting_times_list.dart';
-import 'package:foody_app/screens/home/home.dart';
+import 'package:foody_app/screens/authenticated.dart';
 
-import '../screens/chats.dart';
-import '../screens/orders.dart';
-import '../screens/profile.dart';
 import '../screens/welcome/welcome.dart';
-import '../widgets/foody_page_view.dart';
 import 'constants.dart';
 
 class Router {
@@ -45,22 +40,21 @@ class Router {
             child: const AddSittingTimesList(),
           ),
         );
-      case homeRoute:
+      case authenticatedRoute:
         return CupertinoPageRoute(
-          builder: (_) => BlocProvider<BottomNavBarBloc>(
-            create: (context) => BottomNavBarBloc(),
-            child: FoodyPageView(
-              home: BlocProvider<HomeBloc>(
-                create: (context) => HomeBloc(),
-                child: const Home(),
+          builder: (_) => MultiBlocProvider(
+            providers: [
+              BlocProvider<BottomNavBarBloc>(
+                create: (context) => BottomNavBarBloc(),
               ),
-              chats: const Chats(),
-              orders: const Orders(),
-              profile: const Profile(),
-            ),
+              BlocProvider<AuthBloc>(
+                create: (context) => AuthBloc(
+                    foodyApiRepository: context.read<FoodyApiRepository>()),
+              ),
+            ],
+            child: const Authenticated(),
           ),
         );
-
       default:
         return CupertinoPageRoute(
           builder: (_) => Scaffold(

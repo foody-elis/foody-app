@@ -1,3 +1,4 @@
+import 'package:foody_app/dto/response/category_response_dto.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 part '../mapper/response/restaurant_response_dto.g.dart';
@@ -5,6 +6,7 @@ part '../mapper/response/restaurant_response_dto.g.dart';
 @JsonSerializable()
 class RestaurantResponseDto {
   const RestaurantResponseDto({
+    required this.id,
     required this.name,
     required this.description,
     required this.phoneNumber,
@@ -15,13 +17,14 @@ class RestaurantResponseDto {
     required this.postalCode,
     required this.seats,
     required this.approved,
-    required this.userId,
+    required this.restaurateurId,
     required this.categories,
   });
 
   factory RestaurantResponseDto.fromJson(Map<String, dynamic> json) =>
       _$RestaurantResponseDtoFromJson(json);
 
+  final int id;
   final String name;
   final String description;
   final String phoneNumber;
@@ -32,8 +35,8 @@ class RestaurantResponseDto {
   final String postalCode;
   final int seats;
   final bool approved;
-  final int userId;
-  final List<int> categories;
+  final int restaurateurId;
+  final List<CategoryResponseDto> categories;
 
   Map<String, dynamic> toJson() => _$RestaurantResponseDtoToJson(this);
 }

@@ -24,6 +24,7 @@ Future<void> callApi<T>({
   await (data == null ? api() : api(data))
       .then((T response) => onComplete?.call(response))
       .catchError((e, stackTrace) {
+        print(e);
     if (e is DioException &&
         e.response != null &&
         e.response?.data != null &&

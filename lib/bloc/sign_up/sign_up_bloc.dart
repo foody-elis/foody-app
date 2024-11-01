@@ -11,6 +11,7 @@ import 'package:intl/intl.dart';
 import '../../models/user.dart';
 import '../../routing/navigation_service.dart';
 import '../../utils/call_api.dart';
+import '../../utils/get_foody_dio.dart';
 import 'sign_up_event.dart';
 import 'sign_up_state.dart';
 
@@ -111,6 +112,7 @@ class SignUpBloc extends Bloc<SignUpEvent, SignUpState> {
         avatar: "avatar.png",
       ),
       onComplete: (response) {
+        foodyApiRepository.dio = getFoodyDio(token: response.accessToken);
         userRepository.add(User(jwt: response.accessToken));
         emit(state.copyWith(apiError: "Registazione effettuata con successo"));
         onComplete();
@@ -125,7 +127,7 @@ class SignUpBloc extends Bloc<SignUpEvent, SignUpState> {
       await _signUp(
         emit: emit,
         api: foodyApiRepository.auth.registerCustomer,
-        onComplete: () => _navigationService.goBack(),
+        onComplete: () => _navigationService.resetToScreen(authenticatedRoute),
       );
     }
   }

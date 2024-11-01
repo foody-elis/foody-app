@@ -12,13 +12,10 @@ part '../generated/interface/auth_api_repository.g.dart';
 abstract class AuthApiRepository {
   factory AuthApiRepository(Dio dio, {String? baseUrl}) = _AuthApiRepository;
 
-  @POST('/register-moderator')
-  Future<AuthResponseDto> registerModerator(@Body() UserRegistrationRequestDto _);
-
-  @POST('/register-customer')
+  @POST('/customers')
   Future<AuthResponseDto> registerCustomer(@Body() UserRegistrationRequestDto _);
 
-  @POST('/register-restaurateur')
+  @POST('/restaurateurs')
   Future<AuthResponseDto> registerRestaurateur(@Body() UserRegistrationRequestDto _);
 
   @POST('/login')

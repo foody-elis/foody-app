@@ -2,8 +2,8 @@
 
 const String welcomeRoute = '/';
 const String authenticatedRoute = 'home';
-const String addRestaurant = 'add_restaurant';
-const String addSittingTimes = 'add_sitting_times';
+const String addRestaurantRoute = 'add_restaurant';
+const String addSittingTimesRoute = 'add_sitting_times';
 // const String loginRoute = "login";
 // const String preferencesRoute = "preferences";
 // const String settingsRoute = 'settings';

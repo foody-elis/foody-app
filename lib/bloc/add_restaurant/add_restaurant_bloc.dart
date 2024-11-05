@@ -131,7 +131,7 @@ class AddRestaurantBloc extends Bloc<AddRestaurantEvent, AddRestaurantState> {
         ),
         onComplete: (response) {
           emit(state.copyWith(apiError: "Creazione del ristorante successo"));
-          _navigationService.resetToScreen(authenticatedRoute);
+          _navigationService.resetToScreen(addSittingTimesRoute);
         },
         errorToEmit: (msg) => emit(state.copyWith(apiError: msg)),
       );
@@ -184,11 +184,15 @@ class AddRestaurantBloc extends Bloc<AddRestaurantEvent, AddRestaurantState> {
 
   void _onFetchCategories(
       FetchCategories event, Emitter<AddRestaurantState> emit) async {
+    emit(state.copyWith(isFetchingCategories: true));
+
     await callApi<List<CategoryResponseDto>>(
       api: foodyApiRepository.categories.getAll,
       onComplete: (response) => emit(state.copyWith(allCategories: response)),
       errorToEmit: (msg) => emit(state.copyWith(apiError: msg)),
     );
+
+    emit(state.copyWith(isFetchingCategories: false));
   }
 
   void _onSelectedCategoriesChanged(

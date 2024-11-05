@@ -4,5 +4,5 @@ enum Role {
   RESTAURATEUR,
   COOK,
   WAITER,
-  CUSTOMER
+  CUSTOMER,
 }

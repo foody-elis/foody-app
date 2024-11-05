@@ -12,6 +12,7 @@ import '../../models/user.dart';
 import '../../repository/interface/foody_api_repository.dart';
 import '../../routing/navigation_service.dart';
 import '../../utils/call_api.dart';
+import '../../utils/token_inteceptor.dart';
 import 'sign_in_event.dart';
 import 'sign_in_state.dart';
 
@@ -53,8 +54,16 @@ class SignInBloc extends Bloc<SignInEvent, SignInState> {
         data: UserLoginRequestDto(email: state.email, password: state.password),
         onComplete: (response) {
           emit(state.copyWith(apiError: "Accesso effettuato con successo"));
-          foodyApiRepository.dio = getFoodyDio(token: response.accessToken);
-          userRepository.add(User(jwt: response.accessToken));
+          userRepository.add(User(
+            jwt: response.accessToken,
+            role: JwtDecoder.decode(response.accessToken)["role"],
+          ));
+
+          foodyApiRepository.dio = getFoodyDio(
+              tokenInterceptor: TokenInterceptor(
+            token: response.accessToken,
+            userRepository: userRepository,
+          ));
           _navigationService.resetToScreen(authenticatedRoute);
         },
         errorToEmit: (msg) => emit(state.copyWith(apiError: msg)),

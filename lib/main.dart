@@ -8,6 +8,7 @@ import 'package:foody_app/repository/interface/foody_api_repository.dart';
 import 'package:foody_app/repository/interface/settings_repository.dart';
 import 'package:foody_app/repository/interface/user_repository.dart';
 import 'package:foody_app/utils/get_foody_dio.dart';
+import 'package:foody_app/utils/token_inteceptor.dart';
 
 import 'object_box/objectbox.dart';
 
@@ -19,7 +20,13 @@ Future<void> main() async {
   objectBox = await ObjectBox.create();
 
   final userRepository = UserRepositoryImpl();
-  // userRepository.removeAll();
+  final token = userRepository.get()?.jwt;
+  final tokenInterceptor = token != null
+      ? TokenInterceptor(
+          token: token,
+          userRepository: userRepository,
+        )
+      : null;
 
   runApp(
     MultiRepositoryProvider(
@@ -32,12 +39,12 @@ Future<void> main() async {
         ),
         RepositoryProvider<FoodyApiRepository>(
           create: (_) => FoodyApiRepository(
-            dio: getFoodyDio(token: userRepository.get()?.jwt),
+            dio: getFoodyDio(tokenInterceptor: tokenInterceptor),
           ),
         ),
       ],
       child: BlocProvider<FoodyBloc>(
-        create: (context) => FoodyBloc(),
+        create: (context) => FoodyBloc(userRepository: userRepository),
         child: const Foody(),
       ),
     ),

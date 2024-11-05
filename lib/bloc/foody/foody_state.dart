@@ -10,9 +10,9 @@ class FoodyState extends Equatable {
     required this.initialRoute,
   });
 
-  const FoodyState.initial()
+  const FoodyState.initial(bool isLogged)
       : darkTheme = false,
-        initialRoute = welcomeRoute;
+        initialRoute = isLogged ? authenticatedRoute : welcomeRoute;
 
   FoodyState copyWith({
     bool? darkTheme,

@@ -6,4 +6,6 @@ abstract class UserRepository {
   void update(User user);
   bool isLogged();
   void removeAll();
+  bool isCustomer();
+  bool isRestaurateur();
 }

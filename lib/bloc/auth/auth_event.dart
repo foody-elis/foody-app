@@ -8,4 +8,5 @@ class AuthEvent extends Equatable {
 }
 
 class FetchUser extends AuthEvent {}
+class FetchUserRestaurant extends AuthEvent {}
 

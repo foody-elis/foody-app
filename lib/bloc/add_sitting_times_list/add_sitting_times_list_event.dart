@@ -4,7 +4,7 @@ class AddSittingTimesListEvent extends Equatable {
   const AddSittingTimesListEvent();
 
   @override
-  List<Object> get props => [];
+  List<Object?> get props => [];
 }
 
 class FormSubmit extends AddSittingTimesListEvent {}
@@ -17,11 +17,11 @@ class LunchTimeChanged extends AddSittingTimesListEvent {
   });
 
   final String weekDay;
-  final DateTime startTime;
-  final DateTime endTime;
+  final DateTime? startTime;
+  final DateTime? endTime;
 
   @override
-  List<Object> get props => [weekDay, startTime, endTime];
+  List<Object?> get props => [weekDay, startTime, endTime];
 }
 
 class DinnerTimeChanged extends AddSittingTimesListEvent {
@@ -32,11 +32,11 @@ class DinnerTimeChanged extends AddSittingTimesListEvent {
   });
 
   final String weekDay;
-  final DateTime startTime;
-  final DateTime endTime;
+  final DateTime? startTime;
+  final DateTime? endTime;
 
   @override
-  List<Object> get props => [weekDay, startTime, endTime];
+  List<Object?> get props => [weekDay, startTime, endTime];
 }
 
 class AccordionStateChanged extends AddSittingTimesListEvent {
@@ -49,12 +49,12 @@ class AccordionStateChanged extends AddSittingTimesListEvent {
   List<Object> get props => [weekDay, state];
 }
 
-class ActiveIndexChanged extends AddSittingTimesListEvent {
-  const ActiveIndexChanged({required this.weekDay, required this.activeIndex});
+class StepIndexChanged extends AddSittingTimesListEvent {
+  const StepIndexChanged({required this.weekDay, required this.stepIndex});
 
   final String weekDay;
-  final int activeIndex;
+  final int stepIndex;
 
   @override
-  List<Object> get props => [weekDay, activeIndex];
+  List<Object> get props => [weekDay, stepIndex];
 }

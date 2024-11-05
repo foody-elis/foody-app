@@ -7,6 +7,7 @@ import 'package:foody_app/bloc/auth/auth_bloc.dart';
 import 'package:foody_app/bloc/bottom_nav_bar/bottom_nav_bar_bloc.dart';
 import 'package:foody_app/bloc/welcome/welcome_bloc.dart';
 import 'package:foody_app/repository/interface/foody_api_repository.dart';
+import 'package:foody_app/repository/interface/user_repository.dart';
 import 'package:foody_app/screens/add_restaurant.dart';
 import 'package:foody_app/screens/add_sitting_times/add_sitting_times_list.dart';
 import 'package:foody_app/screens/authenticated.dart';
@@ -24,19 +25,21 @@ class Router {
             child: const Welcome(),
           ),
         );
-      case addRestaurant:
+      case addRestaurantRoute:
         return CupertinoPageRoute(
           builder: (_) => BlocProvider<AddRestaurantBloc>(
             create: (context) => AddRestaurantBloc(
               foodyApiRepository: context.read<FoodyApiRepository>(),
             ),
-            child: AddRestaurant(),
+            child: const AddRestaurant(),
           ),
         );
-      case addSittingTimes:
+      case addSittingTimesRoute:
         return CupertinoPageRoute(
           builder: (_) => BlocProvider<AddSittingTimesListBloc>(
-            create: (context) => AddSittingTimesListBloc(),
+            create: (context) => AddSittingTimesListBloc(
+              foodyApiRepository: context.read<FoodyApiRepository>(),
+            ),
             child: const AddSittingTimesList(),
           ),
         );
@@ -49,7 +52,9 @@ class Router {
               ),
               BlocProvider<AuthBloc>(
                 create: (context) => AuthBloc(
-                    foodyApiRepository: context.read<FoodyApiRepository>()),
+                  foodyApiRepository: context.read<FoodyApiRepository>(),
+                  userRepository: context.read<UserRepository>(),
+                ),
               ),
             ],
             child: const Authenticated(),

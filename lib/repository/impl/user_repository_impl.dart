@@ -1,3 +1,5 @@
+import 'package:foody_app/utils/roles.dart';
+
 import '../../main.dart' show objectBox;
 import '../../models/user.dart';
 import '../interface/user_repository.dart';
@@ -32,4 +34,10 @@ class UserRepositoryImpl implements UserRepository {
   void update(User user) {
     _userBox.put(user);
   }
+
+  @override
+  bool isCustomer() => get()?.role == Role.CUSTOMER;
+
+  @override
+  bool isRestaurateur() => get()?.role == Role.RESTAURATEUR;
 }

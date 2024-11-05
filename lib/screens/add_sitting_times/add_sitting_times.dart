@@ -20,9 +20,15 @@ class AddSittingTimes extends HookWidget {
   Widget build(BuildContext context) {
     final lunchTextController = useTextEditingController();
     final dinnerTextController = useTextEditingController();
+    final expansionTileController = useExpansionTileController();
 
-    return BlocBuilder<AddSittingTimesListBloc, AddSittingTimesListState>(
-      buildWhen: (prev, curr) => prev.weekDays[weekDay] != curr.weekDays[weekDay],
+    return BlocConsumer<AddSittingTimesListBloc, AddSittingTimesListState>(
+      listenWhen: (prev, curr) =>
+          prev.weekDays[weekDay]!.accordionsState == true &&
+          curr.weekDays[weekDay]!.accordionsState == false,
+      listener: (context, listState) => expansionTileController.collapse(),
+      buildWhen: (prev, curr) =>
+          prev.weekDays[weekDay] != curr.weekDays[weekDay],
       builder: (context, listState) {
         final state = listState.weekDays[weekDay]!;
 
@@ -35,6 +41,7 @@ class AddSittingTimes extends HookWidget {
             borderRadius: BorderRadius.all(Radius.circular(10)),
           ),
           child: ExpansionTile(
+            controller: expansionTileController,
             collapsedShape: const RoundedRectangleBorder(
               borderRadius: BorderRadius.all(Radius.circular(10)),
             ),
@@ -71,7 +78,7 @@ class AddSittingTimes extends HookWidget {
                       label: state.lunchStartTime != null
                           ? "Dalle ${DateFormat('HH:mm').format(state.lunchStartTime!)} "
                               "alle ${DateFormat('HH:mm').format(state.lunchEndTime!)}"
-                          : null,
+                          : "",
                       onTap: showFoodyTimeRangePicker(
                         context: context,
                         lastDateTime:
@@ -79,12 +86,23 @@ class AddSittingTimes extends HookWidget {
                         onSubmit: (startTime, endTime) => context
                             .read<AddSittingTimesListBloc>()
                             .add(LunchTimeChanged(
-                          weekDay: weekDay,
-                          startTime: startTime,
+                              weekDay: weekDay,
+                              startTime: startTime,
                               endTime: endTime,
                             )),
                       ),
-                      suffixIcon: const Icon(PhosphorIconsRegular.sun),
+                      suffixIcon: state.lunchStartTime == null
+                          ? const Icon(PhosphorIconsRegular.sun)
+                          : IconButton(
+                              onPressed: () => context
+                                  .read<AddSittingTimesListBloc>()
+                                  .add(LunchTimeChanged(
+                                    weekDay: weekDay,
+                                    startTime: null,
+                                    endTime: null,
+                                  )),
+                              icon: const Icon(PhosphorIconsRegular.x),
+                            ),
                       showCursor: false,
                       readOnly: true,
                     ),
@@ -96,7 +114,7 @@ class AddSittingTimes extends HookWidget {
                       label: state.dinnerStartTime != null
                           ? "Dalle ${DateFormat('HH:mm').format(state.dinnerStartTime!)} "
                               "alle ${DateFormat('HH:mm').format(state.dinnerEndTime!)}"
-                          : null,
+                          : "",
                       onTap: showFoodyTimeRangePicker(
                         context: context,
                         lastDateTime:
@@ -104,12 +122,23 @@ class AddSittingTimes extends HookWidget {
                         onSubmit: (startTime, endTime) => context
                             .read<AddSittingTimesListBloc>()
                             .add(DinnerTimeChanged(
-                          weekDay: weekDay,
-                          startTime: startTime,
+                              weekDay: weekDay,
+                              startTime: startTime,
                               endTime: endTime,
                             )),
                       ),
-                      suffixIcon: const Icon(PhosphorIconsRegular.moon),
+                      suffixIcon: state.dinnerStartTime == null
+                          ? const Icon(PhosphorIconsRegular.moon)
+                          : IconButton(
+                              onPressed: () => context
+                                  .read<AddSittingTimesListBloc>()
+                                  .add(DinnerTimeChanged(
+                                    weekDay: weekDay,
+                                    startTime: null,
+                                    endTime: null,
+                                  )),
+                              icon: const Icon(PhosphorIconsRegular.x),
+                            ),
                       showCursor: false,
                       readOnly: true,
                     ),
@@ -121,10 +150,13 @@ class AddSittingTimes extends HookWidget {
                     const SizedBox(height: 8),
                     FoodySegmentedControl(
                       labels: const ["15 min", "30 min", "60 min"],
-                      activeIndex: state.activeIndex,
+                      activeIndex: state.stepIndex,
                       onValueChanged: (value) => context
                           .read<AddSittingTimesListBloc>()
-                          .add(ActiveIndexChanged(weekDay: weekDay, activeIndex: value)),
+                          .add(StepIndexChanged(
+                            weekDay: weekDay,
+                            stepIndex: value,
+                          )),
                     ),
                   ],
                 ),

@@ -6,12 +6,15 @@ import 'package:foody_app/dto/response/auth_response_dto.dart';
 import 'package:foody_app/repository/interface/foody_api_repository.dart';
 import 'package:foody_app/repository/interface/user_repository.dart';
 import 'package:foody_app/routing/constants.dart';
+import 'package:foody_app/utils/roles.dart';
 import 'package:intl/intl.dart';
+import 'package:jwt_decoder/jwt_decoder.dart';
 
 import '../../models/user.dart';
 import '../../routing/navigation_service.dart';
 import '../../utils/call_api.dart';
 import '../../utils/get_foody_dio.dart';
+import '../../utils/token_inteceptor.dart';
 import 'sign_up_event.dart';
 import 'sign_up_state.dart';
 
@@ -112,8 +115,15 @@ class SignUpBloc extends Bloc<SignUpEvent, SignUpState> {
         avatar: "avatar.png",
       ),
       onComplete: (response) {
-        foodyApiRepository.dio = getFoodyDio(token: response.accessToken);
-        userRepository.add(User(jwt: response.accessToken));
+        userRepository.add(User(
+          jwt: response.accessToken,
+          role: JwtDecoder.decode(response.accessToken)["role"],
+        ));
+        foodyApiRepository.dio = getFoodyDio(
+            tokenInterceptor: TokenInterceptor(
+          token: response.accessToken,
+          userRepository: userRepository,
+        ));
         emit(state.copyWith(apiError: "Registazione effettuata con successo"));
         onComplete();
       },
@@ -138,7 +148,7 @@ class SignUpBloc extends Bloc<SignUpEvent, SignUpState> {
       await _signUp(
         emit: emit,
         api: foodyApiRepository.auth.registerRestaurateur,
-        onComplete: () => _navigationService.navigateTo(addRestaurant),
+        onComplete: () => _navigationService.navigateTo(addRestaurantRoute),
       );
     }
   }

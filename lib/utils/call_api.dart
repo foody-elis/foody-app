@@ -9,21 +9,19 @@ Future<void> callApi<T>({
   void Function()? onError,
   void Function(String)? errorToEmit,
 }) async {
-  assert((errorToEmit == null) || (onFailed == null && onError == null),
-      "You can't use at the same time errorToEmit and onFailed or onError");
-
   void callOnError() {
     if (errorToEmit != null) {
-      errorToEmit("There was a generic error while calling the server");
+      errorToEmit("Qualcosa è andato storto durante una chiamata al server");
       errorToEmit("");
-    } else {
-      onError?.call();
     }
+
+    onError?.call();
   }
 
   await (data == null ? api() : api(data))
       .then((T response) => onComplete?.call(response))
       .catchError((e, stackTrace) {
+        print("---------------------- NETWORK ERROR -------------------------");
         print(e);
     if (e is DioException &&
         e.response != null &&
@@ -33,6 +31,12 @@ Future<void> callApi<T>({
         final errorDto = ErrorDto.fromJson(e.response?.data);
 
         if (errorToEmit != null) {
+          if(errorDto.status == 498) {
+            errorToEmit("Sessione scaduta. Effettua di nuovo il login.");
+            errorToEmit("");
+            return;
+          }
+
           final message = errorDto.message;
 
           if (message is Map) {
@@ -44,9 +48,9 @@ Future<void> callApi<T>({
           }
 
           errorToEmit("");
-        } else {
-          onFailed?.call(errorDto);
         }
+
+        onFailed?.call(errorDto);
       } catch (e) {
         callOnError();
       }

@@ -6,7 +6,7 @@ class AddSittingTimesState extends Equatable {
   final DateTime? dinnerStartTime;
   final DateTime? dinnerEndTime;
   final bool? accordionsState;
-  final int activeIndex;
+  final int stepIndex;
 
   const AddSittingTimesState({
     required this.lunchStartTime,
@@ -14,7 +14,7 @@ class AddSittingTimesState extends Equatable {
     required this.dinnerStartTime,
     required this.dinnerEndTime,
     required this.accordionsState,
-    required this.activeIndex,
+    required this.stepIndex,
   });
 
   const AddSittingTimesState.initial()
@@ -23,23 +23,31 @@ class AddSittingTimesState extends Equatable {
         dinnerStartTime = null,
         dinnerEndTime = null,
         accordionsState = null,
-        activeIndex = 0;
+        stepIndex = 0;
 
   AddSittingTimesState copyWith({
-    DateTime? lunchStartTime,
-    DateTime? lunchEndTime,
-    DateTime? dinnerStartTime,
-    DateTime? dinnerEndTime,
+    Object? lunchStartTime,
+    Object? lunchEndTime,
+    Object? dinnerStartTime,
+    Object? dinnerEndTime,
     bool? accordionsState,
-    int? activeIndex,
+    int? stepIndex,
   }) {
     return AddSittingTimesState(
-      lunchStartTime: lunchStartTime ?? this.lunchStartTime,
-      lunchEndTime: lunchEndTime ?? this.lunchEndTime,
-      dinnerStartTime: dinnerStartTime ?? this.dinnerStartTime,
-      dinnerEndTime: dinnerEndTime ?? this.dinnerEndTime,
+      lunchStartTime: lunchStartTime == "null"
+          ? null
+          : (lunchStartTime as DateTime?) ?? this.lunchStartTime,
+      lunchEndTime: lunchEndTime == "null"
+          ? null
+          : (lunchEndTime as DateTime?) ?? this.lunchEndTime,
+      dinnerStartTime: dinnerStartTime == "null"
+          ? null
+          : (dinnerStartTime as DateTime?) ?? this.dinnerStartTime,
+      dinnerEndTime: dinnerEndTime == "null"
+          ? null
+          : (dinnerEndTime as DateTime?) ?? this.dinnerEndTime,
       accordionsState: accordionsState ?? this.accordionsState,
-      activeIndex: activeIndex ?? this.activeIndex,
+      stepIndex: stepIndex ?? this.stepIndex,
     );
   }
 
@@ -50,6 +58,6 @@ class AddSittingTimesState extends Equatable {
         lunchEndTime,
         dinnerStartTime,
         dinnerEndTime,
-        activeIndex,
+        stepIndex,
       ];
 }

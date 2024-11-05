@@ -15,4 +15,6 @@ abstract class RestaurantsApiRepository {
   @GET('')
   Future<List<RestaurantResponseDto>> getAll();
 
+  @GET('/restaurateur')
+  Future<RestaurantResponseDto> getMyRestaurant();
 }

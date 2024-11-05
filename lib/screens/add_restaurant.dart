@@ -18,20 +18,21 @@ import 'package:multi_dropdown/multi_dropdown.dart';
 import 'package:phosphor_flutter/phosphor_flutter.dart';
 
 class AddRestaurant extends HookWidget {
-  AddRestaurant({super.key});
-
-  final _completer = Completer<List<CategoryResponseDto>>();
+  const AddRestaurant({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final completer =
+        useMemoized(() => Completer<List<CategoryResponseDto>>(), []);
+
     return BlocConsumer<AddRestaurantBloc, AddRestaurantState>(
       listener: (context, state) {
         if (state.apiError != "") {
           showSnackBar(context: context, msg: state.apiError);
         }
 
-        if (!_completer.isCompleted && !state.isFetchingCategories) {
-          _completer.complete(state.allCategories);
+        if (!completer.isCompleted && !state.isFetchingCategories) {
+          completer.complete(state.allCategories);
         }
       },
       builder: (context, state) {
@@ -170,7 +171,7 @@ class AddRestaurant extends HookWidget {
               ),
               const SizedBox(height: 8),
               FoodyMultiDropdown<int>(
-                future: () async => (await _completer.future)
+                future: () async => (await completer.future)
                     .map((category) =>
                         DropdownItem(label: category.name, value: category.id))
                     .toList(),

@@ -34,8 +34,8 @@ class FoodyDatePicker extends HookWidget {
 
   @override
   Widget build(BuildContext context) {
-    final controller = useTextEditingController();
     final selectedDate = useState<DateTime>(initialDate);
+    final isSelected = useState<bool>(false);
 
     void onShowCalendarClick() async {
       final res = await showModalBottomSheet(
@@ -52,7 +52,7 @@ class FoodyDatePicker extends HookWidget {
 
       if (res is DateTime) {
         selectedDate.value = res;
-        controller.text = DateFormat('dd/MM/yyyy').format(res);
+        isSelected.value = true;
         onChanged?.call(res);
       }
     }
@@ -63,7 +63,7 @@ class FoodyDatePicker extends HookWidget {
       child: FoodyTextField(
         title: "Data di nascita",
         hint: "-- / -- / ----",
-        controller: controller,
+        label: isSelected.value ? DateFormat('dd/MM/yyyy').format(selectedDate.value) : '',
         onTap: onShowCalendarClick,
         suffixIcon: const Icon(PhosphorIconsRegular.calendarDots),
         showCursor: false,

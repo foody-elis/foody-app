@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:phosphor_flutter/phosphor_flutter.dart';
 
-class FoodyTextField extends StatelessWidget {
+class FoodyTextField extends HookWidget {
   const FoodyTextField({
     super.key,
     required this.title,
     this.hint,
-    this.controller,
     this.obscureText = false,
     this.padding,
     this.margin,
@@ -23,7 +23,6 @@ class FoodyTextField extends StatelessWidget {
 
   final String title;
   final String? hint;
-  final TextEditingController? controller;
   final bool obscureText;
   final EdgeInsetsGeometry? padding, margin;
   final Widget? suffixIcon;
@@ -38,7 +37,12 @@ class FoodyTextField extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    if(label != null) controller?.text = label!;
+    final textController = useTextEditingController();
+
+    useEffect(() {
+      if (label != null) textController.text = label!;
+      return null;
+    }, [label]);
 
     return Container(
       padding: padding,
@@ -76,14 +80,13 @@ class FoodyTextField extends StatelessWidget {
               textAlignVertical: suffixIcon != null || errorText != null
                   ? TextAlignVertical.center
                   : null,
-              controller: controller,
+              controller: textController,
               obscureText: obscureText,
               decoration: InputDecoration(
-                // label: label != null ? Text(label!) : null,
-                // alignLabelWithHint: false,
                 hintText: hint,
                 hintStyle: TextStyle(fontSize: 14, color: Colors.grey[400]),
-                contentPadding:  EdgeInsets.only(left: 16, right: 16, top: textArea ? 8 : 0),
+                contentPadding:
+                    EdgeInsets.only(left: 16, right: 16, top: textArea ? 8 : 0),
                 border: InputBorder.none,
                 suffixIcon: errorText == null
                     ? suffixIcon

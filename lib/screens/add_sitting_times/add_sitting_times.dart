@@ -18,8 +18,6 @@ class AddSittingTimes extends HookWidget {
 
   @override
   Widget build(BuildContext context) {
-    final lunchTextController = useTextEditingController();
-    final dinnerTextController = useTextEditingController();
     final expansionTileController = useExpansionTileController();
 
     return BlocConsumer<AddSittingTimesListBloc, AddSittingTimesListState>(
@@ -74,7 +72,6 @@ class AddSittingTimes extends HookWidget {
                     FoodyTextField(
                       title: "Orario lavorativo pranzo",
                       hint: "Dalle --:-- alle --:--",
-                      controller: lunchTextController,
                       label: state.lunchStartTime != null
                           ? "Dalle ${DateFormat('HH:mm').format(state.lunchStartTime!)} "
                               "alle ${DateFormat('HH:mm').format(state.lunchEndTime!)}"
@@ -110,7 +107,6 @@ class AddSittingTimes extends HookWidget {
                       margin: const EdgeInsets.only(top: 10),
                       title: "Orario lavorativo cena",
                       hint: "Dalle --:-- alle --:--",
-                      controller: dinnerTextController,
                       label: state.dinnerStartTime != null
                           ? "Dalle ${DateFormat('HH:mm').format(state.dinnerStartTime!)} "
                               "alle ${DateFormat('HH:mm').format(state.dinnerEndTime!)}"

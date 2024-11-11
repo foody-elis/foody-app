@@ -79,17 +79,16 @@ class Welcome extends StatelessWidget {
                     width: MediaQuery.of(context).size.width - 24,
                     height: 60,
                     child: ElevatedButton(
-                      onPressed: () {
-                        showFoodyModalBottomSheetWithBloc<SignUpBloc>(
-                          context: context,
-                          createBloc: (context) => SignUpBloc(
-                            foodyApiRepository:
-                                context.read<FoodyApiRepository>(),
-                            userRepository: context.read<UserRepository>(),
-                          ),
-                          child: const SignUp(),
-                        );
-                      },
+                      onPressed: () =>
+                          showFoodyModalBottomSheetWithBloc<SignUpBloc>(
+                        context: context,
+                        createBloc: (context) => SignUpBloc(
+                          foodyApiRepository:
+                              context.read<FoodyApiRepository>(),
+                          userRepository: context.read<UserRepository>(),
+                        ),
+                        child: const SignUp(),
+                      ),
                       style: ElevatedButton.styleFrom(
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(10),

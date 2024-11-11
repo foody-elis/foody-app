@@ -36,10 +36,14 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
 
   void _onFetchUserRestaurant(
       FetchUserRestaurant event, Emitter<AuthState> emit) async {
+    emit(state.copyWith(isFetchingRestaurant: true));
+
     await callApi<RestaurantResponseDto?>(
       api: foodyApiRepository.restaurants.getMyRestaurant,
-      onComplete: (response) =>
-          emit(state.copyWith(restaurantResponseDto: response)),
+      onComplete: (response) => emit(state.copyWith(
+        restaurantResponseDto: response,
+        isFetchingRestaurant: false,
+      )),
       onFailed: (_) => _navigationService.resetToScreen(addRestaurantRoute),
     );
   }

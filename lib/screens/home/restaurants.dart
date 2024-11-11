@@ -18,7 +18,7 @@ class Restaurants extends StatelessWidget {
           children: [
             const Align(
               alignment: Alignment.centerLeft,
-              child:  Text(
+              child: Text(
                 "Ristoranti",
                 style: TextStyle(fontWeight: FontWeight.bold),
               ),
@@ -30,21 +30,22 @@ class Restaurants extends StatelessWidget {
                   ? const FoodyEmptyData(title: "Nessun ristorante trovato")
                   : ListView.builder(
                       padding: const EdgeInsets.only(top: 10),
-                      // primary: false,
                       shrinkWrap: true,
                       physics: const NeverScrollableScrollPhysics(),
-                      // scrollDirection: Axis.horizontal,
                       itemCount: state.restaurants.length,
                       itemBuilder: (context, index) {
                         final restaurant = state.restaurants[index];
 
                         return FoodyCardRestaurant(
                           imagePath: "assets/images/ristorante.jpg",
-                          category: restaurant.categories.isEmpty ? "" : restaurant.categories.first.name,
+                          category: restaurant.categories.isEmpty
+                              ? ""
+                              : restaurant.categories.first.name,
                           rating: 4.5,
                           name: restaurant.name,
-                          address: "${restaurant.street}, ${restaurant.postalCode}, ${restaurant.city}",
-                          sittingTimes: ["12:30", "13:00", "13:30"],
+                          address:
+                              "${restaurant.street}, ${restaurant.postalCode}, ${restaurant.city}",
+                          sittingTimes: const ["12:30", "13:00", "13:30"],
                         );
                       },
                     ),

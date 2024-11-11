@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:foody_app/widgets/foody_rating_label.dart';
 import 'package:phosphor_flutter/phosphor_flutter.dart';
 import 'package:skeletonizer/skeletonizer.dart';
 
@@ -72,29 +73,7 @@ class FoodyCardRestaurant extends StatelessWidget {
                           ),
                         ),
                         Skeleton.unite(
-                          child: Row(
-                            children: [
-                              Container(
-                                padding: const EdgeInsets.all(5),
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(100),
-                                  color: Theme.of(context).primaryColor,
-                                ),
-                                child: const Icon(
-                                  PhosphorIconsRegular.forkKnife,
-                                  color: Colors.white,
-                                  size: 12,
-                                ),
-                              ),
-                              const SizedBox(width: 5),
-                              Text(
-                                rating.toString(),
-                                style: const TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              ),
-                            ],
-                          ),
+                          child: FoodyRatingLabel(rating: rating.toString()),
                         )
                       ],
                     ),

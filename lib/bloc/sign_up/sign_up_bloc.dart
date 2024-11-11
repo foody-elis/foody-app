@@ -6,7 +6,6 @@ import 'package:foody_app/dto/response/auth_response_dto.dart';
 import 'package:foody_app/repository/interface/foody_api_repository.dart';
 import 'package:foody_app/repository/interface/user_repository.dart';
 import 'package:foody_app/routing/constants.dart';
-import 'package:foody_app/utils/roles.dart';
 import 'package:intl/intl.dart';
 import 'package:jwt_decoder/jwt_decoder.dart';
 
@@ -103,6 +102,8 @@ class SignUpBloc extends Bloc<SignUpEvent, SignUpState> {
     required Function api,
     required void Function() onComplete,
   }) async {
+    foodyApiRepository.dio = getFoodyDio(); // reset dio in case of 498
+
     await callApi<AuthResponseDto>(
       api: api,
       data: UserRegistrationRequestDto(

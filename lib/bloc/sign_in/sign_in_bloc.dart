@@ -49,6 +49,8 @@ class SignInBloc extends Bloc<SignInEvent, SignInState> {
 
   void _onLoginSubmit(LoginSubmit event, Emitter<SignInState> emit) async {
     if (_isFormValid(emit)) {
+      foodyApiRepository.dio = getFoodyDio(); // reset dio in case of 498
+
       await callApi<AuthResponseDto>(
         api: foodyApiRepository.auth.login,
         data: UserLoginRequestDto(email: state.email, password: state.password),

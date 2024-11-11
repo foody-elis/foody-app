@@ -5,13 +5,13 @@ class FoodyTagOutlined extends StatelessWidget {
     super.key,
     required this.label,
     this.margin = EdgeInsets.zero,
-    this.height = 40,
-    this.width = 90,
-    this.elevation = 0
+    this.height,
+    this.width,
+    this.elevation = 0,
   });
 
   final String label;
-  final EdgeInsetsGeometry? margin;
+  final EdgeInsetsGeometry margin;
   final double? height;
   final double? width;
   final double elevation;
@@ -28,10 +28,10 @@ class FoodyTagOutlined extends StatelessWidget {
                         borderRadius: BorderRadius.circular(10.0),
                       ),*/
         margin: margin,
-        child: Center(
-          child: InkWell(
-            borderRadius: BorderRadius.circular(10),
-            onTap: () {},
+        child: InkWell(
+          borderRadius: BorderRadius.circular(10),
+          onTap: () {},
+          child: Center(
             child: Padding(
               padding: const EdgeInsets.fromLTRB(10, 5, 10, 5),
               // padding: EdgeInsets.all(0),

@@ -8,6 +8,7 @@ import 'package:foody_app/repository/interface/user_repository.dart';
 import 'package:foody_app/screens/welcome/sign_in.dart';
 import 'package:foody_app/screens/welcome/sign_up_form.dart';
 import 'package:foody_app/utils/show_snackbar.dart';
+import 'package:foody_app/widgets/foody_button.dart';
 import 'package:foody_app/widgets/foody_segmented_control.dart';
 import 'package:phosphor_flutter/phosphor_flutter.dart';
 
@@ -47,31 +48,19 @@ class SignUp extends StatelessWidget {
             ),
             const SizedBox(height: 24),
             const SignUpForm(),
-            Container(
-              margin: const EdgeInsets.only(top: 32, bottom: 6),
+            const SizedBox(height: 32),
+            FoodyButton(
+              label: state.activeIndex == 0 ? 'Registrati' : 'Invia Richiesta',
               width: MediaQuery.of(context).size.width,
-              height: 60,
-              child: ElevatedButton(
-                onPressed: () => context.read<SignUpBloc>().add(
-                    state.activeIndex == 0
-                        ? SignUpConsumer()
-                        : SignUpRestaurateur()),
-                style: ElevatedButton.styleFrom(
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(10),
-                  ),
-                  backgroundColor: Theme.of(context).primaryColor,
-                ),
-                child: Text(
-                  state.activeIndex == 0 ? 'Registrati' : 'Invia Richiesta',
-                  style: const TextStyle(color: Colors.white, fontSize: 16),
-                ),
-              ),
+              onPressed: () => context.read<SignUpBloc>().add(
+                  state.activeIndex == 0
+                      ? SignUpConsumer()
+                      : SignUpRestaurateur()),
             ),
+            const SizedBox(height: 6),
             TextButton(
               onPressed: () {
                 Navigator.of(context).pop();
-
                 showFoodyModalBottomSheetWithBloc<SignInBloc>(
                   context: context,
                   createBloc: (context) => SignInBloc(
@@ -87,11 +76,7 @@ class SignUp extends StatelessWidget {
                   style: TextStyle(color: Colors.grey),
                   children: [
                     TextSpan(
-                      style: TextStyle(
-                        //color: AppColor.primary,
-                        fontWeight: FontWeight.w700,
-                        //fontFamily: 'inter',
-                      ),
+                      style: TextStyle(fontWeight: FontWeight.w700),
                       text: 'Accedi',
                     )
                   ],

@@ -51,6 +51,7 @@ class AddRestaurant extends HookWidget {
                     .read<AddRestaurantBloc>()
                     .add(NameChanged(name: value)),
                 errorText: state.nameError,
+                maxLength: 100,
               ),
               FoodyTextField(
                 title: "Descrizione",
@@ -61,6 +62,7 @@ class AddRestaurant extends HookWidget {
                     .read<AddRestaurantBloc>()
                     .add(DescriptionChanged(description: value)),
                 errorText: state.descriptionError,
+                maxLength: 65535,
               ),
               FoodyPhoneNumberField(
                 title: 'Cellulare',
@@ -86,6 +88,7 @@ class AddRestaurant extends HookWidget {
                           .read<AddRestaurantBloc>()
                           .add(AddressChanged(address: value)),
                       errorText: state.addressError,
+                      maxLength: 30,
                     ),
                   ),
                   const SizedBox(width: 10),
@@ -99,6 +102,8 @@ class AddRestaurant extends HookWidget {
                           .read<AddRestaurantBloc>()
                           .add(CivicNumberChanged(civicNumber: value)),
                       errorText: state.civicNumberError,
+                      maxLength: 10,
+                      keyboardType: TextInputType.number,
                     ),
                   ),
                 ],
@@ -115,6 +120,7 @@ class AddRestaurant extends HookWidget {
                           .read<AddRestaurantBloc>()
                           .add(CityChanged(city: value)),
                       errorText: state.cityError,
+                      maxLength: 20,
                     ),
                   ),
                   const SizedBox(width: 10),
@@ -128,6 +134,7 @@ class AddRestaurant extends HookWidget {
                           .read<AddRestaurantBloc>()
                           .add(ProvinceChanged(province: value)),
                       errorText: state.provinceError,
+                      maxLength: 2,
                     ),
                   ),
                 ],
@@ -144,6 +151,8 @@ class AddRestaurant extends HookWidget {
                           .read<AddRestaurantBloc>()
                           .add(CapChanged(cap: value)),
                       errorText: state.capError,
+                      maxLength: 5,
+                      keyboardType: TextInputType.number,
                     ),
                   ),
                   const SizedBox(width: 10),

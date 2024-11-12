@@ -87,6 +87,10 @@ class SignUpBloc extends Bloc<SignUpEvent, SignUpState> {
     if (state.phoneNumber.isEmpty) {
       emit(state.copyWith(phoneNumberError: "Il cellulare è obbligatorio"));
       isValid = false;
+    } else if (state.phoneNumber.length > 16) {
+      emit(state.copyWith(
+          phoneNumberError:
+          "Il cellulare non può contenere più di 16 caratteri"));
     }
 
     if (state.birthDate.isEmpty) {

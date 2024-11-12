@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:intl_phone_number_input/intl_phone_number_input.dart';
+import 'package:phosphor_flutter/phosphor_flutter.dart';
 
 class FoodyPhoneNumberField extends StatelessWidget {
   const FoodyPhoneNumberField({
@@ -10,16 +11,15 @@ class FoodyPhoneNumberField extends StatelessWidget {
     this.onInputChanged,
     this.required = false,
     this.errorText,
+    this.suffixIcon,
   });
 
   final String title;
   final EdgeInsetsGeometry? padding, margin;
-  // final void Function()? onTap;
   final void Function(PhoneNumber)? onInputChanged;
-  // final bool showCursor;
-  // final bool readOnly;
   final bool required;
   final String? errorText;
+  final Widget? suffixIcon;
 
   @override
   Widget build(BuildContext context) {
@@ -47,7 +47,6 @@ class FoodyPhoneNumberField extends StatelessWidget {
           ),
           Container(
             margin: const EdgeInsets.only(top: 8),
-            // width: MediaQuery.of(context).size.width,
             height: 50,
             decoration: BoxDecoration(
               color: Theme.of(context).primaryColor.withOpacity(0.1),
@@ -72,14 +71,21 @@ class FoodyPhoneNumberField extends StatelessWidget {
               ),
               spaceBetweenSelectorAndTextField: 0.0,
               ignoreBlank: false,
-              // autoValidateMode: AutovalidateMode.disabled,
               initialValue: PhoneNumber(isoCode: 'IT'),
               formatInput: true,
               keyboardType: const TextInputType.numberWithOptions(
                 signed: true,
                 decimal: true,
               ),
-              inputDecoration: const InputDecoration(border: InputBorder.none),
+              inputDecoration: InputDecoration(
+                border: InputBorder.none,
+                suffixIcon: errorText == null
+                    ? suffixIcon
+                    : const Icon(
+                        PhosphorIconsRegular.warningCircle,
+                        color: Colors.red,
+                      ),
+              ),
             ),
           ),
           if (errorText != null)

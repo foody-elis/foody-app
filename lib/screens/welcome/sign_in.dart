@@ -11,6 +11,7 @@ import 'package:phosphor_flutter/phosphor_flutter.dart';
 
 import '../../bloc/sign_up/sign_up_bloc.dart';
 import '../../utils/show_foody_modal_bottom_sheet.dart';
+import '../../widgets/foody_button.dart';
 import '../../widgets/foody_text_field.dart';
 
 class SignIn extends StatelessWidget {
@@ -42,8 +43,9 @@ class SignIn extends StatelessWidget {
               title: 'Email',
               hint: 'tuaemail@email.com',
               suffixIcon: const Icon(PhosphorIconsRegular.at),
-              onChanged: (email) =>
-                  context.read<SignInBloc>().add(EmailChanged(email: email)),
+              onChanged: (email) => context
+                  .read<SignInBloc>()
+                  .add(EmailChanged(email: email.trim())),
               errorText: state.emailError,
             ),
             FoodyTextField(
@@ -58,24 +60,13 @@ class SignIn extends StatelessWidget {
                   .add(PasswordChanged(password: password)),
               errorText: state.passwordError,
             ),
-            // Log in Button
-            Container(
-              margin: const EdgeInsets.only(top: 32, bottom: 6),
+            const SizedBox(height: 32),
+            FoodyButton(
+              label: 'Accedi',
               width: MediaQuery.of(context).size.width,
-              height: 60,
-              child: ElevatedButton(
-                onPressed: () => context.read<SignInBloc>().add(LoginSubmit()),
-                style: ElevatedButton.styleFrom(
-                  shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(10)),
-                  backgroundColor: Theme.of(context).primaryColor,
-                ),
-                child: const Text(
-                  'Accedi',
-                  style: TextStyle(color: Colors.white, fontSize: 16),
-                ),
-              ),
+              onPressed: () => context.read<SignInBloc>().add(LoginSubmit()),
             ),
+            const SizedBox(height: 6),
             TextButton(
               onPressed: () {
                 Navigator.of(context).pop();
@@ -94,11 +85,7 @@ class SignIn extends StatelessWidget {
                   style: TextStyle(color: Colors.grey),
                   children: [
                     TextSpan(
-                      style: TextStyle(
-                        //color: AppColor.primary,
-                        fontWeight: FontWeight.w700,
-                        //fontFamily: 'inter',
-                      ),
+                      style: TextStyle(fontWeight: FontWeight.w700),
                       text: 'Registrati',
                     )
                   ],

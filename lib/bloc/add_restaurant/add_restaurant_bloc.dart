@@ -74,7 +74,7 @@ class AddRestaurantBloc extends Bloc<AddRestaurantEvent, AddRestaurantState> {
     }
 
     if (state.civicNumber.isEmpty) {
-      emit(state.copyWith(civicNumberError: "Il numero civico è obbligatorio"));
+      emit(state.copyWith(civicNumberError: "Obbligatorio"));
       isValid = false;
     } else if (state.civicNumber.length > 10) {
       emit(state.copyWith(

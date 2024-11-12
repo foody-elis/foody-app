@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:phosphor_flutter/phosphor_flutter.dart';
 
@@ -19,6 +20,8 @@ class FoodyTextField extends HookWidget {
     this.required = false,
     this.textArea = false,
     this.label,
+    this.maxLength,
+    this.keyboardType
   });
 
   final String title;
@@ -34,6 +37,8 @@ class FoodyTextField extends HookWidget {
   final bool required;
   final bool textArea;
   final String? label;
+  final int? maxLength;
+  final TextInputType? keyboardType;
 
   @override
   Widget build(BuildContext context) {
@@ -74,9 +79,10 @@ class FoodyTextField extends HookWidget {
               color: Theme.of(context).primaryColor.withOpacity(0.1),
               borderRadius: BorderRadius.circular(10),
             ),
-            child: TextFormField(
+            child: TextField(
+              maxLength: maxLength,
               maxLines: textArea ? 5 : 1,
-              keyboardType: textArea ? TextInputType.multiline : null,
+              keyboardType: textArea ? TextInputType.multiline : keyboardType,
               textAlignVertical: suffixIcon != null || errorText != null
                   ? TextAlignVertical.center
                   : null,
@@ -94,6 +100,7 @@ class FoodyTextField extends HookWidget {
                         PhosphorIconsRegular.warningCircle,
                         color: Colors.red,
                       ),
+                counterText: "",
               ),
               onTap: onTap,
               onChanged: onChanged,

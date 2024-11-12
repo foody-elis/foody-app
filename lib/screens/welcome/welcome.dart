@@ -7,6 +7,8 @@ import 'package:foody_app/repository/interface/foody_api_repository.dart';
 import 'package:foody_app/screens/welcome/sign_in.dart';
 import 'package:foody_app/screens/welcome/sign_up.dart';
 import 'package:foody_app/utils/show_foody_modal_bottom_sheet.dart';
+import 'package:foody_app/widgets/foody_button.dart';
+import 'package:foody_app/widgets/foody_outlined_button.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:lottie/lottie.dart';
 
@@ -75,33 +77,17 @@ class Welcome extends StatelessWidget {
                 FadeInUp(
                   duration: duration,
                   delay: const Duration(milliseconds: 500),
-                  child: SizedBox(
+                  child: FoodyButton(
+                    label: 'Registrati',
                     width: MediaQuery.of(context).size.width - 24,
-                    height: 60,
-                    child: ElevatedButton(
-                      onPressed: () =>
-                          showFoodyModalBottomSheetWithBloc<SignUpBloc>(
-                        context: context,
-                        createBloc: (context) => SignUpBloc(
-                          foodyApiRepository:
-                              context.read<FoodyApiRepository>(),
-                          userRepository: context.read<UserRepository>(),
-                        ),
-                        child: const SignUp(),
+                    onPressed: () =>
+                        showFoodyModalBottomSheetWithBloc<SignUpBloc>(
+                      context: context,
+                      createBloc: (context) => SignUpBloc(
+                        foodyApiRepository: context.read<FoodyApiRepository>(),
+                        userRepository: context.read<UserRepository>(),
                       ),
-                      style: ElevatedButton.styleFrom(
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(10),
-                        ),
-                        backgroundColor: Theme.of(context).primaryColor,
-                      ),
-                      child: const Text(
-                        'Registrati',
-                        style: TextStyle(
-                          fontSize: 16,
-                          color: Colors.white,
-                        ),
-                      ),
+                      child: const SignUp(),
                     ),
                   ),
                 ),
@@ -109,38 +95,20 @@ class Welcome extends StatelessWidget {
                 FadeInUp(
                   duration: duration,
                   delay: const Duration(milliseconds: 200),
-                  child: SizedBox(
+                  child: FoodyOutlinedButton(
+                    label: 'Accedi',
                     width: MediaQuery.of(context).size.width - 24,
-                    height: 60,
-                    child: OutlinedButton(
-                      onPressed: () {
-                        showFoodyModalBottomSheetWithBloc<SignInBloc>(
-                          context: context,
-                          createBloc: (context) => SignInBloc(
-                            foodyApiRepository:
-                                context.read<FoodyApiRepository>(),
-                            userRepository: context.read<UserRepository>(),
-                          ),
-                          child: const SignIn(),
-                        );
-                      },
-                      style: OutlinedButton.styleFrom(
-                        //foregroundColor: Colors.white,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(10),
+                    onPressed: () {
+                      showFoodyModalBottomSheetWithBloc<SignInBloc>(
+                        context: context,
+                        createBloc: (context) => SignInBloc(
+                          foodyApiRepository:
+                              context.read<FoodyApiRepository>(),
+                          userRepository: context.read<UserRepository>(),
                         ),
-                        side: BorderSide(
-                          color: Theme.of(context).primaryColor,
-                          width: 1,
-                        ),
-                      ),
-                      child: const Text(
-                        'Accedi',
-                        style: TextStyle(
-                          fontSize: 16,
-                        ),
-                      ),
-                    ),
+                        child: const SignIn(),
+                      );
+                    },
                   ),
                 ),
                 const SizedBox(height: 16),

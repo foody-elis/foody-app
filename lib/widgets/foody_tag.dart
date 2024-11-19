@@ -13,31 +13,33 @@ class FoodyTag extends StatelessWidget {
   final String label;
   final double? height;
   final double? width;
-  final EdgeInsetsGeometry? margin;
+  final EdgeInsetsGeometry margin;
   final double elevation;
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-      height: height,
-      width: width,
-      child: Card(
-        elevation: elevation,
-        /*shape: RoundedRectangleBorder(
-                        side: const BorderSide(color: Colors.grey, width: 1.0),
-                        borderRadius: BorderRadius.circular(10.0),
-                      ),*/
-        color: Theme.of(context).primaryColor,
-        margin: margin,
-        child: InkWell(
-          borderRadius: BorderRadius.circular(10),
-          onTap: () {},
-          child: Center(
-            child: Text(
-              label,
-              style: const TextStyle(
-                color: Colors.white,
-                fontWeight: FontWeight.bold,
+    return Padding(
+      padding: margin,
+      child: SizedBox(
+        height: height,
+        width: width,
+        child: Card(
+          elevation: elevation,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(10.0),
+          ),
+          color: Theme.of(context).primaryColor,
+          margin: EdgeInsets.zero,
+          child: InkWell(
+            borderRadius: BorderRadius.circular(10),
+            onTap: () {},
+            child: Center(
+              child: Text(
+                label,
+                style: const TextStyle(
+                  color: Colors.white,
+                  fontWeight: FontWeight.bold,
+                ),
               ),
             ),
           ),

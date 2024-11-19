@@ -90,7 +90,7 @@ class SignUpBloc extends Bloc<SignUpEvent, SignUpState> {
     } else if (state.phoneNumber.length > 16) {
       emit(state.copyWith(
           phoneNumberError:
-          "Il cellulare non può contenere più di 16 caratteri"));
+              "Il cellulare non può contenere più di 16 caratteri"));
     }
 
     if (state.birthDate.isEmpty) {
@@ -103,14 +103,13 @@ class SignUpBloc extends Bloc<SignUpEvent, SignUpState> {
 
   Future<void> _signUp({
     required Emitter<SignUpState> emit,
-    required Function api,
+    required Function(UserRegistrationRequestDto) api,
     required void Function() onComplete,
   }) async {
     foodyApiRepository.dio = getFoodyDio(); // reset dio in case of 498
 
     await callApi<AuthResponseDto>(
-      api: api,
-      data: UserRegistrationRequestDto(
+      api: () => api(UserRegistrationRequestDto(
         name: state.name,
         surname: state.surname,
         email: state.email,
@@ -118,7 +117,16 @@ class SignUpBloc extends Bloc<SignUpEvent, SignUpState> {
         phoneNumber: state.phoneNumber,
         birthDate: DateFormat("dd/MM/yyyy").parse(state.birthDate),
         avatar: "avatar.png",
-      ),
+      )),
+      /*data: UserRegistrationRequestDto(
+        name: state.name,
+        surname: state.surname,
+        email: state.email,
+        password: state.password,
+        phoneNumber: state.phoneNumber,
+        birthDate: DateFormat("dd/MM/yyyy").parse(state.birthDate),
+        avatar: "avatar.png",
+      ),*/
       onComplete: (response) {
         userRepository.add(User(
           jwt: response.accessToken,
@@ -153,7 +161,7 @@ class SignUpBloc extends Bloc<SignUpEvent, SignUpState> {
       await _signUp(
         emit: emit,
         api: foodyApiRepository.auth.registerRestaurateur,
-        onComplete: () => _navigationService.navigateTo(addRestaurantRoute),
+        onComplete: () => _navigationService.navigateTo(restaurantFormRoute),
       );
     }
   }

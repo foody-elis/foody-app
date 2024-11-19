@@ -9,33 +9,36 @@ class RestaurantReviews extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        const Text(
-          "Recensioni",
-          style: TextStyle(
-            fontSize: 18,
-            fontWeight: FontWeight.bold,
+    return SafeArea(
+      top: false,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          const Text(
+            "Recensioni",
+            style: TextStyle(
+              fontSize: 18,
+              fontWeight: FontWeight.bold,
+            ),
           ),
-        ),
-        const SizedBox(height: 20),
-        Skeletonizer(
-          enabled: enableSkeletonizer,
-          child: Column(
-            children: List.generate(
-              5,
-              (index) => RestaurantReview(
-                username: "Nome utente",
-                rating: 4,
-                date: "10 nov 2024",
-                review: "Recensione " * 10,
-                isLastReview: index != 4,
+          const SizedBox(height: 20),
+          Skeletonizer(
+            enabled: enableSkeletonizer,
+            child: Column(
+              children: List.generate(
+                5,
+                (index) => RestaurantReview(
+                  username: "Nome utente",
+                  rating: 4,
+                  date: "10 nov 2024",
+                  review: "Recensione " * 10,
+                  isLastReview: index != 4,
+                ),
               ),
             ),
           ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 }

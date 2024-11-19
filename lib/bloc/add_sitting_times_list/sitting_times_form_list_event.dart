@@ -1,15 +1,16 @@
 import 'package:equatable/equatable.dart';
 
-class AddSittingTimesListEvent extends Equatable {
-  const AddSittingTimesListEvent();
+class SittingTimesFormListEvent extends Equatable {
+  const SittingTimesFormListEvent();
 
   @override
   List<Object?> get props => [];
 }
 
-class FormSubmit extends AddSittingTimesListEvent {}
+class FormSubmit extends SittingTimesFormListEvent {}
+class FetchWeekdays extends SittingTimesFormListEvent {}
 
-class LunchTimeChanged extends AddSittingTimesListEvent {
+class LunchTimeChanged extends SittingTimesFormListEvent {
   const LunchTimeChanged({
     required this.weekDay,
     required this.startTime,
@@ -24,7 +25,7 @@ class LunchTimeChanged extends AddSittingTimesListEvent {
   List<Object?> get props => [weekDay, startTime, endTime];
 }
 
-class DinnerTimeChanged extends AddSittingTimesListEvent {
+class DinnerTimeChanged extends SittingTimesFormListEvent {
   const DinnerTimeChanged({
     required this.weekDay,
     required this.startTime,
@@ -39,7 +40,7 @@ class DinnerTimeChanged extends AddSittingTimesListEvent {
   List<Object?> get props => [weekDay, startTime, endTime];
 }
 
-class AccordionStateChanged extends AddSittingTimesListEvent {
+class AccordionStateChanged extends SittingTimesFormListEvent {
   const AccordionStateChanged({required this.weekDay, required this.state});
 
   final String weekDay;
@@ -49,7 +50,7 @@ class AccordionStateChanged extends AddSittingTimesListEvent {
   List<Object> get props => [weekDay, state];
 }
 
-class StepIndexChanged extends AddSittingTimesListEvent {
+class StepIndexChanged extends SittingTimesFormListEvent {
   const StepIndexChanged({required this.weekDay, required this.stepIndex});
 
   final String weekDay;

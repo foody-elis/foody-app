@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:multi_dropdown/multi_dropdown.dart';
 import 'package:phosphor_flutter/phosphor_flutter.dart';
 
-class FoodyMultiDropdown<T extends Object> extends StatelessWidget {
-  const FoodyMultiDropdown({
+class FoodyMultiSelect<T extends Object> extends StatelessWidget {
+  const FoodyMultiSelect({
     super.key,
     required this.future,
     this.controller,

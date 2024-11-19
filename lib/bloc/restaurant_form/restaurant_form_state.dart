@@ -1,7 +1,8 @@
 import 'package:equatable/equatable.dart';
 import 'package:foody_app/dto/response/category_response_dto.dart';
+import 'package:foody_app/dto/response/restaurant_response_dto.dart';
 
-class AddRestaurantState extends Equatable {
+class RestaurantFormState extends Equatable {
   final String name;
   final String description;
   final String phoneNumber;
@@ -24,8 +25,10 @@ class AddRestaurantState extends Equatable {
   final bool isFetchingCategories;
   final List<CategoryResponseDto> allCategories;
   final List<int> selectedCategories;
+  final bool isFetchingRestaurant;
+  final RestaurantResponseDto? restaurant;
 
-  const AddRestaurantState({
+  const RestaurantFormState({
     required this.name,
     required this.description,
     required this.phoneNumber,
@@ -47,9 +50,11 @@ class AddRestaurantState extends Equatable {
     required this.isFetchingCategories,
     required this.allCategories,
     required this.selectedCategories,
+    required this.isFetchingRestaurant,
+    required this.restaurant,
   });
 
-  AddRestaurantState.initial()
+  RestaurantFormState.initial()
       : name = "",
         description = "",
         phoneNumber = "",
@@ -70,9 +75,11 @@ class AddRestaurantState extends Equatable {
         apiError = "",
         isFetchingCategories = false,
         allCategories = [],
-        selectedCategories = [];
+        selectedCategories = [],
+        isFetchingRestaurant = false,
+        restaurant = null;
 
-  AddRestaurantState copyWith({
+  RestaurantFormState copyWith({
     String? name,
     String? description,
     String? phoneNumber,
@@ -94,8 +101,10 @@ class AddRestaurantState extends Equatable {
     bool? isFetchingCategories,
     List<CategoryResponseDto>? allCategories,
     List<int>? selectedCategories,
+    bool? isFetchingRestaurant,
+    RestaurantResponseDto? restaurant,
   }) {
-    return AddRestaurantState(
+    return RestaurantFormState(
       name: name ?? this.name,
       description: description ?? this.description,
       phoneNumber: phoneNumber ?? this.phoneNumber,
@@ -125,6 +134,8 @@ class AddRestaurantState extends Equatable {
       isFetchingCategories: isFetchingCategories ?? this.isFetchingCategories,
       allCategories: allCategories ?? this.allCategories,
       selectedCategories: selectedCategories ?? this.selectedCategories,
+      isFetchingRestaurant: isFetchingRestaurant ?? this.isFetchingRestaurant,
+      restaurant: restaurant ?? this.restaurant,
     );
   }
 
@@ -151,5 +162,7 @@ class AddRestaurantState extends Equatable {
         isFetchingCategories,
         allCategories,
         selectedCategories,
+        isFetchingRestaurant,
+        restaurant,
       ];
 }

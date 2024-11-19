@@ -14,6 +14,7 @@ class FoodyCardRestaurant extends StatelessWidget {
     required this.name,
     required this.address,
     required this.sittingTimes,
+    this.onTap,
   });
 
   final String imagePath;
@@ -22,6 +23,7 @@ class FoodyCardRestaurant extends StatelessWidget {
   final String name;
   final String address;
   final List<String> sittingTimes;
+  final void Function()? onTap;
 
   @override
   Widget build(BuildContext context) {
@@ -37,7 +39,7 @@ class FoodyCardRestaurant extends StatelessWidget {
         ),
         child: InkWell(
           borderRadius: BorderRadius.circular(10),
-          onTap: () {},
+          onTap: onTap,
           child: Column(
             children: [
               Container(

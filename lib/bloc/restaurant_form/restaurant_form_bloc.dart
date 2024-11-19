@@ -1,5 +1,7 @@
 import 'package:bloc_concurrency/bloc_concurrency.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:foody_app/bloc/restaurant_form/restaurant_form_event.dart';
+import 'package:foody_app/bloc/restaurant_form/restaurant_form_state.dart';
 import 'package:foody_app/dto/request/restaurant_request_dto.dart';
 import 'package:foody_app/dto/response/category_response_dto.dart';
 import 'package:foody_app/dto/response/restaurant_response_dto.dart';
@@ -8,15 +10,15 @@ import 'package:foody_app/utils/call_api.dart';
 import '../../repository/interface/foody_api_repository.dart';
 import '../../routing/constants.dart';
 import '../../routing/navigation_service.dart';
-import 'add_restaurant_event.dart';
-import 'add_restaurant_state.dart';
 
-class AddRestaurantBloc extends Bloc<AddRestaurantEvent, AddRestaurantState> {
+class RestaurantFormBloc
+    extends Bloc<RestaurantFormEvent, RestaurantFormState> {
   final NavigationService _navigationService = NavigationService();
   final FoodyApiRepository foodyApiRepository;
+  final bool isEditing;
 
-  AddRestaurantBloc({required this.foodyApiRepository})
-      : super(AddRestaurantState.initial()) {
+  RestaurantFormBloc({required this.foodyApiRepository, this.isEditing = false})
+      : super(RestaurantFormState.initial()) {
     on<FormSubmit>(_onFormSubmit, transformer: droppable());
     on<FetchCategories>(_onFetchCategories, transformer: droppable());
     on<NameChanged>(_onNameChanged);
@@ -29,11 +31,16 @@ class AddRestaurantBloc extends Bloc<AddRestaurantEvent, AddRestaurantState> {
     on<CapChanged>(_onCapChanged);
     on<SeatsChanged>(_onSeatsChanged);
     on<SelectedCategoriesChanged>(_onSelectedCategoriesChanged);
+    on<FetchRestaurant>(_onFetchRestaurant);
 
     add(FetchCategories());
+
+    if (isEditing) {
+      add(FetchRestaurant());
+    }
   }
 
-  bool _isFormValid(Emitter<AddRestaurantState> emit) {
+  bool _isFormValid(Emitter<RestaurantFormState> emit) {
     bool isValid = true;
 
     if (state.name.isEmpty) {
@@ -113,11 +120,11 @@ class AddRestaurantBloc extends Bloc<AddRestaurantEvent, AddRestaurantState> {
     return isValid;
   }
 
-  void _onFormSubmit(FormSubmit event, Emitter<AddRestaurantState> emit) async {
+  void _onFormSubmit(
+      FormSubmit event, Emitter<RestaurantFormState> emit) async {
     if (_isFormValid(emit)) {
       await callApi<RestaurantResponseDto>(
-        api: foodyApiRepository.restaurants.save,
-        data: RestaurantRequestDto(
+        api: () => foodyApiRepository.restaurants.save(RestaurantRequestDto(
           name: state.name,
           phoneNumber: state.phoneNumber,
           street: state.address,
@@ -128,62 +135,74 @@ class AddRestaurantBloc extends Bloc<AddRestaurantEvent, AddRestaurantState> {
           province: state.province,
           seats: state.seats,
           categories: state.selectedCategories,
-        ),
+        )),
+        /*data: RestaurantRequestDto(
+          name: state.name,
+          phoneNumber: state.phoneNumber,
+          street: state.address,
+          postalCode: state.cap,
+          city: state.city,
+          civicNumber: state.civicNumber,
+          description: state.description,
+          province: state.province,
+          seats: state.seats,
+          categories: state.selectedCategories,
+        ),*/
         onComplete: (response) {
           emit(state.copyWith(apiError: "Creazione del ristorante successo"));
-          _navigationService.resetToScreen(addSittingTimesRoute);
+          _navigationService.resetToScreen(sittingTimesFormRoute);
         },
         errorToEmit: (msg) => emit(state.copyWith(apiError: msg)),
       );
     }
   }
 
-  void _onNameChanged(NameChanged event, Emitter<AddRestaurantState> emit) {
+  void _onNameChanged(NameChanged event, Emitter<RestaurantFormState> emit) {
     emit(state.copyWith(name: event.name, nameError: "null"));
   }
 
   void _onDescriptionChanged(
-      DescriptionChanged event, Emitter<AddRestaurantState> emit) {
+      DescriptionChanged event, Emitter<RestaurantFormState> emit) {
     emit(state.copyWith(
         description: event.description, descriptionError: "null"));
   }
 
   void _onPhoneNumberChanged(
-      PhoneNumberChanged event, Emitter<AddRestaurantState> emit) {
+      PhoneNumberChanged event, Emitter<RestaurantFormState> emit) {
     emit(state.copyWith(
         phoneNumber: event.phoneNumber, phoneNumberError: "null"));
   }
 
   void _onAddressChanged(
-      AddressChanged event, Emitter<AddRestaurantState> emit) {
+      AddressChanged event, Emitter<RestaurantFormState> emit) {
     emit(state.copyWith(address: event.address, addressError: "null"));
   }
 
   void _onCivicNumberChanged(
-      CivicNumberChanged event, Emitter<AddRestaurantState> emit) {
+      CivicNumberChanged event, Emitter<RestaurantFormState> emit) {
     emit(state.copyWith(
         civicNumber: event.civicNumber, civicNumberError: "null"));
   }
 
-  void _onCityChanged(CityChanged event, Emitter<AddRestaurantState> emit) {
+  void _onCityChanged(CityChanged event, Emitter<RestaurantFormState> emit) {
     emit(state.copyWith(city: event.city, cityError: "null"));
   }
 
   void _onProvinceChanged(
-      ProvinceChanged event, Emitter<AddRestaurantState> emit) {
+      ProvinceChanged event, Emitter<RestaurantFormState> emit) {
     emit(state.copyWith(province: event.province, provinceError: "null"));
   }
 
-  void _onCapChanged(CapChanged event, Emitter<AddRestaurantState> emit) {
+  void _onCapChanged(CapChanged event, Emitter<RestaurantFormState> emit) {
     emit(state.copyWith(cap: event.cap, capError: "null"));
   }
 
-  void _onSeatsChanged(SeatsChanged event, Emitter<AddRestaurantState> emit) {
+  void _onSeatsChanged(SeatsChanged event, Emitter<RestaurantFormState> emit) {
     emit(state.copyWith(seats: event.seats));
   }
 
   void _onFetchCategories(
-      FetchCategories event, Emitter<AddRestaurantState> emit) async {
+      FetchCategories event, Emitter<RestaurantFormState> emit) async {
     emit(state.copyWith(isFetchingCategories: true));
 
     await callApi<List<CategoryResponseDto>>(
@@ -196,7 +215,21 @@ class AddRestaurantBloc extends Bloc<AddRestaurantEvent, AddRestaurantState> {
   }
 
   void _onSelectedCategoriesChanged(
-      SelectedCategoriesChanged event, Emitter<AddRestaurantState> emit) {
+      SelectedCategoriesChanged event, Emitter<RestaurantFormState> emit) {
     emit(state.copyWith(selectedCategories: event.selectedCategories));
+  }
+
+  void _onFetchRestaurant(
+      FetchRestaurant event, Emitter<RestaurantFormState> emit) async {
+    emit(state.copyWith(isFetchingRestaurant: true));
+
+    await callApi<RestaurantResponseDto>(
+      api: foodyApiRepository.restaurants.getMyRestaurant,
+      onComplete: (response) => emit(state.copyWith(
+        restaurant: response,
+        isFetchingRestaurant: false,
+      )),
+      errorToEmit: (msg) => emit(state.copyWith(apiError: msg)),
+    );
   }
 }

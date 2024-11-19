@@ -17,4 +17,7 @@ abstract class RestaurantsApiRepository {
 
   @GET('/restaurateur')
   Future<RestaurantResponseDto> getMyRestaurant();
+
+  @GET('/{id}')
+  Future<RestaurantResponseDto> getById(@Path() int id);
 }

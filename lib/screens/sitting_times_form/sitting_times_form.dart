@@ -1,18 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
-import 'package:foody_app/bloc/add_sitting_times_list/add_sitting_times_list_bloc.dart';
-import 'package:foody_app/bloc/add_sitting_times_list/add_sitting_times_list_event.dart';
-import 'package:foody_app/bloc/add_sitting_times_list/add_sitting_times_list_state.dart';
+import 'package:foody_app/bloc/add_sitting_times_list/sitting_times_form_list_bloc.dart';
+import 'package:foody_app/bloc/add_sitting_times_list/sitting_times_form_list_state.dart';
 import 'package:foody_app/utils/show_foody_time_range_picker.dart';
 import 'package:foody_app/widgets/foody_segmented_control.dart';
 import 'package:intl/intl.dart';
 import 'package:phosphor_flutter/phosphor_flutter.dart';
 
+import '../../bloc/add_sitting_times_list/sitting_times_form_list_event.dart';
 import '../../widgets/foody_text_field.dart';
 
-class AddSittingTimes extends HookWidget {
-  const AddSittingTimes({super.key, required this.weekDay});
+class SittingTimesForm extends HookWidget {
+  const SittingTimesForm({super.key, required this.weekDay});
 
   final String weekDay;
 
@@ -20,7 +20,7 @@ class AddSittingTimes extends HookWidget {
   Widget build(BuildContext context) {
     final expansionTileController = useExpansionTileController();
 
-    return BlocConsumer<AddSittingTimesListBloc, AddSittingTimesListState>(
+    return BlocConsumer<SittingTimesFormListBloc, SittingTimesFormListState>(
       listenWhen: (prev, curr) =>
           prev.weekDays[weekDay]!.accordionsState == true &&
           curr.weekDays[weekDay]!.accordionsState == false,
@@ -46,7 +46,7 @@ class AddSittingTimes extends HookWidget {
             shape: const Border(),
             minTileHeight: 60,
             onExpansionChanged: (expanded) => context
-                .read<AddSittingTimesListBloc>()
+                .read<SittingTimesFormListBloc>()
                 .add(AccordionStateChanged(weekDay: weekDay, state: expanded)),
             title: state.accordionsState == false &&
                     state.lunchStartTime == null &&
@@ -81,7 +81,7 @@ class AddSittingTimes extends HookWidget {
                         lastDateTime:
                             DateTime.now().copyWith(hour: 12, minute: 0),
                         onSubmit: (startTime, endTime) => context
-                            .read<AddSittingTimesListBloc>()
+                            .read<SittingTimesFormListBloc>()
                             .add(LunchTimeChanged(
                               weekDay: weekDay,
                               startTime: startTime,
@@ -92,7 +92,7 @@ class AddSittingTimes extends HookWidget {
                           ? const Icon(PhosphorIconsRegular.sun)
                           : IconButton(
                               onPressed: () => context
-                                  .read<AddSittingTimesListBloc>()
+                                  .read<SittingTimesFormListBloc>()
                                   .add(LunchTimeChanged(
                                     weekDay: weekDay,
                                     startTime: null,
@@ -116,7 +116,7 @@ class AddSittingTimes extends HookWidget {
                         lastDateTime:
                             DateTime.now().copyWith(hour: 19, minute: 0),
                         onSubmit: (startTime, endTime) => context
-                            .read<AddSittingTimesListBloc>()
+                            .read<SittingTimesFormListBloc>()
                             .add(DinnerTimeChanged(
                               weekDay: weekDay,
                               startTime: startTime,
@@ -127,7 +127,7 @@ class AddSittingTimes extends HookWidget {
                           ? const Icon(PhosphorIconsRegular.moon)
                           : IconButton(
                               onPressed: () => context
-                                  .read<AddSittingTimesListBloc>()
+                                  .read<SittingTimesFormListBloc>()
                                   .add(DinnerTimeChanged(
                                     weekDay: weekDay,
                                     startTime: null,
@@ -148,7 +148,7 @@ class AddSittingTimes extends HookWidget {
                       labels: const ["15 min", "30 min", "60 min"],
                       activeIndex: state.stepIndex,
                       onValueChanged: (value) => context
-                          .read<AddSittingTimesListBloc>()
+                          .read<SittingTimesFormListBloc>()
                           .add(StepIndexChanged(
                             weekDay: weekDay,
                             stepIndex: value,

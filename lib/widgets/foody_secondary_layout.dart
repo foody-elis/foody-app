@@ -97,7 +97,6 @@ class FoodySecondaryLayout extends HookWidget {
           child: Column(children: body),
         ),
       ],
-      // floatingActionButton: floatingActionButton,
     );
   }
 }

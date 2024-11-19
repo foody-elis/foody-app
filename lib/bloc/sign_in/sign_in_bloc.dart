@@ -52,8 +52,10 @@ class SignInBloc extends Bloc<SignInEvent, SignInState> {
       foodyApiRepository.dio = getFoodyDio(); // reset dio in case of 498
 
       await callApi<AuthResponseDto>(
-        api: foodyApiRepository.auth.login,
-        data: UserLoginRequestDto(email: state.email, password: state.password),
+        api: () => foodyApiRepository.auth.login(UserLoginRequestDto(
+          email: state.email,
+          password: state.password,
+        )),
         onComplete: (response) {
           emit(state.copyWith(apiError: "Accesso effettuato con successo"));
           userRepository.add(User(

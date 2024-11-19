@@ -1,6 +1,6 @@
 import 'package:equatable/equatable.dart';
 
-class AddSittingTimesState extends Equatable {
+class SittingTimesFormState extends Equatable {
   final DateTime? lunchStartTime;
   final DateTime? lunchEndTime;
   final DateTime? dinnerStartTime;
@@ -8,7 +8,7 @@ class AddSittingTimesState extends Equatable {
   final bool? accordionsState;
   final int stepIndex;
 
-  const AddSittingTimesState({
+  const SittingTimesFormState({
     required this.lunchStartTime,
     required this.lunchEndTime,
     required this.dinnerStartTime,
@@ -17,7 +17,7 @@ class AddSittingTimesState extends Equatable {
     required this.stepIndex,
   });
 
-  const AddSittingTimesState.initial()
+  const SittingTimesFormState.initial()
       : lunchStartTime = null,
         lunchEndTime = null,
         dinnerStartTime = null,
@@ -25,7 +25,7 @@ class AddSittingTimesState extends Equatable {
         accordionsState = null,
         stepIndex = 0;
 
-  AddSittingTimesState copyWith({
+  SittingTimesFormState copyWith({
     Object? lunchStartTime,
     Object? lunchEndTime,
     Object? dinnerStartTime,
@@ -33,7 +33,7 @@ class AddSittingTimesState extends Equatable {
     bool? accordionsState,
     int? stepIndex,
   }) {
-    return AddSittingTimesState(
+    return SittingTimesFormState(
       lunchStartTime: lunchStartTime == "null"
           ? null
           : (lunchStartTime as DateTime?) ?? this.lunchStartTime,

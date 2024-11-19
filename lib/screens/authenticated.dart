@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:foody_app/bloc/auth/auth_bloc.dart';
 import 'package:foody_app/bloc/auth/auth_state.dart';
+import 'package:foody_app/bloc/restaurant_details/restaurant_details_bloc.dart';
 import 'package:foody_app/screens/bookings.dart';
 import 'package:foody_app/screens/profile.dart';
 import 'package:foody_app/screens/restaurant_details/restaurant_details.dart';
@@ -28,20 +29,21 @@ class Authenticated extends StatelessWidget {
       builder: (context, state) {
         return MultiBlocProvider(
           providers: [
-            BlocProvider<HomeBloc>(
-              create: (context) => HomeBloc(
-                foodyApiRepository: context.read<FoodyApiRepository>(),
-              ),
-            ),
+            state.isRestaurateur
+                ? BlocProvider<RestaurantDetailsBloc>(
+                    create: (context) => RestaurantDetailsBloc(
+                      foodyApiRepository: context.read<FoodyApiRepository>(),
+                    ),
+                  )
+                : BlocProvider<HomeBloc>(
+                    create: (context) => HomeBloc(
+                      foodyApiRepository: context.read<FoodyApiRepository>(),
+                    ),
+                  ),
           ],
           child: FoodyPageView(
-            home: state.isRestaurateur
-                ? RestaurantDetails(
-                    restaurant: state.restaurantResponseDto,
-                    enableSkeletonizer: state.isFetchingRestaurant,
-                    isOwner: true,
-                  )
-                : const Home(),
+            home:
+                state.isRestaurateur ? const RestaurantDetails() : const Home(),
             chats: const Chats(),
             orders: state.isRestaurateur ? const Bookings() : const Orders(),
             profile: const Profile(),

@@ -13,4 +13,7 @@ abstract class WeekdaysInfoApiRepository {
   @POST('')
   Future<WeekdayInfoResponseDto> save(@Body() WeekdayInfoRequestDto _);
 
+  @GET('')
+  Future<List<WeekdayInfoResponseDto>> getAll();
+
 }

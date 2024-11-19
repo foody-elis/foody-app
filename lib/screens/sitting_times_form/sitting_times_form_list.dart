@@ -1,22 +1,23 @@
 import 'package:animate_do/animate_do.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:foody_app/bloc/add_sitting_times_list/add_sitting_times_list_bloc.dart';
-import 'package:foody_app/bloc/add_sitting_times_list/add_sitting_times_list_event.dart';
-import 'package:foody_app/bloc/add_sitting_times_list/add_sitting_times_list_state.dart';
+import 'package:foody_app/screens/sitting_times_form/sitting_times_form.dart';
 import 'package:foody_app/utils/show_snackbar.dart';
 import 'package:foody_app/widgets/foody_secondary_layout.dart';
 import 'package:lottie/lottie.dart';
 import 'package:phosphor_flutter/phosphor_flutter.dart';
 
-import 'add_sitting_times.dart';
+import '../../bloc/add_sitting_times_list/sitting_times_form_list_bloc.dart';
+import '../../bloc/add_sitting_times_list/sitting_times_form_list_event.dart';
+import '../../bloc/add_sitting_times_list/sitting_times_form_list_state.dart';
 
-class AddSittingTimesList extends StatelessWidget {
-  const AddSittingTimesList({super.key});
+
+class SittingTimesFormList extends StatelessWidget {
+  const SittingTimesFormList({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return BlocListener<AddSittingTimesListBloc, AddSittingTimesListState>(
+    return BlocListener<SittingTimesFormListBloc, SittingTimesFormListState>(
       listener: (context, state) {
         if (state.error != "") {
           showSnackBar(context: context, msg: state.error);
@@ -28,7 +29,7 @@ class AddSittingTimesList extends StatelessWidget {
           // headerExpandedHeight: 0.3,
           expandedBodyHeight: 0.8,
           showBottomNavBar: false,
-          startWithExpandedBody: true,
+          startWithExpandedBody: !context.read<SittingTimesFormListBloc>().isEditing,
           expandedBody: Padding(
             padding: const EdgeInsets.only(
               top: 30,
@@ -41,7 +42,6 @@ class AddSittingTimesList extends StatelessWidget {
                 FadeInDown(
                   animate: true,
                   duration: const Duration(milliseconds: 500),
-                  // delay: const Duration(milliseconds: 1400),
                   child: Lottie.asset(
                     width: 300,
                     height: 250,
@@ -141,7 +141,7 @@ class AddSittingTimesList extends StatelessWidget {
             ListView.builder(
               shrinkWrap: true,
               itemCount: context
-                  .read<AddSittingTimesListBloc>()
+                  .read<SittingTimesFormListBloc>()
                   .state
                   .weekDays
                   .keys
@@ -149,20 +149,20 @@ class AddSittingTimesList extends StatelessWidget {
               physics: const NeverScrollableScrollPhysics(),
               itemBuilder: (context, index) {
                 String weekDay = context
-                    .read<AddSittingTimesListBloc>()
+                    .read<SittingTimesFormListBloc>()
                     .state
                     .weekDays
                     .keys
                     .elementAt(index);
 
-                return AddSittingTimes(weekDay: weekDay);
+                return SittingTimesForm(weekDay: weekDay);
               },
             ),
           ],
         ),
         floatingActionButton: FloatingActionButton(
           onPressed: () {
-            context.read<AddSittingTimesListBloc>().add(FormSubmit());
+            context.read<SittingTimesFormListBloc>().add(FormSubmit());
           },
           child: const Icon(PhosphorIconsRegular.paperPlaneRight),
         ),

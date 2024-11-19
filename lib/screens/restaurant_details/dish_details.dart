@@ -1,19 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_rating/flutter_rating.dart';
+import 'package:foody_app/dto/response/dish_response_dto.dart';
 
 import '../../widgets/foody_button.dart';
 
 class DishDetails extends StatelessWidget {
   const DishDetails({
     super.key,
-    required this.dishName,
-    required this.rating,
-    required this.price,
+    required this.dish,
+    this.canAddToOrder = false,
   });
 
-  final String dishName;
-  final double rating;
-  final double price;
+  final DishResponseDto dish;
+  final bool canAddToOrder;
 
   @override
   Widget build(BuildContext context) {
@@ -30,8 +29,11 @@ class DishDetails extends StatelessWidget {
                 height: 140,
                 width: 180,
                 decoration: BoxDecoration(
-                  color: Colors.grey,
                   borderRadius: BorderRadius.circular(10),
+                  image: const DecorationImage(
+                    image: AssetImage("assets/images/piatto_pasta.jpg"),
+                    fit: BoxFit.fill,
+                  ),
                 ),
               ),
               const SizedBox(width: 20),
@@ -39,20 +41,20 @@ class DishDetails extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    dishName,
+                    dish.name,
                     style: const TextStyle(
                         fontSize: 20, fontWeight: FontWeight.bold),
                   ),
                   const SizedBox(height: 5),
                   StarRating(
-                    rating: rating,
+                    rating: 4,
                     size: 14,
                     mainAxisAlignment: MainAxisAlignment.start,
                     color: Colors.amber,
                   ),
                   const SizedBox(height: 8),
                   Text(
-                    "€ $price",
+                    "€ ${dish.price}",
                     style: const TextStyle(
                       fontSize: 18,
                       fontWeight: FontWeight.bold,
@@ -72,17 +74,18 @@ class DishDetails extends StatelessWidget {
           ),
         ),
         const SizedBox(height: 5),
-        Text("ingredienti " * 20),
-        Expanded(
-          child: Align(
-            alignment: Alignment.bottomCenter,
-            child: FoodyButton(
-              label: "Aggiungi al carrello",
-              width: MediaQuery.of(context).size.width - 24,
-              onPressed: () {},
+        Text("${dish.description} " * 20),
+        if (canAddToOrder)
+          Expanded(
+            child: Align(
+              alignment: Alignment.bottomCenter,
+              child: FoodyButton(
+                label: "Aggiungi al carrello",
+                width: MediaQuery.of(context).size.width - 24,
+                onPressed: () {},
+              ),
             ),
           ),
-        ),
       ],
     );
   }

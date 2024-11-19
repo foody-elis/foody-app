@@ -28,8 +28,11 @@ class RestaurantReview extends StatelessWidget {
               width: 50,
               height: 50,
               decoration: BoxDecoration(
-                color: Colors.grey,
                 borderRadius: BorderRadius.circular(100),
+                image: const DecorationImage(
+                  image: AssetImage("assets/images/user.png"),
+                  fit: BoxFit.fill,
+                ),
               ),
             ),
             const SizedBox(width: 10),

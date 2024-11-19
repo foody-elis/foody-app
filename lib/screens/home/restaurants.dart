@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:foody_app/bloc/home/home_bloc.dart';
 import 'package:foody_app/bloc/home/home_state.dart';
+import 'package:foody_app/routing/constants.dart';
+import 'package:foody_app/routing/navigation_service.dart';
 import 'package:foody_app/widgets/foody_card_restaurant.dart';
 import 'package:foody_app/widgets/foody_empty_data.dart';
 import 'package:skeletonizer/skeletonizer.dart';
@@ -46,6 +48,10 @@ class Restaurants extends StatelessWidget {
                           address:
                               "${restaurant.street}, ${restaurant.postalCode}, ${restaurant.city}",
                           sittingTimes: const ["12:30", "13:00", "13:30"],
+                          onTap: () => NavigationService().navigateTo(
+                            restaurantDetailsRoute,
+                            arguments: {"restaurantId": restaurant.id},
+                          ),
                         );
                       },
                     ),

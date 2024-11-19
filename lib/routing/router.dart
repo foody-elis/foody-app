@@ -1,22 +1,29 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:foody_app/bloc/add_restaurant/add_restaurant_bloc.dart';
-import 'package:foody_app/bloc/add_sitting_times_list/add_sitting_times_list_bloc.dart';
 import 'package:foody_app/bloc/auth/auth_bloc.dart';
 import 'package:foody_app/bloc/bottom_nav_bar/bottom_nav_bar_bloc.dart';
+import 'package:foody_app/bloc/home/home_bloc.dart';
+import 'package:foody_app/bloc/menu/menu_bloc.dart';
+import 'package:foody_app/bloc/restaurant_details/restaurant_details_bloc.dart';
+import 'package:foody_app/bloc/restaurant_form/restaurant_form_bloc.dart';
 import 'package:foody_app/bloc/welcome/welcome_bloc.dart';
 import 'package:foody_app/repository/interface/foody_api_repository.dart';
 import 'package:foody_app/repository/interface/user_repository.dart';
-import 'package:foody_app/screens/add_restaurant.dart';
-import 'package:foody_app/screens/add_sitting_times/add_sitting_times_list.dart';
 import 'package:foody_app/screens/authenticated.dart';
+import 'package:foody_app/screens/menu/menu.dart';
+import 'package:foody_app/screens/restaurant_details/restaurant_details.dart';
+import 'package:foody_app/screens/restaurant_form.dart';
 
+import '../bloc/add_sitting_times_list/sitting_times_form_list_bloc.dart';
+import '../screens/sitting_times_form/sitting_times_form_list.dart';
 import '../screens/welcome/welcome.dart';
 import 'constants.dart';
 
 class Router {
   static Route<dynamic> generateRoute(RouteSettings settings) {
+    final arguments = settings.arguments as Map<String, dynamic>?;
+
     switch (settings.name) {
       case welcomeRoute:
         return CupertinoPageRoute(
@@ -25,22 +32,24 @@ class Router {
             child: const Welcome(),
           ),
         );
-      case addRestaurantRoute:
+      case restaurantFormRoute:
         return CupertinoPageRoute(
-          builder: (_) => BlocProvider<AddRestaurantBloc>(
-            create: (context) => AddRestaurantBloc(
+          builder: (_) => BlocProvider<RestaurantFormBloc>(
+            create: (context) => RestaurantFormBloc(
               foodyApiRepository: context.read<FoodyApiRepository>(),
+              isEditing: arguments?["isEditing"],
             ),
-            child: const AddRestaurant(),
+            child: const RestaurantForm(),
           ),
         );
-      case addSittingTimesRoute:
+      case sittingTimesFormRoute:
         return CupertinoPageRoute(
-          builder: (_) => BlocProvider<AddSittingTimesListBloc>(
-            create: (context) => AddSittingTimesListBloc(
+          builder: (_) => BlocProvider<SittingTimesFormListBloc>(
+            create: (context) => SittingTimesFormListBloc(
               foodyApiRepository: context.read<FoodyApiRepository>(),
+              isEditing: arguments?["isEditing"],
             ),
-            child: const AddSittingTimesList(),
+            child: const SittingTimesFormList(),
           ),
         );
       case authenticatedRoute:
@@ -58,6 +67,29 @@ class Router {
               ),
             ],
             child: const Authenticated(),
+          ),
+        );
+      case restaurantDetailsRoute:
+        return CupertinoPageRoute(
+          builder: (_) => BlocProvider<RestaurantDetailsBloc>(
+            create: (context) => RestaurantDetailsBloc(
+              foodyApiRepository: context.read<FoodyApiRepository>(),
+              restaurantId: arguments?["restaurantId"],
+            ),
+            child: const Scaffold(
+              extendBody: true,
+              body: RestaurantDetails(),
+            ),
+          ),
+        );
+      case menuRoute:
+        return CupertinoPageRoute(
+          builder: (_) => BlocProvider<MenuBloc>(
+            create: (context) => MenuBloc(
+              foodyApiRepository: context.read<FoodyApiRepository>(),
+              restaurantId: arguments?["restaurantId"],
+            ),
+            child: const Menu(),
           ),
         );
       default:

@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:intl_phone_number_input/intl_phone_number_input.dart';
 import 'package:phosphor_flutter/phosphor_flutter.dart';
 
-class FoodyPhoneNumberField extends StatelessWidget {
+class FoodyPhoneNumberField extends HookWidget {
   const FoodyPhoneNumberField({
     super.key,
     required this.title,
@@ -12,6 +13,7 @@ class FoodyPhoneNumberField extends StatelessWidget {
     this.required = false,
     this.errorText,
     this.suffixIcon,
+    this.label,
   });
 
   final String title;
@@ -20,9 +22,17 @@ class FoodyPhoneNumberField extends StatelessWidget {
   final bool required;
   final String? errorText;
   final Widget? suffixIcon;
+  final String? label;
 
   @override
   Widget build(BuildContext context) {
+    final textController = useTextEditingController();
+
+    useEffect(() {
+      if (label != null) textController.text = label!;
+      return null;
+    }, [label]);
+
     return Container(
       padding: padding,
       margin: margin,
@@ -53,6 +63,7 @@ class FoodyPhoneNumberField extends StatelessWidget {
               borderRadius: BorderRadius.circular(10),
             ),
             child: InternationalPhoneNumberInput(
+              textFieldController: textController,
               onInputChanged: onInputChanged,
               selectorConfig: const SelectorConfig(
                 selectorType: PhoneInputSelectorType.BOTTOM_SHEET,

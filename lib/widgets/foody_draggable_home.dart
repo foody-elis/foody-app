@@ -170,8 +170,6 @@ class FoodyDraggableHome extends HookWidget {
               return SliverAppBar(
                 scrolledUnderElevation: 0,
                 backgroundColor: appBarColor,
-                /*automaticallyImplyLeading:
-                    isFullyCollapsed.value || isFullyExpanded.value,*/
                 leading: alwaysShowLeadingAndAction
                     ? leading
                     : isFullyCollapsed.value || isFullyExpanded.value

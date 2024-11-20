@@ -23,10 +23,6 @@ class FoodyTagOutlined extends StatelessWidget {
       width: width,
       child: Card.outlined(
         elevation: elevation,
-        /*shape: RoundedRectangleBorder(
-                        side: const BorderSide(color: Colors.grey, width: 1.0),
-                        borderRadius: BorderRadius.circular(10.0),
-                      ),*/
         margin: margin,
         child: InkWell(
           borderRadius: BorderRadius.circular(10),
@@ -34,7 +30,6 @@ class FoodyTagOutlined extends StatelessWidget {
           child: Center(
             child: Padding(
               padding: const EdgeInsets.fromLTRB(10, 5, 10, 5),
-              // padding: EdgeInsets.all(0),
               child: Text(label),
             ),
           ),

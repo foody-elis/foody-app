@@ -30,7 +30,6 @@ class HomeSearchBar extends StatelessWidget {
           enabledBorder: _border(grey),
           hintText: 'Cerca un ristorante',
           hintStyle: const TextStyle(color: Colors.grey),
-          // contentPadding: const EdgeInsets.symmetric(vertical: 20),
           prefixIcon: const Icon(
             PhosphorIconsRegular.magnifyingGlass,
             color: Colors.grey,

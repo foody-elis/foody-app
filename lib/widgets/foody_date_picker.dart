@@ -170,7 +170,6 @@ class _CalendarView extends HookWidget {
                     onSelectedItemChanged: (value) {
                       currentDate.value =
                           currentDate.value.copyWith(day: value + 1);
-                      // setState(() {});
                     },
                     itemBuilder: (context, index) {
                       return Container(
@@ -202,8 +201,6 @@ class _CalendarView extends HookWidget {
 
                       currentDate.value =
                           currentDate.value.copyWith(month: value + 1);
-
-                      // setState(() {});
                     },
                     itemBuilder: (context, index) {
                       return Container(
@@ -238,8 +235,6 @@ class _CalendarView extends HookWidget {
                         currentDate.value =
                             currentDate.value.copyWith(day: daysInMonth.last);
                       }
-
-                      // setState(() {});
                     },
                     itemBuilder: (context, index) {
                       return Container(

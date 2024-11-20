@@ -136,18 +136,6 @@ class RestaurantFormBloc
           seats: state.seats,
           categories: state.selectedCategories,
         )),
-        /*data: RestaurantRequestDto(
-          name: state.name,
-          phoneNumber: state.phoneNumber,
-          street: state.address,
-          postalCode: state.cap,
-          city: state.city,
-          civicNumber: state.civicNumber,
-          description: state.description,
-          province: state.province,
-          seats: state.seats,
-          categories: state.selectedCategories,
-        ),*/
         onComplete: (response) {
           emit(state.copyWith(apiError: "Creazione del ristorante successo"));
           _navigationService.resetToScreen(sittingTimesFormRoute);

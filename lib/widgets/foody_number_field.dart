@@ -14,10 +14,7 @@ class FoodyNumberField extends StatelessWidget {
 
   final String title;
   final EdgeInsetsGeometry? padding, margin;
-  // final void Function()? onTap;
   final void Function(double)? onChanged;
-  // final bool showCursor;
-  // final bool readOnly;
   final bool required;
   final double startValue;
 
@@ -47,7 +44,6 @@ class FoodyNumberField extends StatelessWidget {
           ),
           Container(
             margin: const EdgeInsets.only(top: 8),
-            // width: MediaQuery.of(context).size.width,
             height: 50,
             decoration: BoxDecoration(
               color: Theme.of(context).primaryColor.withOpacity(0.1),
@@ -61,11 +57,6 @@ class FoodyNumberField extends StatelessWidget {
               onChanged: onChanged,
             ),
           ),
-          /*if (errorText != null)
-                          Text(
-                            errorText!,
-                            style: TextStyle(color: Theme.of(context).colorScheme.error),
-                          ),*/
         ],
       ),
     );

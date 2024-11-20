@@ -25,7 +25,6 @@ class RestaurantMenu extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Row(
-          // crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             const Text(
               "Menù",

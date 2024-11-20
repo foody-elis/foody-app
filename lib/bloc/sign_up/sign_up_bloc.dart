@@ -118,15 +118,6 @@ class SignUpBloc extends Bloc<SignUpEvent, SignUpState> {
         birthDate: DateFormat("dd/MM/yyyy").parse(state.birthDate),
         avatar: "avatar.png",
       )),
-      /*data: UserRegistrationRequestDto(
-        name: state.name,
-        surname: state.surname,
-        email: state.email,
-        password: state.password,
-        phoneNumber: state.phoneNumber,
-        birthDate: DateFormat("dd/MM/yyyy").parse(state.birthDate),
-        avatar: "avatar.png",
-      ),*/
       onComplete: (response) {
         userRepository.add(User(
           jwt: response.accessToken,

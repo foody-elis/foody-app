@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:foody_app/bloc/foody/foody_bloc.dart';
+import 'package:foody_app/bloc/foody/foody_event.dart';
 import 'package:foody_app/bloc/sign_in/sign_in_bloc.dart';
 import 'package:foody_app/bloc/sign_in/sign_in_event.dart';
 import 'package:foody_app/bloc/sign_in/sign_in_state.dart';
@@ -24,6 +26,10 @@ class SignIn extends StatelessWidget {
         if (state.apiError != "") {
           showSnackBar(context: context, msg: state.apiError);
         }
+
+        context
+            .read<FoodyBloc>()
+            .add(ShowLoadingOverlayChanged(show: state.isLoading));
       },
       builder: (context, state) {
         return Column(

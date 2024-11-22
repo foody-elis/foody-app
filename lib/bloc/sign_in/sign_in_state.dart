@@ -6,6 +6,7 @@ class SignInState extends Equatable {
   final String? emailError;
   final String? passwordError;
   final String apiError;
+  final bool isLoading;
 
   const SignInState({
     required this.email,
@@ -13,6 +14,7 @@ class SignInState extends Equatable {
     required this.emailError,
     required this.passwordError,
     required this.apiError,
+    required this.isLoading,
   });
 
   const SignInState.initial()
@@ -20,6 +22,7 @@ class SignInState extends Equatable {
         password = "",
         emailError = null,
         passwordError = null,
+        isLoading = false,
         apiError = "";
 
   SignInState copyWith({
@@ -28,6 +31,7 @@ class SignInState extends Equatable {
     String? emailError,
     String? passwordError,
     String? apiError,
+    bool? isLoading,
   }) {
     return SignInState(
       email: email ?? this.email,
@@ -36,6 +40,7 @@ class SignInState extends Equatable {
       passwordError:
           passwordError == "null" ? null : passwordError ?? this.passwordError,
       apiError: apiError ?? this.apiError,
+      isLoading: isLoading ?? this.isLoading,
     );
   }
 
@@ -46,5 +51,6 @@ class SignInState extends Equatable {
         emailError,
         passwordError,
         apiError,
+        isLoading,
       ];
 }

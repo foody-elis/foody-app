@@ -18,6 +18,7 @@ class Categories extends StatelessWidget {
               "Categorie",
               style: TextStyle(fontWeight: FontWeight.bold),
             ),
+            const SizedBox(height: 10),
             FoodyHorizontalTags(
               enableSkeletonizer: state.isFetching,
               itemCount: state.categories.length,

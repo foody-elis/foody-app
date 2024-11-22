@@ -20,7 +20,10 @@ class FoodyOutlinedButton extends StatelessWidget {
       width: width,
       height: height,
       child: OutlinedButton(
-        onPressed: onPressed,
+        onPressed: () {
+          FocusManager.instance.primaryFocus?.unfocus();
+          onPressed?.call();
+        },
         style: OutlinedButton.styleFrom(
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(10),

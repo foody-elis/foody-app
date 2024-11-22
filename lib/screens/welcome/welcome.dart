@@ -83,7 +83,7 @@ class Welcome extends StatelessWidget {
                     onPressed: () =>
                         showFoodyModalBottomSheetWithBloc<SignUpBloc>(
                       context: context,
-                      createBloc: (context) => SignUpBloc(
+                      createBloc: (_) => SignUpBloc(
                         foodyApiRepository: context.read<FoodyApiRepository>(),
                         userRepository: context.read<UserRepository>(),
                       ),
@@ -101,7 +101,7 @@ class Welcome extends StatelessWidget {
                     onPressed: () {
                       showFoodyModalBottomSheetWithBloc<SignInBloc>(
                         context: context,
-                        createBloc: (context) => SignInBloc(
+                        createBloc: (_) => SignInBloc(
                           foodyApiRepository:
                               context.read<FoodyApiRepository>(),
                           userRepository: context.read<UserRepository>(),

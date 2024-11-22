@@ -17,6 +17,7 @@ class SignUpState extends Equatable {
   final String? birthDateError;
   final int activeIndex;
   final String apiError;
+  final bool isLoading;
 
   const SignUpState({
     required this.name,
@@ -35,6 +36,7 @@ class SignUpState extends Equatable {
     required this.birthDateError,
     required this.activeIndex,
     required this.apiError,
+    required this.isLoading,
   });
 
   const SignUpState.initial()
@@ -53,6 +55,7 @@ class SignUpState extends Equatable {
         phoneNumberError = null,
         birthDateError = null,
         activeIndex = 0,
+        isLoading = false,
         apiError = "";
 
   SignUpState copyWith({
@@ -72,6 +75,7 @@ class SignUpState extends Equatable {
     String? birthDateError,
     int? activeIndex,
     String? apiError,
+    bool? isLoading,
   }) {
     return SignUpState(
       name: name ?? this.name,
@@ -98,6 +102,7 @@ class SignUpState extends Equatable {
           : birthDateError ?? this.birthDateError,
       activeIndex: activeIndex ?? this.activeIndex,
       apiError: apiError ?? this.apiError,
+      isLoading: isLoading ?? this.isLoading,
     );
   }
 
@@ -119,5 +124,6 @@ class SignUpState extends Equatable {
         birthDateError,
         activeIndex,
         apiError,
+        isLoading,
       ];
 }

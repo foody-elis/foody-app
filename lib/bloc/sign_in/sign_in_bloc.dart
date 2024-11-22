@@ -51,6 +51,8 @@ class SignInBloc extends Bloc<SignInEvent, SignInState> {
     if (_isFormValid(emit)) {
       foodyApiRepository.dio = getFoodyDio(); // reset dio in case of 498
 
+      emit(state.copyWith(isLoading: true));
+
       await callApi<AuthResponseDto>(
         api: () => foodyApiRepository.auth.login(UserLoginRequestDto(
           email: state.email,
@@ -72,6 +74,8 @@ class SignInBloc extends Bloc<SignInEvent, SignInState> {
         },
         errorToEmit: (msg) => emit(state.copyWith(apiError: msg)),
       );
+
+      emit(state.copyWith(isLoading: false));
     }
   }
 

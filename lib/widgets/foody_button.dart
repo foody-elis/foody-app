@@ -22,7 +22,10 @@ class FoodyButton extends StatelessWidget {
       width: width,
       height: height,
       child: ElevatedButton(
-        onPressed: onPressed,
+        onPressed: () {
+          FocusManager.instance.primaryFocus?.unfocus();
+          onPressed?.call();
+        },
         style: ElevatedButton.styleFrom(
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(10),

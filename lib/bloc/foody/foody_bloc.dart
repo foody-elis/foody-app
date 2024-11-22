@@ -16,6 +16,7 @@ class FoodyBloc extends Bloc<FoodyEvent, FoodyState> {
           userRepository.isLogged(),
         )) {
     on<DarkThemeToggled>(_onDarkThemeToggled);
+    on<ShowLoadingOverlayChanged>(_onShowLoadingOverlayChanged);
   }
 
   void _onDarkThemeToggled(DarkThemeToggled event, Emitter<FoodyState> emit) {
@@ -23,5 +24,9 @@ class FoodyBloc extends Bloc<FoodyEvent, FoodyState> {
     settings?.darkTheme = !settings.darkTheme;
     settingsRepository.update(settings!);*/
     emit(state.copyWith(darkTheme: !state.darkTheme));
+  }
+
+  void _onShowLoadingOverlayChanged(ShowLoadingOverlayChanged event, Emitter<FoodyState> emit) {
+    emit(state.copyWith(showLoadingOverlay: event.show));
   }
 }

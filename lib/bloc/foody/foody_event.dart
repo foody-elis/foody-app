@@ -9,3 +9,11 @@ class FoodyEvent extends Equatable {
 
 class DarkThemeToggled extends FoodyEvent {}
 
+class ShowLoadingOverlayChanged extends FoodyEvent {
+  const ShowLoadingOverlayChanged({required this.show});
+
+  final bool show;
+
+  @override
+  List<Object> get props => [show];
+}

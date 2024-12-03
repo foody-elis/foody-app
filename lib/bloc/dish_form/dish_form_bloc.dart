@@ -28,6 +28,7 @@ class DishFormBloc extends Bloc<DishFormEvent, DishFormState> {
     on<DescriptionChanged>(_onDescriptionChanged);
     on<PriceChanged>(_onPriceChanged);
     on<PhotoChanged>(_onPhotoChanged);
+    on<Remove>(_onRemove);
   }
 
   bool _isFormValid(Emitter<DishFormState> emit) {
@@ -83,17 +84,22 @@ class DishFormBloc extends Bloc<DishFormEvent, DishFormState> {
         restaurantId: restaurantId,
       );
 
+      emit(state.copyWith(isLoading: true));
+
       await callApi<DishResponseDto>(
         api: () => dish == null
             ? foodyApiRepository.dishes.add(bodyData)
             : foodyApiRepository.dishes.edit(bodyData),
         onComplete: (response) {
           emit(state.copyWith(
-              apiError: "Piatto aggiunto effettuato con successo"));
+              apiError: "Piatto aggiunto con successo"));
+          emit(state.copyWith(apiError: "", isLoading: false));
           menuBloc.add(FetchDishes());
           NavigationService().goBack();
         },
         errorToEmit: (msg) => emit(state.copyWith(apiError: msg)),
+        onFailed: (_) => emit(state.copyWith(isLoading: false)),
+        onError: () => emit(state.copyWith(isLoading: false)),
       );
     }
   }
@@ -114,5 +120,11 @@ class DishFormBloc extends Bloc<DishFormEvent, DishFormState> {
 
   void _onPhotoChanged(PhotoChanged event, Emitter<DishFormState> emit) {
     emit(state.copyWith(photo: event.photo, photoError: "null"));
+  }
+
+  void _onRemove(Remove event, Emitter<DishFormState> emit) async {
+    emit(state.copyWith(isLoading: true));
+
+    menuBloc.add(RemoveDish(dishId: state.id!, isFromBottomSheet: true));
   }
 }

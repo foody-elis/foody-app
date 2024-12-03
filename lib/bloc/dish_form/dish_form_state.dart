@@ -12,6 +12,7 @@ class DishFormState extends Equatable {
   final String? descriptionError;
   final String? priceError;
   final String? photoError;
+  final bool isLoading;
 
   const DishFormState({
     required this.id,
@@ -24,6 +25,7 @@ class DishFormState extends Equatable {
     required this.descriptionError,
     required this.priceError,
     required this.photoError,
+    required this.isLoading,
   });
 
   DishFormState.initial(DishResponseDto? dish)
@@ -36,7 +38,8 @@ class DishFormState extends Equatable {
         nameError = null,
         descriptionError = null,
         priceError = null,
-        photoError = null;
+        photoError = null,
+        isLoading = false;
 
   DishFormState copyWith({
     String? name,
@@ -48,6 +51,7 @@ class DishFormState extends Equatable {
     String? descriptionError,
     String? priceError,
     String? photoError,
+    bool? isLoading,
   }) {
     return DishFormState(
       id: id,
@@ -62,6 +66,7 @@ class DishFormState extends Equatable {
           : descriptionError ?? this.descriptionError,
       priceError: priceError == "null" ? null : priceError ?? this.priceError,
       photoError: photoError == "null" ? null : photoError ?? this.photoError,
+      isLoading: isLoading ?? this.isLoading,
     );
   }
 
@@ -76,5 +81,6 @@ class DishFormState extends Equatable {
         descriptionError,
         priceError,
         photoError,
+        isLoading,
       ];
 }

@@ -16,7 +16,6 @@ class Foody extends StatelessWidget {
   Widget build(BuildContext context) {
     MaterialTheme theme =
         MaterialTheme(createTextTheme(context, "Roboto", "Roboto"));
-
     return BlocBuilder<FoodyBloc, FoodyState>(
       builder: (context, state) {
         return Portal(

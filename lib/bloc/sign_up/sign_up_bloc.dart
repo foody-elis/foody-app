@@ -149,11 +149,15 @@ class SignUpBloc extends Bloc<SignUpEvent, SignUpState> {
   void _onSignUpRestaurateur(
       SignUpRestaurateur event, Emitter<SignUpState> emit) async {
     if (_isFormValid(emit)) {
+      emit(state.copyWith(isLoading: true));
+
       await _signUp(
         emit: emit,
         api: foodyApiRepository.auth.registerRestaurateur,
         onComplete: () => _navigationService.navigateTo(restaurantFormRoute),
       );
+
+      emit(state.copyWith(isLoading: false));
     }
   }
 

@@ -10,9 +10,10 @@ class MenuEvent extends Equatable {
 class FetchDishes extends MenuEvent {}
 
 class RemoveDish extends MenuEvent {
-  const RemoveDish({required this.dishId});
+  const RemoveDish({required this.dishId, this.isFromBottomSheet = false});
 
   final int dishId;
+  final bool isFromBottomSheet;
 
   @override
   List<Object> get props => [dishId];

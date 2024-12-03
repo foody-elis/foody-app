@@ -29,7 +29,6 @@ class Home extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
               Categories(),
-              SizedBox(height: 20),
               Restaurants(),
             ],
           ),

@@ -32,73 +32,76 @@ class SignIn extends StatelessWidget {
             .add(ShowLoadingOverlayChanged(show: state.isLoading));
       },
       builder: (context, state) {
-        return Column(
-          children: [
-            const Text(
-              'Accesso',
-              style: TextStyle(
-                color: Colors.black,
-                fontSize: 22,
-                fontWeight: FontWeight.w700,
-              ),
-            ),
-            const SizedBox(height: 24),
-            // Form
-            FoodyTextField(
-              required: true,
-              title: 'Email',
-              hint: 'tuaemail@email.com',
-              suffixIcon: const Icon(PhosphorIconsRegular.at),
-              onChanged: (email) => context
-                  .read<SignInBloc>()
-                  .add(EmailChanged(email: email.trim())),
-              errorText: state.emailError,
-            ),
-            FoodyTextField(
-              required: true,
-              title: 'Password',
-              hint: '**********',
-              obscureText: true,
-              suffixIcon: const Icon(PhosphorIconsRegular.lockKey),
-              margin: const EdgeInsets.only(top: 16),
-              onChanged: (password) => context
-                  .read<SignInBloc>()
-                  .add(PasswordChanged(password: password)),
-              errorText: state.passwordError,
-            ),
-            const SizedBox(height: 32),
-            FoodyButton(
-              label: 'Accedi',
-              width: MediaQuery.of(context).size.width,
-              onPressed: () => context.read<SignInBloc>().add(LoginSubmit()),
-            ),
-            const SizedBox(height: 6),
-            TextButton(
-              onPressed: () {
-                Navigator.of(context).pop();
-                showFoodyModalBottomSheetWithBloc<SignUpBloc>(
-                  context: context,
-                  createBloc: (context) => SignUpBloc(
-                    foodyApiRepository: context.read<FoodyApiRepository>(),
-                    userRepository: context.read<UserRepository>(),
-                  ),
-                  child: const SignUp(),
-                );
-              },
-              child: RichText(
-                text: const TextSpan(
-                  text: 'Vuoi creare un account? ',
-                  style: TextStyle(color: Colors.grey),
-                  children: [
-                    TextSpan(
-                      style: TextStyle(fontWeight: FontWeight.w700),
-                      text: 'Registrati',
-                    )
-                  ],
+        return PopScope(
+          canPop: !state.isLoading,
+          child: Column(
+            children: [
+              const Text(
+                'Accesso',
+                style: TextStyle(
+                  color: Colors.black,
+                  fontSize: 22,
+                  fontWeight: FontWeight.w700,
                 ),
               ),
-            ),
-          ],
+              const SizedBox(height: 24),
+              // Form
+              FoodyTextField(
+                required: true,
+                title: 'Email',
+                hint: 'tuaemail@email.com',
+                suffixIcon: const Icon(PhosphorIconsRegular.at),
+                onChanged: (email) => context
+                    .read<SignInBloc>()
+                    .add(EmailChanged(email: email.trim())),
+                errorText: state.emailError,
+              ),
+              FoodyTextField(
+                required: true,
+                title: 'Password',
+                hint: '**********',
+                obscureText: true,
+                suffixIcon: const Icon(PhosphorIconsRegular.lockKey),
+                margin: const EdgeInsets.only(top: 16),
+                onChanged: (password) => context
+                    .read<SignInBloc>()
+                    .add(PasswordChanged(password: password)),
+                errorText: state.passwordError,
+              ),
+              const SizedBox(height: 32),
+              FoodyButton(
+                label: 'Accedi',
+                width: MediaQuery.of(context).size.width,
+                onPressed: () => context.read<SignInBloc>().add(LoginSubmit()),
+              ),
+              const SizedBox(height: 6),
+              TextButton(
+                onPressed: () {
+                  Navigator.of(context).pop();
+                  showFoodyModalBottomSheetWithBloc<SignUpBloc>(
+                    context: context,
+                    createBloc: (context) => SignUpBloc(
+                      foodyApiRepository: context.read<FoodyApiRepository>(),
+                      userRepository: context.read<UserRepository>(),
+                    ),
+                    child: const SignUp(),
+                  );
+                },
+                child: RichText(
+                  text: const TextSpan(
+                    text: 'Vuoi creare un account? ',
+                    style: TextStyle(color: Colors.grey),
+                    children: [
+                      TextSpan(
+                        style: TextStyle(fontWeight: FontWeight.w700),
+                        text: 'Registrati',
+                      )
+                    ],
+                  ),
+                ),
+              ),
+            ],
+          ),
         );
       },
     );

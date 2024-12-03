@@ -20,6 +20,8 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
   Future<bool> _fetchCategories(Emitter<HomeState> emit) async {
     bool error = false;
 
+    // emit(state.copyWith(categories: []));
+
     await callApi<List<CategoryResponseDto>>(
       api: foodyApiRepository.categories.getAll,
       onComplete: (response) => emit(state.copyWith(categories: response)),

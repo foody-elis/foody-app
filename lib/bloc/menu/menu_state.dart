@@ -4,31 +4,31 @@ import 'package:foody_app/dto/response/dish_response_dto.dart';
 class MenuState extends Equatable {
   final List<DishResponseDto> dishes;
   final String apiError;
-  final bool isFetchingDishes;
+  final bool isLoading;
 
   const MenuState({
     required this.dishes,
     required this.apiError,
-    required this.isFetchingDishes,
+    required this.isLoading,
   });
 
   MenuState.initial()
       : dishes = [],
         apiError = "",
-        isFetchingDishes = false;
+        isLoading = false;
 
   MenuState copyWith({
     List<DishResponseDto>? dishes,
     String? apiError,
-    bool? isFetchingDishes,
+    bool? isLoading,
   }) {
     return MenuState(
       dishes: dishes ?? this.dishes,
       apiError: apiError ?? this.apiError,
-      isFetchingDishes: isFetchingDishes ?? this.isFetchingDishes,
+      isLoading: isLoading ?? this.isLoading,
     );
   }
 
   @override
-  List<Object?> get props => [dishes, apiError, isFetchingDishes];
+  List<Object?> get props => [dishes, apiError, isLoading];
 }

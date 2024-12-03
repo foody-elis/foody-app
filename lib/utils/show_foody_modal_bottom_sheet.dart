@@ -69,7 +69,7 @@ void showFoodyModalBottomSheetWithBloc<
     isScrollControlled: true,
     backgroundColor: Colors.white,
     builder: (context) {
-      return BlocProvider<T>(
+      return  BlocProvider<T>(
         create: (context) => createBloc(context),
         child: _modalLayout(context, child, heightPercentage),
       );

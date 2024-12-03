@@ -11,7 +11,7 @@ class Categories extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<HomeBloc, HomeState>(
       builder: (context, state) {
-        return Column(
+        return state.categories.isNotEmpty ? Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             const Text(
@@ -24,8 +24,9 @@ class Categories extends StatelessWidget {
               itemCount: state.categories.length,
               tagBuilder: (context, index) => state.categories[index].name,
             ),
+            const SizedBox(height: 20),
           ],
-        );
+        ) : const SizedBox.shrink();
       },
     );
   }

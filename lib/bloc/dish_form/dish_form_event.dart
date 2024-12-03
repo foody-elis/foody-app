@@ -10,6 +10,8 @@ class DishFormEvent extends Equatable {
 
 class Save extends DishFormEvent {}
 
+class Remove extends DishFormEvent {}
+
 class NameChanged extends DishFormEvent {
   const NameChanged({required this.name});
 

@@ -4,6 +4,7 @@ import 'package:foody_app/bloc/dish_form/dish_form_bloc.dart';
 import 'package:foody_app/bloc/foody/foody_bloc.dart';
 import 'package:foody_app/bloc/foody/foody_event.dart';
 import 'package:foody_app/bloc/menu/menu_bloc.dart';
+import 'package:foody_app/bloc/menu/menu_event.dart';
 import 'package:foody_app/bloc/menu/menu_state.dart';
 import 'package:foody_app/repository/interface/foody_api_repository.dart';
 import 'package:foody_app/screens/menu/dish_form.dart';
@@ -28,56 +29,68 @@ class Menu extends StatelessWidget {
 
         context
             .read<FoodyBloc>()
-            .add(ShowLoadingOverlayChanged(show: state.isFetchingDishes));
+            .add(ShowLoadingOverlayChanged(show: state.isLoading));
       },
       builder: (context, state) {
-        return Scaffold(
-          body: FoodySecondaryLayout(
-              showBottomNavBar: false,
-              title: "Menù",
-              subtitle: "Gestisci i piatti all'interno del tuo menù",
-              body: state.dishes.isEmpty
-                  ? [
-                      SizedBox(
-                        height: MediaQuery.of(context).size.height * 0.7,
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          crossAxisAlignment: CrossAxisAlignment.stretch,
-                          children: [
-                            Lottie.asset(
-                              height: 120,
-                              "assets/lottie/empty_menu.json",
-                              animate: false,
-                            ),
-                            const Text(
-                              "Nessun piatto nel menù",
-                              style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                                fontSize: 20,
+        return PopScope(
+          canPop: !state.isLoading,
+          child: Scaffold(
+            body: FoodySecondaryLayout(
+                showBottomNavBar: false,
+                title: "Menù",
+                subtitle: "Gestisci i piatti all'interno del tuo menù",
+                body: state.dishes.isEmpty
+                    ? [
+                        SizedBox(
+                          height: MediaQuery.of(context).size.height * 0.7,
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.stretch,
+                            children: [
+                              Lottie.asset(
+                                height: 120,
+                                "assets/lottie/empty_menu.json",
+                                animate: false,
                               ),
-                              textAlign: TextAlign.center,
-                            ),
-                          ],
-                        ),
-                      )
-                    ]
-                  : state.dishes
-                      .map((dish) => FoodyDishCard(dish: dish, canEdit: true))
-                      .toList()),
-          floatingActionButton: FloatingActionButton(
-            onPressed: () => showFoodyModalBottomSheet(
-              context: context,
-              heightPercentage: 70,
-              child: BlocProvider<DishFormBloc>(
-                create: (_) => DishFormBloc(
-                  foodyApiRepository: context.read<FoodyApiRepository>(),
-                  menuBloc: context.read<MenuBloc>(),
-                  restaurantId: context.read<MenuBloc>().restaurantId,
+                              const Text(
+                                "Nessun piatto nel menù",
+                                style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 20,
+                                ),
+                                textAlign: TextAlign.center,
+                              ),
+                            ],
+                          ),
+                        )
+                      ]
+                    : state.dishes.map((dish) {
+                        return Dismissible(
+                          key: ValueKey(dish.id),
+                          onDismissed: (_) {
+                            state.dishes.removeWhere((e) => e.id == dish.id);
+                            context
+                                .read<MenuBloc>()
+                                .add(RemoveDish(dishId: dish.id));
+                          },
+                          child: FoodyDishCard(dish: dish, canEdit: true),
+                        );
+                      }).toList()),
+            floatingActionButton: FloatingActionButton(
+              onPressed: () => showFoodyModalBottomSheet(
+                context: context,
+                heightPercentage: 70,
+                child: BlocProvider<DishFormBloc>(
+                  create: (_) => DishFormBloc(
+                    foodyApiRepository: context.read<FoodyApiRepository>(),
+                    menuBloc: context.read<MenuBloc>(),
+                    restaurantId: context.read<MenuBloc>().restaurantId,
+                  ),
+                  child: const DishForm(),
                 ),
-                child: const DishForm(),
               ),
+              child: const Icon(PhosphorIconsRegular.plus),
             ),
-            child: const Icon(PhosphorIconsRegular.plus),
           ),
         );
       },

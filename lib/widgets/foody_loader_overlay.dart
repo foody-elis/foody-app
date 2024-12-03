@@ -16,12 +16,9 @@ class FoodyLoaderOverlay extends StatelessWidget {
           ? Stack(
               alignment: Alignment.center,
               children: [
-                PopScope(
-                  canPop: false,
-                  child: SizedBox.expand(
-                    child: ColoredBox(
-                      color: Colors.grey.withOpacity(0.4),
-                    ),
+                SizedBox.expand(
+                  child: ColoredBox(
+                    color: Colors.grey.withOpacity(0.4),
                   ),
                 ),
                 Lottie.asset(

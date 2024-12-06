@@ -23,4 +23,7 @@ abstract class AuthApiRepository {
 
   @GET('/user')
   Future<UserResponseDto> getAuthenticatedUser();
+
+  @PUT('/user')
+  Future<UserResponseDto> edit();
 }

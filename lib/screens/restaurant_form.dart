@@ -26,8 +26,8 @@ class RestaurantForm extends HookWidget {
 
   @override
   Widget build(BuildContext context) {
-    final completer =
-        useMemoized(() => Completer<List<CategoryResponseDto>>(), []);
+    final multiSelectLoaded =
+        useMemoized(() => Completer<Map<CategoryResponseDto, bool>>(), []);
     final multiSelectController = useMultiSelectController<int>();
 
     return BlocConsumer<RestaurantFormBloc, RestaurantFormState>(
@@ -36,24 +36,24 @@ class RestaurantForm extends HookWidget {
           showSnackBar(context: context, msg: state.apiError);
         }
 
-        if (!completer.isCompleted && !state.isFetchingCategories) {
-          completer.complete(state.allCategories);
-        }
+        if (!multiSelectLoaded.isCompleted && !state.isFetchingCategories) {
+          final Map<CategoryResponseDto, bool> items = {};
+          final restaurant = context.read<RestaurantFormBloc>().restaurant;
 
-        if (state.restaurant != null &&
-            state.restaurant!.categories.isNotEmpty) {
-          for (var c in state.restaurant!.categories) {
-            multiSelectController.selectWhere((e) => e.value == c.id);
+          for (var i in state.allCategories) {
+            items[i] = restaurant?.categories.any((e) => e.id == i.id) ?? false;
           }
-          state.restaurant!.categories.clear();
+
+          multiSelectLoaded.complete(items);
         }
 
-        context.read<FoodyBloc>().add(ShowLoadingOverlayChanged(
-            show: state.isFetchingRestaurant || state.isFetchingCategories));
+        context
+            .read<FoodyBloc>()
+            .add(ShowLoadingOverlayChanged(show: state.isFetchingCategories));
       },
       builder: (context, state) {
         return PopScope(
-          canPop: !state.isFetchingRestaurant && !state.isFetchingCategories,
+          canPop: !state.isFetchingCategories,
           child: Scaffold(
             body: FoodySecondaryLayout(
               title: "Ristorante",
@@ -70,7 +70,7 @@ class RestaurantForm extends HookWidget {
                       .add(NameChanged(name: value)),
                   errorText: state.nameError,
                   maxLength: 100,
-                  label: state.restaurant?.name,
+                  initialLabel: state.name,
                 ),
                 FoodyTextField(
                   title: "Descrizione",
@@ -82,7 +82,7 @@ class RestaurantForm extends HookWidget {
                       .add(DescriptionChanged(description: value)),
                   errorText: state.descriptionError,
                   maxLength: 65535,
-                  label: state.restaurant?.description,
+                  initialLabel: state.description,
                 ),
                 FoodyPhoneNumberField(
                   title: 'Cellulare',
@@ -95,7 +95,7 @@ class RestaurantForm extends HookWidget {
                     }
                   },
                   errorText: state.phoneNumberError,
-                  label: state.restaurant?.phoneNumber,
+                  initialLabel: state.phoneNumber,
                 ),
                 Row(
                   children: [
@@ -110,7 +110,7 @@ class RestaurantForm extends HookWidget {
                             .add(AddressChanged(address: value)),
                         errorText: state.addressError,
                         maxLength: 30,
-                        label: state.restaurant?.street,
+                        initialLabel: state.street,
                       ),
                     ),
                     const SizedBox(width: 10),
@@ -126,7 +126,7 @@ class RestaurantForm extends HookWidget {
                         errorText: state.civicNumberError,
                         maxLength: 10,
                         keyboardType: TextInputType.number,
-                        label: state.restaurant?.civicNumber,
+                        initialLabel: state.civicNumber,
                       ),
                     ),
                   ],
@@ -144,7 +144,7 @@ class RestaurantForm extends HookWidget {
                             .add(CityChanged(city: value)),
                         errorText: state.cityError,
                         maxLength: 20,
-                        label: state.restaurant?.city,
+                        initialLabel: state.city,
                       ),
                     ),
                     const SizedBox(width: 10),
@@ -159,7 +159,7 @@ class RestaurantForm extends HookWidget {
                             .add(ProvinceChanged(province: value)),
                         errorText: state.provinceError,
                         maxLength: 2,
-                        label: state.restaurant?.province,
+                        initialLabel: state.province,
                       ),
                     ),
                   ],
@@ -178,14 +178,14 @@ class RestaurantForm extends HookWidget {
                         errorText: state.capError,
                         maxLength: 5,
                         keyboardType: TextInputType.number,
-                        label: state.restaurant?.postalCode,
+                        initialLabel: state.postalCode,
                       ),
                     ),
                     const SizedBox(width: 10),
                     Flexible(
                       flex: 2,
                       child: FoodyNumberField(
-                        startValue: state.restaurant?.seats.toDouble() ?? 0,
+                        startValue: state.seats.toDouble(),
                         required: true,
                         title: "Posti a sedere",
                         margin: const EdgeInsets.only(top: 16),
@@ -208,10 +208,20 @@ class RestaurantForm extends HookWidget {
                 const SizedBox(height: 8),
                 FoodyMultiSelect<int>(
                   controller: multiSelectController,
-                  future: () async => (await completer.future)
-                      .map((category) => DropdownItem(
-                          label: category.name, value: category.id))
-                      .toList(),
+                  future: () async {
+                    final items = await multiSelectLoaded.future;
+                    List<DropdownItem<int>> categories = [];
+
+                    items.forEach((category, isSelected) {
+                      categories.add(DropdownItem(
+                        label: category.name,
+                        value: category.id,
+                        selected: isSelected,
+                      ));
+                    });
+
+                    return categories;
+                  },
                   hintText: "Seleziona le categorie",
                   noItemsFoundMessage: "Categoria non trovata",
                   onSelectionChange: (List<int> selected) => context

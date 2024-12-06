@@ -6,11 +6,11 @@ class RestaurantFormState extends Equatable {
   final String name;
   final String description;
   final String phoneNumber;
-  final String address;
+  final String street;
   final String civicNumber;
   final String city;
   final String province;
-  final String cap;
+  final String postalCode;
   final int seats;
   final String? nameError;
   final String? descriptionError;
@@ -25,18 +25,16 @@ class RestaurantFormState extends Equatable {
   final bool isFetchingCategories;
   final List<CategoryResponseDto> allCategories;
   final List<int> selectedCategories;
-  final bool isFetchingRestaurant;
-  final RestaurantResponseDto? restaurant;
 
   const RestaurantFormState({
     required this.name,
     required this.description,
     required this.phoneNumber,
-    required this.address,
+    required this.street,
     required this.civicNumber,
     required this.city,
     required this.province,
-    required this.cap,
+    required this.postalCode,
     required this.seats,
     required this.nameError,
     required this.descriptionError,
@@ -50,20 +48,18 @@ class RestaurantFormState extends Equatable {
     required this.isFetchingCategories,
     required this.allCategories,
     required this.selectedCategories,
-    required this.isFetchingRestaurant,
-    required this.restaurant,
   });
 
-  RestaurantFormState.initial()
-      : name = "",
-        description = "",
-        phoneNumber = "",
-        address = "",
-        civicNumber = "",
-        city = "",
-        province = "",
-        cap = "",
-        seats = 1,
+  RestaurantFormState.initial(RestaurantResponseDto? restaurant)
+      : name = restaurant?.name ?? "",
+        description = restaurant?.description ?? "",
+        phoneNumber = restaurant?.phoneNumber ?? "",
+        street = restaurant?.street ?? "",
+        civicNumber = restaurant?.civicNumber ?? "",
+        city = restaurant?.city ?? "",
+        province = restaurant?.province ?? "",
+        postalCode = restaurant?.postalCode ?? "",
+        seats = restaurant?.seats ?? 1,
         nameError = null,
         descriptionError = null,
         phoneNumberError = null,
@@ -75,19 +71,17 @@ class RestaurantFormState extends Equatable {
         apiError = "",
         isFetchingCategories = false,
         allCategories = [],
-        selectedCategories = [],
-        isFetchingRestaurant = false,
-        restaurant = null;
+        selectedCategories = [];
 
   RestaurantFormState copyWith({
     String? name,
     String? description,
     String? phoneNumber,
-    String? address,
+    String? street,
     String? civicNumber,
     String? city,
     String? province,
-    String? cap,
+    String? postalCode,
     int? seats,
     String? nameError,
     String? descriptionError,
@@ -108,11 +102,11 @@ class RestaurantFormState extends Equatable {
       name: name ?? this.name,
       description: description ?? this.description,
       phoneNumber: phoneNumber ?? this.phoneNumber,
-      address: address ?? this.address,
+      street: street ?? this.street,
       civicNumber: civicNumber ?? this.civicNumber,
       city: city ?? this.city,
       province: province ?? this.province,
-      cap: cap ?? this.cap,
+      postalCode: postalCode ?? this.postalCode,
       seats: seats ?? this.seats,
       nameError: nameError == "null" ? null : nameError ?? this.nameError,
       descriptionError: descriptionError == "null"
@@ -134,8 +128,6 @@ class RestaurantFormState extends Equatable {
       isFetchingCategories: isFetchingCategories ?? this.isFetchingCategories,
       allCategories: allCategories ?? this.allCategories,
       selectedCategories: selectedCategories ?? this.selectedCategories,
-      isFetchingRestaurant: isFetchingRestaurant ?? this.isFetchingRestaurant,
-      restaurant: restaurant ?? this.restaurant,
     );
   }
 
@@ -144,11 +136,11 @@ class RestaurantFormState extends Equatable {
         name,
         description,
         phoneNumber,
-        address,
+        street,
         civicNumber,
         city,
         province,
-        cap,
+        postalCode,
         seats,
         nameError,
         descriptionError,
@@ -162,7 +154,5 @@ class RestaurantFormState extends Equatable {
         isFetchingCategories,
         allCategories,
         selectedCategories,
-        isFetchingRestaurant,
-        restaurant,
       ];
 }

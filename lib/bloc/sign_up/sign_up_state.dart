@@ -1,4 +1,6 @@
 import 'package:equatable/equatable.dart';
+import 'package:foody_app/dto/response/user_response_dto.dart';
+import 'package:intl/intl.dart';
 
 class SignUpState extends Equatable {
   final String name;
@@ -39,14 +41,14 @@ class SignUpState extends Equatable {
     required this.isLoading,
   });
 
-  const SignUpState.initial()
-      : name = "",
-        surname = "",
-        email = "",
+  SignUpState.initial(UserResponseDto? user)
+      : name = user?.name ?? "",
+        surname = user?.surname ?? "",
+        email = user?.email ?? "",
         password = "",
         confirmPassword = "",
-        birthDate = "",
-        phoneNumber = "",
+        birthDate = user == null ? "" : DateFormat('dd/MM/yyyy').format(user.birthDate),
+        phoneNumber = user?.phoneNumber ?? "",
         nameError = null,
         surnameError = null,
         emailError = null,

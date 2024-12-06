@@ -20,7 +20,8 @@ class FoodyTextField extends HookWidget {
     this.textArea = false,
     this.label,
     this.maxLength,
-    this.keyboardType
+    this.keyboardType,
+    this.initialLabel
   });
 
   final String title;
@@ -36,12 +37,13 @@ class FoodyTextField extends HookWidget {
   final bool required;
   final bool textArea;
   final String? label;
+  final String? initialLabel;
   final int? maxLength;
   final TextInputType? keyboardType;
 
   @override
   Widget build(BuildContext context) {
-    final textController = useTextEditingController();
+    final textController = useTextEditingController(text: initialLabel);
 
     useEffect(() {
       if (label != null) textController.text = label!;

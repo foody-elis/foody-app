@@ -11,7 +11,6 @@ import 'package:foody_app/screens/restaurant_details/restaurant_menu.dart';
 import 'package:foody_app/screens/restaurant_details/restaurant_reviews.dart';
 import 'package:foody_app/screens/restaurant_details/sitting_times_info.dart';
 import 'package:foody_app/widgets/foody_rating_label.dart';
-import 'package:phosphor_flutter/phosphor_flutter.dart';
 import 'package:skeletonizer/skeletonizer.dart';
 
 import '../../bloc/bottom_nav_bar/bottom_nav_bar_bloc.dart';
@@ -54,13 +53,8 @@ class RestaurantDetails extends HookWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     RestaurantInfo(
-                      id: state.restaurant.id,
+                      restaurant: state.restaurant,
                       enableSkeletonizer: state.isFetching,
-                      name: state.restaurant.name,
-                      address:
-                          "${state.restaurant.street}, ${state.restaurant.postalCode}, ${state.restaurant.city}",
-                      phoneNumber: state.restaurant.phoneNumber,
-                      categories: state.restaurant.categories,
                       canEdit: isOwner,
                     ),
                     const Divider(height: 40),

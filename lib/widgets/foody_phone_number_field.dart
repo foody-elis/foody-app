@@ -13,7 +13,7 @@ class FoodyPhoneNumberField extends HookWidget {
     this.required = false,
     this.errorText,
     this.suffixIcon,
-    this.label,
+    this.initialLabel
   });
 
   final String title;
@@ -22,16 +22,11 @@ class FoodyPhoneNumberField extends HookWidget {
   final bool required;
   final String? errorText;
   final Widget? suffixIcon;
-  final String? label;
+  final String? initialLabel;
 
   @override
   Widget build(BuildContext context) {
-    final textController = useTextEditingController();
-
-    useEffect(() {
-      if (label != null) textController.text = label!;
-      return null;
-    }, [label]);
+    final textController = useTextEditingController(text: initialLabel);
 
     return Container(
       padding: padding,

@@ -11,6 +11,8 @@ class SignUpConsumer extends SignUpEvent {}
 
 class SignUpRestaurateur extends SignUpEvent {}
 
+class EditUser extends SignUpEvent {}
+
 class NameChanged extends SignUpEvent {
   const NameChanged({required this.name});
 

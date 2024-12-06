@@ -50,7 +50,7 @@ class DishForm extends StatelessWidget {
                     .read<DishFormBloc>()
                     .add(NameChanged(name: name.trim())),
                 errorText: state.nameError,
-                label: state.name,
+                initialLabel: state.name,
               ),
               FoodyTextField(
                 required: true,
@@ -61,7 +61,7 @@ class DishForm extends StatelessWidget {
                     .read<DishFormBloc>()
                     .add(DescriptionChanged(description: description)),
                 errorText: state.descriptionError,
-                label: state.description,
+                initialLabel: state.description,
               ),
               FoodyTextField(
                 required: true,
@@ -72,7 +72,7 @@ class DishForm extends StatelessWidget {
                     .read<DishFormBloc>()
                     .add(PriceChanged(price: price)),
                 errorText: state.priceError,
-                label: state.price.toString(),
+                initialLabel: state.price.toString(),
                 suffixIcon: const Icon(PhosphorIconsRegular.currencyEur),
               ),
               const SizedBox(height: 32),
@@ -104,7 +104,7 @@ class DishForm extends StatelessWidget {
                             borderRadius: BorderRadius.circular(10),
                           ),
                           iconSize: 20,
-                          backgroundColor: const Color(0xffcc0000),
+                          backgroundColor: Theme.of(context).colorScheme.error,
                         ),
                       ),
                     ),

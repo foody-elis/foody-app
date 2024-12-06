@@ -15,10 +15,10 @@ class RestaurantFormBloc
     extends Bloc<RestaurantFormEvent, RestaurantFormState> {
   final NavigationService _navigationService = NavigationService();
   final FoodyApiRepository foodyApiRepository;
-  final bool isEditing;
+  final RestaurantResponseDto? restaurant;
 
-  RestaurantFormBloc({required this.foodyApiRepository, this.isEditing = false})
-      : super(RestaurantFormState.initial()) {
+  RestaurantFormBloc({required this.foodyApiRepository, this.restaurant})
+      : super(RestaurantFormState.initial(restaurant)) {
     on<FormSubmit>(_onFormSubmit, transformer: droppable());
     on<FetchCategories>(_onFetchCategories, transformer: droppable());
     on<NameChanged>(_onNameChanged);
@@ -31,13 +31,15 @@ class RestaurantFormBloc
     on<CapChanged>(_onCapChanged);
     on<SeatsChanged>(_onSeatsChanged);
     on<SelectedCategoriesChanged>(_onSelectedCategoriesChanged);
-    on<FetchRestaurant>(_onFetchRestaurant);
+    //on<FetchRestaurant>(_onFetchRestaurant);
 
     add(FetchCategories());
 
-    if (isEditing) {
+    print(restaurant?.toJson());
+
+    /*if (isEditing) {
       add(FetchRestaurant());
-    }
+    }*/
   }
 
   bool _isFormValid(Emitter<RestaurantFormState> emit) {
@@ -71,10 +73,10 @@ class RestaurantFormBloc
               "Il cellulare non può contenere più di 16 caratteri"));
     }
 
-    if (state.address.isEmpty) {
+    if (state.street.isEmpty) {
       emit(state.copyWith(addressError: "L'indirizzo è obbligatorio"));
       isValid = false;
-    } else if (state.address.length > 30) {
+    } else if (state.street.length > 30) {
       emit(state.copyWith(
           addressError: "L'indirizzo non può contenere più di 30 caratteri"));
       isValid = false;
@@ -108,7 +110,7 @@ class RestaurantFormBloc
       isValid = false;
     }
 
-    if (state.cap.isEmpty) {
+    if (state.postalCode.isEmpty) {
       emit(state.copyWith(capError: "Il CAP è obbligatorio"));
       isValid = false;
     } else if (state.province.length > 5) {
@@ -127,8 +129,8 @@ class RestaurantFormBloc
         api: () => foodyApiRepository.restaurants.save(RestaurantRequestDto(
           name: state.name,
           phoneNumber: state.phoneNumber,
-          street: state.address,
-          postalCode: state.cap,
+          street: state.street,
+          postalCode: state.postalCode,
           city: state.city,
           civicNumber: state.civicNumber,
           description: state.description,
@@ -163,7 +165,7 @@ class RestaurantFormBloc
 
   void _onAddressChanged(
       AddressChanged event, Emitter<RestaurantFormState> emit) {
-    emit(state.copyWith(address: event.address, addressError: "null"));
+    emit(state.copyWith(street: event.address, addressError: "null"));
   }
 
   void _onCivicNumberChanged(
@@ -182,7 +184,7 @@ class RestaurantFormBloc
   }
 
   void _onCapChanged(CapChanged event, Emitter<RestaurantFormState> emit) {
-    emit(state.copyWith(cap: event.cap, capError: "null"));
+    emit(state.copyWith(postalCode: event.cap, capError: "null"));
   }
 
   void _onSeatsChanged(SeatsChanged event, Emitter<RestaurantFormState> emit) {
@@ -207,7 +209,7 @@ class RestaurantFormBloc
     emit(state.copyWith(selectedCategories: event.selectedCategories));
   }
 
-  void _onFetchRestaurant(
+  /*void _onFetchRestaurant(
       FetchRestaurant event, Emitter<RestaurantFormState> emit) async {
     emit(state.copyWith(isFetchingRestaurant: true));
 
@@ -219,5 +221,5 @@ class RestaurantFormBloc
       )),
       errorToEmit: (msg) => emit(state.copyWith(apiError: msg)),
     );
-  }
+  }*/
 }

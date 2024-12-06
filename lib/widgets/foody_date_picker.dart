@@ -17,6 +17,7 @@ class FoodyDatePicker extends HookWidget {
   final bool required;
   final EdgeInsetsGeometry? padding, margin;
   final String? errorText;
+  final bool isEditing;
 
   FoodyDatePicker({
     super.key,
@@ -28,6 +29,7 @@ class FoodyDatePicker extends HookWidget {
     this.margin,
     this.padding,
     this.errorText,
+    this.isEditing = false
   })  : firstDate = firstDate ?? DateTime(1900, 1, 1),
         lastDate = lastDate ??= DateTime.now(),
         initialDate = initialDate ?? lastDate;
@@ -35,7 +37,7 @@ class FoodyDatePicker extends HookWidget {
   @override
   Widget build(BuildContext context) {
     final selectedDate = useState<DateTime>(initialDate);
-    final isSelected = useState<bool>(false);
+    final isSelected = useState<bool>(isEditing);
 
     void onShowCalendarClick() async {
       final res = await showModalBottomSheet(

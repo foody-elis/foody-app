@@ -21,9 +21,7 @@ class FoodySecondaryLayout extends HookWidget {
     this.headerExpandedHeight = 0.22,
     this.expandedBodyHeight = 0.8,
     this.startWithExpandedBody = false,
-  })  :assert(
-            (subtitle == null && subtitleWidget != null) ||
-                (subtitle != null && subtitleWidget == null),
+  }) : assert(subtitle == null || subtitleWidget == null,
             "subtitle and subtitleWidget cannot be set at the same time");
 
   final bool showBottomNavBar;
@@ -76,17 +74,21 @@ class FoodySecondaryLayout extends HookWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              titleWidget != null ? titleWidget! : Text(
-                title,
-                style: const TextStyle(
-                  fontWeight: FontWeight.bold,
-                  fontSize: 26,
-                ),
-              ),
-              subtitleWidget != null ? subtitleWidget! : Text(
-                subtitle!,
-                style: const TextStyle(color: Colors.grey),
-              ),
+              titleWidget != null
+                  ? titleWidget!
+                  : Text(
+                      title,
+                      style: const TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 26,
+                      ),
+                    ),
+              if(subtitleWidget != null) subtitleWidget!,
+              if(subtitle != null)
+                Text(
+                  subtitle!,
+                  style: const TextStyle(color: Colors.grey),
+                )
             ],
           ),
         ),

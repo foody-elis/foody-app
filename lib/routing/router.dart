@@ -6,13 +6,16 @@ import 'package:foody_app/bloc/bottom_nav_bar/bottom_nav_bar_bloc.dart';
 import 'package:foody_app/bloc/menu/menu_bloc.dart';
 import 'package:foody_app/bloc/restaurant_details/restaurant_details_bloc.dart';
 import 'package:foody_app/bloc/restaurant_form/restaurant_form_bloc.dart';
+import 'package:foody_app/bloc/sign_up/sign_up_bloc.dart';
 import 'package:foody_app/bloc/welcome/welcome_bloc.dart';
 import 'package:foody_app/repository/interface/foody_api_repository.dart';
 import 'package:foody_app/repository/interface/user_repository.dart';
 import 'package:foody_app/screens/authenticated.dart';
+import 'package:foody_app/screens/edit_profile.dart';
 import 'package:foody_app/screens/menu/menu.dart';
 import 'package:foody_app/screens/restaurant_details/restaurant_details.dart';
 import 'package:foody_app/screens/restaurant_form.dart';
+import 'package:foody_app/screens/settings.dart';
 
 import '../bloc/add_sitting_times_list/sitting_times_form_list_bloc.dart';
 import '../screens/sitting_times_form/sitting_times_form_list.dart';
@@ -36,7 +39,7 @@ class Router {
           builder: (_) => BlocProvider<RestaurantFormBloc>(
             create: (context) => RestaurantFormBloc(
               foodyApiRepository: context.read<FoodyApiRepository>(),
-              isEditing: arguments?["isEditing"],
+              restaurant: arguments?["restaurant"],
             ),
             child: const RestaurantForm(),
           ),
@@ -46,7 +49,7 @@ class Router {
           builder: (_) => BlocProvider<SittingTimesFormListBloc>(
             create: (context) => SittingTimesFormListBloc(
               foodyApiRepository: context.read<FoodyApiRepository>(),
-              isEditing: arguments?["isEditing"],
+              isEditing: arguments?["isEditing"] ?? false,
             ),
             child: const SittingTimesFormList(),
           ),
@@ -89,6 +92,21 @@ class Router {
               restaurantId: arguments?["restaurantId"],
             ),
             child: const Menu(),
+          ),
+        );
+      case settingsRoute:
+        return CupertinoPageRoute(
+          builder: (_) => const Settings(),
+        );
+      case editProfileRoute:
+        return CupertinoPageRoute(
+          builder: (_) => BlocProvider<SignUpBloc>(
+            create: (context) => SignUpBloc(
+              foodyApiRepository: context.read<FoodyApiRepository>(),
+              userRepository: context.read<UserRepository>(),
+              user: arguments!["user"],
+            ),
+            child: const EditProfile(),
           ),
         );
       default:

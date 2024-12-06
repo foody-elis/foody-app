@@ -7,7 +7,9 @@ class FoodyButton extends StatelessWidget {
     this.height = 60,
     this.width,
     this.onPressed,
-    this.color
+    this.color,
+    this.labelFontSize = 16,
+    this.radius = 10,
   });
 
   final String label;
@@ -15,6 +17,8 @@ class FoodyButton extends StatelessWidget {
   final double? width;
   final void Function()? onPressed;
   final Color? color;
+  final double labelFontSize;
+  final double radius;
 
   @override
   Widget build(BuildContext context) {
@@ -28,14 +32,14 @@ class FoodyButton extends StatelessWidget {
         },
         style: ElevatedButton.styleFrom(
           shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(10),
+            borderRadius: BorderRadius.circular(radius),
           ),
           backgroundColor: color ?? Theme.of(context).primaryColor,
         ),
         child: Text(
           label,
-          style: const TextStyle(
-            fontSize: 16,
+          style: TextStyle(
+            fontSize: labelFontSize,
             color: Colors.white,
           ),
         ),

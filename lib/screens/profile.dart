@@ -79,7 +79,25 @@ class Profile extends StatelessWidget {
             trailingIconColor: Theme.of(context).colorScheme.error,
             splashColor: Theme.of(context).colorScheme.error,
             highlightColor: Theme.of(context).colorScheme.error,
-            onTap: () => context.read<AuthBloc>().add(Logout()),
+            onTap: () => showDialog(
+              context: context,
+              builder: (_) => AlertDialog(
+                title: const Text("Logout"),
+                content: const Text(
+                  "Sei sicuro di voler uscire dal tuo account Foody?",
+                ),
+                actions: [
+                  TextButton(
+                    child: const Text("No"),
+                    onPressed: () => Navigator.pop(context),
+                  ),
+                  TextButton(
+                    child: const Text("Esci"),
+                    onPressed: () => context.read<AuthBloc>().add(Logout()),
+                  ),
+                ],
+              ),
+            ),
           ),
         ],
       );

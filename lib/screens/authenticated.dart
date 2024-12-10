@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:foody_app/bloc/auth/auth_bloc.dart';
 import 'package:foody_app/bloc/auth/auth_state.dart';
+import 'package:foody_app/bloc/bookings/bookings_bloc.dart';
 import 'package:foody_app/bloc/restaurant_details/restaurant_details_bloc.dart';
+import 'package:foody_app/repository/interface/user_repository.dart';
 import 'package:foody_app/screens/bookings.dart';
 import 'package:foody_app/screens/profile.dart';
 import 'package:foody_app/screens/restaurant_details/restaurant_details.dart';
@@ -13,7 +15,6 @@ import '../repository/interface/foody_api_repository.dart';
 import '../widgets/foody_page_view.dart';
 import 'chats.dart';
 import 'home/home.dart';
-import 'orders.dart';
 
 class Authenticated extends StatelessWidget {
   const Authenticated({super.key});
@@ -33,6 +34,7 @@ class Authenticated extends StatelessWidget {
                 ? BlocProvider<RestaurantDetailsBloc>(
                     create: (context) => RestaurantDetailsBloc(
                       foodyApiRepository: context.read<FoodyApiRepository>(),
+                      userRepository: context.read<UserRepository>(),
                     ),
                   )
                 : BlocProvider<HomeBloc>(
@@ -40,12 +42,17 @@ class Authenticated extends StatelessWidget {
                       foodyApiRepository: context.read<FoodyApiRepository>(),
                     ),
                   ),
+            BlocProvider<BookingsBloc>(
+              create: (context) => BookingsBloc(
+                foodyApiRepository: context.read<FoodyApiRepository>(),
+              ),
+            ),
           ],
           child: FoodyPageView(
             home:
                 state.isRestaurateur ? const RestaurantDetails() : const Home(),
             chats: const Chats(),
-            orders: state.isRestaurateur ? const Bookings() : const Orders(),
+            orders: const Bookings(),
             profile: const Profile(),
           ),
         );

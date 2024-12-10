@@ -136,7 +136,7 @@ class SignUpBloc extends Bloc<SignUpEvent, SignUpState> {
       onComplete: (response) {
         userRepository.add(User(
           jwt: response.accessToken,
-          role: JwtDecoder.decode(response.accessToken)["role"],
+          // role: JwtDecoder.decode(response.accessToken)["role"],
         ));
         foodyApiRepository.dio = getFoodyDio(
             tokenInterceptor: TokenInterceptor(

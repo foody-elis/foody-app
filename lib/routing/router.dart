@@ -76,6 +76,7 @@ class Router {
           builder: (_) => BlocProvider<RestaurantDetailsBloc>(
             create: (context) => RestaurantDetailsBloc(
               foodyApiRepository: context.read<FoodyApiRepository>(),
+              userRepository: context.read<UserRepository>(),
               restaurantId: arguments?["restaurantId"],
             ),
             child: const Scaffold(

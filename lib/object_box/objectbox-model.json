@@ -24,7 +24,7 @@
     },
     {
       "id": "2:6924458497544582559",
-      "lastPropertyId": "11:4045769009743394079",
+      "lastPropertyId": "12:3025307914532911143",
       "name": "User",
       "properties": [
         {
@@ -42,6 +42,11 @@
           "id": "11:4045769009743394079",
           "name": "dbRole",
           "type": 9
+        },
+        {
+          "id": "12:3025307914532911143",
+          "name": "restaurantId",
+          "type": 6
         }
       ],
       "relations": []

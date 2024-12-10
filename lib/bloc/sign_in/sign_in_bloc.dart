@@ -62,7 +62,7 @@ class SignInBloc extends Bloc<SignInEvent, SignInState> {
           emit(state.copyWith(apiError: "Accesso effettuato con successo"));
           userRepository.add(User(
             jwt: response.accessToken,
-            role: JwtDecoder.decode(response.accessToken)["role"],
+            // role: JwtDecoder.decode(response.accessToken)["role"],
           ));
 
           foodyApiRepository.dio = getFoodyDio(

@@ -16,7 +16,7 @@ class RestaurantDetailsState extends Equatable {
 
   const RestaurantDetailsState.initial()
       : restaurant = const RestaurantResponseDto(
-          id: 0,
+          id: -1,
           restaurateurId: 0,
           name: "Ristorante",
           phoneNumber: "0000000000",
@@ -35,6 +35,8 @@ class RestaurantDetailsState extends Equatable {
           approved: true,
           postalCode: "00000",
           street: "Via Roma",
+          photoUrl: '',
+          averageRating: 0,
         ),
         apiError = "",
         isFetching = false;
@@ -45,8 +47,7 @@ class RestaurantDetailsState extends Equatable {
     bool? isFetching,
   }) {
     return RestaurantDetailsState(
-      restaurant:
-          restaurant ?? this.restaurant,
+      restaurant: restaurant ?? this.restaurant,
       apiError: apiError ?? this.apiError,
       isFetching: isFetching ?? this.isFetching,
     );

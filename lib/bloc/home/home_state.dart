@@ -34,6 +34,8 @@ class HomeState extends Equatable {
             approved: true,
             postalCode: "00000",
             street: "Via Roma",
+            photoUrl: '',
+            averageRating: 0,
           ),
         ),
         isFetching = true,

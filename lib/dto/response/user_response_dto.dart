@@ -13,7 +13,7 @@ class UserResponseDto {
     required this.surname,
     required this.birthDate,
     required this.phoneNumber,
-    required this.avatar,
+    required this.avatarUrl,
     required this.role,
     required this.active,
   });
@@ -27,7 +27,7 @@ class UserResponseDto {
   final String surname;
   final DateTime birthDate;
   final String phoneNumber;
-  final String avatar;
+  final String? avatarUrl;
   final Role role;
   final bool active;
 

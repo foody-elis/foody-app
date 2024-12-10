@@ -23,6 +23,7 @@ Future<void> callApi<T>({
       .catchError((e, stackTrace) {
     print("---------------------- NETWORK ERROR -------------------------");
     print(e);
+    print(stackTrace);
     if (e is DioException &&
         e.response != null &&
         e.response?.data != null &&

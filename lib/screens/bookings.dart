@@ -24,18 +24,17 @@ class Bookings extends HookWidget {
 
     final isRestaurateur =
         useMemoized(() => context.read<AuthBloc>().state.isRestaurateur);
+    final restaurantId = useMemoized(() => isRestaurateur
+        ? context.read<UserRepository>().get()!.restaurantId
+        : null);
 
     useEffect(() {
       if (!isRestaurateur) {
         context.read<BookingsBloc>().add(const FetchBookings());
-      } else {
-        final restaurantId = context.read<UserRepository>().get()!.restaurantId;
-
-        if (restaurantId != null) {
-          context
-              .read<BookingsBloc>()
-              .add(FetchBookings(restaurantId: restaurantId));
-        }
+      } else if (restaurantId != null) {
+        context
+            .read<BookingsBloc>()
+            .add(FetchBookings(restaurantId: restaurantId));
       }
 
       return null;
@@ -49,6 +48,9 @@ class Bookings extends HookWidget {
       },
       builder: (context, state) {
         return FoodySecondaryLayout(
+          onRefresh: () async => context
+              .read<BookingsBloc>()
+              .add(FetchBookings(restaurantId: restaurantId)),
           title: 'Prenotazioni',
           subtitle: context.read<AuthBloc>().state.isRestaurateur
               ? 'Le prenotazioni effettuate al tuo ristorante'

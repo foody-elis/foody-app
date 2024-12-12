@@ -21,6 +21,7 @@ class FoodySecondaryLayout extends HookWidget {
     this.headerExpandedHeight = 0.22,
     this.expandedBodyHeight = 0.8,
     this.startWithExpandedBody = false,
+    this.onRefresh,
   }) : assert(subtitle == null || subtitleWidget == null,
             "subtitle and subtitleWidget cannot be set at the same time");
 
@@ -35,6 +36,7 @@ class FoodySecondaryLayout extends HookWidget {
   final double headerExpandedHeight;
   final double expandedBodyHeight;
   final bool startWithExpandedBody;
+  final Future<void> Function()? onRefresh;
 
   @override
   Widget build(BuildContext context) {
@@ -54,7 +56,8 @@ class FoodySecondaryLayout extends HookWidget {
       }, [scrollController]);
     }
 
-    return FoodyDraggableHome(
+    final foodyDraggableHome = FoodyDraggableHome(
+      physics: onRefresh == null ? null : const ClampingScrollPhysics(),
       expandedBody: expandedBody,
       scrollController: scrollController,
       stretchMaxHeight: expandedBodyHeight,
@@ -83,8 +86,8 @@ class FoodySecondaryLayout extends HookWidget {
                         fontSize: 26,
                       ),
                     ),
-              if(subtitleWidget != null) subtitleWidget!,
-              if(subtitle != null)
+              if (subtitleWidget != null) subtitleWidget!,
+              if (subtitle != null)
                 Text(
                   subtitle!,
                   style: const TextStyle(color: Colors.grey),
@@ -100,5 +103,9 @@ class FoodySecondaryLayout extends HookWidget {
         ),
       ],
     );
+
+    return onRefresh == null
+        ? foodyDraggableHome
+        : RefreshIndicator(onRefresh: onRefresh!, child: foodyDraggableHome);
   }
 }

@@ -13,7 +13,7 @@ abstract class WeekdaysInfoApiRepository {
   @POST('')
   Future<WeekdayInfoResponseDto> save(@Body() WeekdayInfoRequestDto _);
 
-  @GET('')
-  Future<List<WeekdayInfoResponseDto>> getAll();
+  @GET('/restaurant/{id}')
+  Future<List<WeekdayInfoResponseDto>> getByRestaurant(@Path() int id);
 
 }

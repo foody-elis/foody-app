@@ -5,6 +5,7 @@ import 'package:foody_app/bloc/add_sitting_times_list/sitting_times_form_list_st
 import 'package:foody_app/bloc/add_sitting_times_list/sitting_times_form_state.dart';
 import 'package:foody_app/dto/request/weekday_info_request_dto.dart';
 import 'package:foody_app/dto/response/weekday_info_response_dto.dart';
+import 'package:foody_app/repository/interface/user_repository.dart';
 import 'package:foody_app/utils/call_api.dart';
 import 'package:foody_app/utils/sitting_times_steps.dart';
 
@@ -16,10 +17,13 @@ class SittingTimesFormListBloc
     extends Bloc<SittingTimesFormListEvent, SittingTimesFormListState> {
   final NavigationService _navigationService = NavigationService();
   final FoodyApiRepository foodyApiRepository;
+  final UserRepository userRepository;
   final bool isEditing;
+  late final int _restaurantId;
 
   SittingTimesFormListBloc({
     required this.foodyApiRepository,
+    required this.userRepository,
     this.isEditing = false,
   }) : super(SittingTimesFormListState.initial()) {
     on<FormSubmit>(_onFormSubmit, transformer: droppable());
@@ -32,6 +36,8 @@ class SittingTimesFormListBloc
     if (isEditing) {
       add(FetchWeekdays());
     }
+
+    _restaurantId = userRepository.get()!.restaurantId!;
   }
 
   void _onFormSubmit(
@@ -54,22 +60,29 @@ class SittingTimesFormListBloc
         addSittingTimeApiCalls.add(callApi<WeekdayInfoResponseDto>(
           api: () => foodyApiRepository.weekdayInfo.save(WeekdayInfoRequestDto(
             weekDay: weekDay,
-            startLaunch: weekDayState.lunchStartTime!,
-            endLaunch: weekDayState.lunchEndTime!,
-            startDinner: weekDayState.dinnerStartTime!,
-            endDinner: weekDayState.dinnerEndTime!,
+            startLaunch: weekDayState.lunchStartTime,
+            endLaunch: weekDayState.lunchEndTime,
+            startDinner: weekDayState.dinnerStartTime,
+            endDinner: weekDayState.dinnerEndTime,
             sittingTimeStep: SittingTimeStep.values[weekDayState.stepIndex],
+            restaurantId: _restaurantId,
           )),
           errorToEmit: (e) => emit(state.copyWith(error: e)),
+          throwException: true,
         ));
       }
 
       weekDay++;
     }
 
-    await Future.wait(addSittingTimeApiCalls);
+    emit(state.copyWith(isLoading: true));
 
-    _navigationService.resetToScreen(authenticatedRoute);
+    try {
+      await Future.wait(addSittingTimeApiCalls);
+      _navigationService.resetToScreen(authenticatedRoute);
+    } catch (_) {}
+
+    emit(state.copyWith(isLoading: false));
   }
 
   void _onLunchTimeChanged(
@@ -132,13 +145,15 @@ class SittingTimesFormListBloc
 
   void _onFetchWeekdays(
       FetchWeekdays event, Emitter<SittingTimesFormListState> emit) async {
-    emit(state.copyWith(isFetchingWeekdays: true));
+    emit(state.copyWith(isLoading: true));
 
     await callApi<List<WeekdayInfoResponseDto>>(
-      api: foodyApiRepository.weekdayInfo.getAll,
+      api: () => foodyApiRepository.weekdayInfo.getByRestaurant(_restaurantId),
       onComplete: (response) {
-        final Map<String, SittingTimesFormState> weekDays =
-            Map.from(state.weekDays);
+        final Map<String, SittingTimesFormState> weekDays = Map.from(
+          state.weekDays
+              .map((k, v) => MapEntry(k, v.copyWith(accordionsState: false))),
+        );
 
         for (WeekdayInfoResponseDto weekDay in response) {
           final key = state.weekDays.keys.elementAt(weekDay.weekDay - 1);
@@ -147,15 +162,15 @@ class SittingTimesFormListBloc
           if (weekDayState == null) continue;
 
           weekDays[key] = weekDayState.copyWith(
-            lunchStartTime: weekDay.startLaunch,
-            lunchEndTime: weekDay.endLaunch,
-            dinnerStartTime: weekDay.startDinner,
-            dinnerEndTime: weekDay.endDinner,
-            stepIndex: weekDay.sittingTimeStep.index,
-          );
+              lunchStartTime: weekDay.startLaunch,
+              lunchEndTime: weekDay.endLaunch,
+              dinnerStartTime: weekDay.startDinner,
+              dinnerEndTime: weekDay.endDinner,
+              stepIndex: weekDay.sittingTimeStep.index,
+              accordionsState: false);
         }
 
-        emit(state.copyWith(weekDays: weekDays, isFetchingWeekdays: false));
+        emit(state.copyWith(weekDays: weekDays, isLoading: false));
       },
       errorToEmit: (msg) => emit(state.copyWith(error: msg)),
     );

@@ -52,7 +52,7 @@ class SittingTimesForm extends HookWidget {
                     state.lunchStartTime == null &&
                     state.dinnerStartTime == null
                 ? Text(
-                    "$weekDay - Chiuso",
+                    "$weekDay - Ristorante chiuso",
                     style: const TextStyle(
                       fontWeight: FontWeight.bold,
                       color: Colors.grey,

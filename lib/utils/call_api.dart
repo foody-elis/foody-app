@@ -8,6 +8,7 @@ Future<void> callApi<T>({
   void Function(ErrorDto)? onFailed,
   void Function()? onError,
   void Function(String)? errorToEmit,
+  bool throwException = false,
 }) async {
   void callOnError() {
     if (errorToEmit != null) {
@@ -16,6 +17,8 @@ Future<void> callApi<T>({
     }
 
     onError?.call();
+
+    if (throwException) throw Exception();
   }
 
   await api()
@@ -23,14 +26,10 @@ Future<void> callApi<T>({
       .catchError((e, stackTrace) {
     print("---------------------- NETWORK ERROR -------------------------");
     print(e);
-    print(stackTrace);
     if (e is DioException &&
         e.response != null &&
         e.response?.data != null &&
         e.response?.data is Map) {
-      print("---------------------------");
-      print(e.response?.realUri);
-      print("---------------------------");
       try {
         final errorDto = ErrorDto.fromJson(e.response?.data);
 
@@ -55,6 +54,7 @@ Future<void> callApi<T>({
         }
 
         onFailed?.call(errorDto);
+        if (throwException) throw Exception();
       } catch (e) {
         callOnError();
       }

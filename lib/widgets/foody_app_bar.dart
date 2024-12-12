@@ -55,13 +55,10 @@ class FoodyAppBar extends SliverPersistentHeaderDelegate {
               animate: true,
               delay: const Duration(milliseconds: 500),
               duration: const Duration(milliseconds: 800),
-              child: SizedBox(
+              child: Lottie.asset(
                 width: 250,
                 height: 250,
-                child: Lottie.asset(
-                  "assets/lottie/home_page.json",
-                  animate: true,
-                ),
+                "assets/lottie/home_page.json",
               ),
             ),
           ),

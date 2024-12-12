@@ -10,6 +10,7 @@ import 'package:foody_app/utils/bookings_filter.dart';
 import 'package:foody_app/utils/show_snackbar.dart';
 import 'package:foody_app/widgets/foody_booking_card.dart';
 import 'package:foody_app/widgets/foody_filter_chip.dart';
+import 'package:lottie/lottie.dart';
 import 'package:skeletonizer/skeletonizer.dart';
 
 import '../widgets/foody_secondary_layout.dart';
@@ -70,15 +71,38 @@ class Bookings extends HookWidget {
                     .toList(),
               ),
             ),
-            const SizedBox(height: 10),
-            Skeletonizer(
-              enabled: state.isFetching,
-              child: Column(
-                children: state.bookingsFiltered
-                    .map((booking) => FoodyBookingCard(booking: booking))
-                    .toList(),
-              ),
-            ),
+            const SizedBox(height: 20),
+            state.bookingsFiltered.isEmpty
+                ? SizedBox(
+                    height: MediaQuery.of(context).size.height * 0.6,
+                    child: Column(
+                      spacing: 10,
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        SizedBox(
+                          width: 225,
+                          height: 225,
+                          child:
+                              Lottie.asset("assets/lottie/empty_bookings.json"),
+                        ),
+                        const Text(
+                          "Nessuna prenotazione",
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontSize: 18,
+                          ),
+                        ),
+                      ],
+                    ),
+                  )
+                : Skeletonizer(
+                    enabled: state.isFetching,
+                    child: Column(
+                      children: state.bookingsFiltered
+                          .map((booking) => FoodyBookingCard(booking: booking))
+                          .toList(),
+                    ),
+                  ),
           ],
         );
       },

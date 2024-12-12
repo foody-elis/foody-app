@@ -22,7 +22,7 @@ class RestaurantFormState extends Equatable {
   final String? capError;
   final String apiError;
 
-  final bool isFetchingCategories;
+  final bool isLoading;
   final List<CategoryResponseDto> allCategories;
   final List<int> selectedCategories;
 
@@ -45,7 +45,7 @@ class RestaurantFormState extends Equatable {
     required this.provinceError,
     required this.capError,
     required this.apiError,
-    required this.isFetchingCategories,
+    required this.isLoading,
     required this.allCategories,
     required this.selectedCategories,
   });
@@ -69,7 +69,7 @@ class RestaurantFormState extends Equatable {
         provinceError = null,
         capError = null,
         apiError = "",
-        isFetchingCategories = false,
+        isLoading = false,
         allCategories = [],
         selectedCategories = [];
 
@@ -95,7 +95,7 @@ class RestaurantFormState extends Equatable {
     bool? isFetchingCategories,
     List<CategoryResponseDto>? allCategories,
     List<int>? selectedCategories,
-    bool? isFetchingRestaurant,
+    bool? isLoading,
     RestaurantResponseDto? restaurant,
   }) {
     return RestaurantFormState(
@@ -125,7 +125,7 @@ class RestaurantFormState extends Equatable {
           provinceError == "null" ? null : provinceError ?? this.provinceError,
       capError: capError == "null" ? null : capError ?? this.capError,
       apiError: apiError ?? this.apiError,
-      isFetchingCategories: isFetchingCategories ?? this.isFetchingCategories,
+      isLoading: isFetchingCategories ?? this.isLoading,
       allCategories: allCategories ?? this.allCategories,
       selectedCategories: selectedCategories ?? this.selectedCategories,
     );
@@ -151,7 +151,7 @@ class RestaurantFormState extends Equatable {
         provinceError,
         capError,
         apiError,
-        isFetchingCategories,
+        isLoading,
         allCategories,
         selectedCategories,
       ];

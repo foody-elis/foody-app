@@ -10,10 +10,10 @@ class WeekdayInfoResponseDto {
   const WeekdayInfoResponseDto({
     required this.id,
     required this.weekDay,
-    required this.startLaunch,
-    required this.endLaunch,
-    required this.startDinner,
-    required this.endDinner,
+    this.startLaunch,
+    this.endLaunch,
+    this.startDinner,
+    this.endDinner,
     required this.sittingTimeStep,
     required this.restaurantId,
   });
@@ -24,17 +24,17 @@ class WeekdayInfoResponseDto {
   final int id;
   final int weekDay;
 
-  @JsonKey(fromJson: timeFromJson, toJson: timeToJson)
-  final DateTime startLaunch;
+  @JsonKey(fromJson: timeFromJsonNullable, toJson: timeToJsonNullable)
+  final DateTime? startLaunch;
 
-  @JsonKey(fromJson: timeFromJson, toJson: timeToJson)
-  final DateTime endLaunch;
+  @JsonKey(fromJson: timeFromJsonNullable, toJson: timeToJsonNullable)
+  final DateTime? endLaunch;
 
-  @JsonKey(fromJson: timeFromJson, toJson: timeToJson)
-  final DateTime startDinner;
+  @JsonKey(fromJson: timeFromJsonNullable, toJson: timeToJsonNullable)
+  final DateTime? startDinner;
 
-  @JsonKey(fromJson: timeFromJson, toJson: timeToJson)
-  final DateTime endDinner;
+  @JsonKey(fromJson: timeFromJsonNullable, toJson: timeToJsonNullable)
+  final DateTime? endDinner;
 
   final SittingTimeStep sittingTimeStep;
 

@@ -5,6 +5,7 @@ import 'package:foody_app/bloc/restaurant_form/restaurant_form_state.dart';
 import 'package:foody_app/dto/request/restaurant_request_dto.dart';
 import 'package:foody_app/dto/response/category_response_dto.dart';
 import 'package:foody_app/dto/response/restaurant_response_dto.dart';
+import 'package:foody_app/repository/interface/user_repository.dart';
 import 'package:foody_app/utils/call_api.dart';
 
 import '../../repository/interface/foody_api_repository.dart';
@@ -15,10 +16,14 @@ class RestaurantFormBloc
     extends Bloc<RestaurantFormEvent, RestaurantFormState> {
   final NavigationService _navigationService = NavigationService();
   final FoodyApiRepository foodyApiRepository;
+  final UserRepository userRepository;
   final RestaurantResponseDto? restaurant;
 
-  RestaurantFormBloc({required this.foodyApiRepository, this.restaurant})
-      : super(RestaurantFormState.initial(restaurant)) {
+  RestaurantFormBloc({
+    required this.foodyApiRepository,
+    required this.userRepository,
+    this.restaurant,
+  }) : super(RestaurantFormState.initial(restaurant)) {
     on<FormSubmit>(_onFormSubmit, transformer: droppable());
     on<FetchCategories>(_onFetchCategories, transformer: droppable());
     on<NameChanged>(_onNameChanged);
@@ -31,15 +36,8 @@ class RestaurantFormBloc
     on<CapChanged>(_onCapChanged);
     on<SeatsChanged>(_onSeatsChanged);
     on<SelectedCategoriesChanged>(_onSelectedCategoriesChanged);
-    //on<FetchRestaurant>(_onFetchRestaurant);
 
     add(FetchCategories());
-
-    print(restaurant?.toJson());
-
-    /*if (isEditing) {
-      add(FetchRestaurant());
-    }*/
   }
 
   bool _isFormValid(Emitter<RestaurantFormState> emit) {
@@ -125,6 +123,8 @@ class RestaurantFormBloc
   void _onFormSubmit(
       FormSubmit event, Emitter<RestaurantFormState> emit) async {
     if (_isFormValid(emit)) {
+      emit(state.copyWith(isLoading: true));
+
       await callApi<RestaurantResponseDto>(
         api: () => foodyApiRepository.restaurants.save(RestaurantRequestDto(
           name: state.name,
@@ -138,12 +138,19 @@ class RestaurantFormBloc
           seats: state.seats,
           categories: state.selectedCategories,
         )),
-        onComplete: (response) {
+        onComplete: (restaurant) {
           emit(state.copyWith(apiError: "Creazione del ristorante successo"));
+
+          final user = userRepository.get()!;
+          user.restaurantId = restaurant.id;
+          userRepository.update(user);
+
           _navigationService.resetToScreen(sittingTimesFormRoute);
         },
         errorToEmit: (msg) => emit(state.copyWith(apiError: msg)),
       );
+
+      emit(state.copyWith(isLoading: false));
     }
   }
 

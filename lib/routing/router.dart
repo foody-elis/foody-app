@@ -39,6 +39,7 @@ class Router {
           builder: (_) => BlocProvider<RestaurantFormBloc>(
             create: (context) => RestaurantFormBloc(
               foodyApiRepository: context.read<FoodyApiRepository>(),
+              userRepository: context.read<UserRepository>(),
               restaurant: arguments?["restaurant"],
             ),
             child: const RestaurantForm(),
@@ -49,6 +50,7 @@ class Router {
           builder: (_) => BlocProvider<SittingTimesFormListBloc>(
             create: (context) => SittingTimesFormListBloc(
               foodyApiRepository: context.read<FoodyApiRepository>(),
+              userRepository: context.read<UserRepository>(),
               isEditing: arguments?["isEditing"] ?? false,
             ),
             child: const SittingTimesFormList(),

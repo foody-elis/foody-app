@@ -36,7 +36,7 @@ class RestaurantForm extends HookWidget {
           showSnackBar(context: context, msg: state.apiError);
         }
 
-        if (!multiSelectLoaded.isCompleted && !state.isFetchingCategories) {
+        if (!multiSelectLoaded.isCompleted && !state.isLoading) {
           final Map<CategoryResponseDto, bool> items = {};
           final restaurant = context.read<RestaurantFormBloc>().restaurant;
 
@@ -49,11 +49,11 @@ class RestaurantForm extends HookWidget {
 
         context
             .read<FoodyBloc>()
-            .add(ShowLoadingOverlayChanged(show: state.isFetchingCategories));
+            .add(ShowLoadingOverlayChanged(show: state.isLoading));
       },
       builder: (context, state) {
         return PopScope(
-          canPop: !state.isFetchingCategories,
+          canPop: !state.isLoading,
           child: Scaffold(
             body: FoodySecondaryLayout(
               title: "Ristorante",

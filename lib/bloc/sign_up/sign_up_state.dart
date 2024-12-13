@@ -10,6 +10,7 @@ class SignUpState extends Equatable {
   final String confirmPassword;
   final String birthDate;
   final String phoneNumber;
+  final String avatar;
   final String? nameError;
   final String? surnameError;
   final String? emailError;
@@ -29,6 +30,7 @@ class SignUpState extends Equatable {
     required this.confirmPassword,
     required this.birthDate,
     required this.phoneNumber,
+    required this.avatar,
     required this.nameError,
     required this.surnameError,
     required this.emailError,
@@ -49,6 +51,7 @@ class SignUpState extends Equatable {
         confirmPassword = "",
         birthDate = user == null ? "" : DateFormat('dd/MM/yyyy').format(user.birthDate),
         phoneNumber = user?.phoneNumber ?? "",
+        avatar = user?.avatarUrl ?? "",
         nameError = null,
         surnameError = null,
         emailError = null,
@@ -68,6 +71,7 @@ class SignUpState extends Equatable {
     String? confirmPassword,
     String? birthDate,
     String? phoneNumber,
+    String? avatar,
     String? nameError,
     String? surnameError,
     String? emailError,
@@ -87,6 +91,7 @@ class SignUpState extends Equatable {
       confirmPassword: confirmPassword ?? this.confirmPassword,
       birthDate: birthDate ?? this.birthDate,
       phoneNumber: phoneNumber ?? this.phoneNumber,
+      avatar: avatar ?? this.avatar,
       nameError: nameError == "null" ? null : nameError ?? this.nameError,
       surnameError:
           surnameError == "null" ? null : surnameError ?? this.surnameError,
@@ -117,6 +122,7 @@ class SignUpState extends Equatable {
         confirmPassword,
         birthDate,
         phoneNumber,
+        avatar,
         nameError,
         surnameError,
         emailError,

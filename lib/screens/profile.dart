@@ -5,6 +5,7 @@ import 'package:foody_app/bloc/auth/auth_event.dart';
 import 'package:foody_app/bloc/auth/auth_state.dart';
 import 'package:foody_app/routing/constants.dart';
 import 'package:foody_app/routing/navigation_service.dart';
+import 'package:foody_app/widgets/foody_avatar.dart';
 import 'package:foody_app/widgets/foody_profile_list_tile.dart';
 import 'package:phosphor_flutter/phosphor_flutter.dart';
 
@@ -24,7 +25,9 @@ class Profile extends StatelessWidget {
           children: [
             Column(
               children: [
-                ClipOval(
+                FoodyAvatar(avatarUrl: state.userResponseDto?.avatarUrl),
+
+                /*ClipOval(
                   child: Container(
                     padding: const EdgeInsets.all(15.0),
                     color: Colors.white,
@@ -35,7 +38,7 @@ class Profile extends StatelessWidget {
                       height: 50,
                     ),
                   ),
-                ),
+                ),*/
                 const SizedBox(height: 10),
                 Text(
                   "${state.userResponseDto?.name} "

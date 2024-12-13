@@ -1,3 +1,6 @@
+import 'dart:convert';
+import 'dart:io';
+
 import 'package:bloc_concurrency/bloc_concurrency.dart';
 import 'package:email_validator/email_validator.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -7,6 +10,7 @@ import 'package:foody_app/dto/response/user_response_dto.dart';
 import 'package:foody_app/repository/interface/foody_api_repository.dart';
 import 'package:foody_app/repository/interface/user_repository.dart';
 import 'package:foody_app/routing/constants.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
 import 'package:jwt_decoder/jwt_decoder.dart';
 
@@ -40,6 +44,8 @@ class SignUpBloc extends Bloc<SignUpEvent, SignUpState> {
     on<BirthDateChanged>(_onBirthDateChanged);
     on<ActiveIndexChanged>(_onActiveIndexChanged);
     on<PhoneNumberChanged>(_onPhoneNumberChanged);
+    on<ImagePickerGallery>(_onImagePickerGallery);
+    on<ImagePickerCamera>(_onImagePickerCamera);
   }
 
   bool _isEditFormValid(Emitter<SignUpState> emit) {
@@ -131,7 +137,9 @@ class SignUpBloc extends Bloc<SignUpEvent, SignUpState> {
         password: state.password,
         phoneNumber: state.phoneNumber,
         birthDate: DateFormat("dd/MM/yyyy").parse(state.birthDate),
-        avatar: "avatar.png",
+        avatarBase64: state.avatar == ""
+            ? ""
+            : base64Encode(File(state.avatar).readAsBytesSync()),
       )),
       onComplete: (response) {
         userRepository.add(User(
@@ -233,5 +241,26 @@ class SignUpBloc extends Bloc<SignUpEvent, SignUpState> {
 
       emit(state.copyWith(isLoading: false));
     }
+  }
+
+  Future<void> _onImagePicker(
+      Emitter<SignUpState> emit, ImageSource source) async {
+    final imagePicker = ImagePicker();
+    final pickedFile = await imagePicker.pickImage(source: source);
+
+    if (pickedFile != null) {
+      emit(state.copyWith(avatar: pickedFile.path));
+      _navigationService.goBack();
+    }
+  }
+
+  void _onImagePickerGallery(
+      ImagePickerGallery event, Emitter<SignUpState> emit) async {
+    await _onImagePicker(emit, ImageSource.gallery);
+  }
+
+  void _onImagePickerCamera(
+      ImagePickerCamera event, Emitter<SignUpState> emit) async {
+    await _onImagePicker(emit, ImageSource.camera);
   }
 }

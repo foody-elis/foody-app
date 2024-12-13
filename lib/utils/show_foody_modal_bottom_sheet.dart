@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:foody_app/widgets/foody_bottom_sheet_layout.dart';
 
 Widget _modalLayout(BuildContext context, Widget child, int heightPercentage) {
   return SizedBox(
@@ -53,7 +54,11 @@ void showFoodyModalBottomSheet({
     context: context,
     isScrollControlled: true,
     backgroundColor: Colors.white,
-    builder: (context) => _modalLayout(context, child, heightPercentage),
+    builder: (context) => FoodyBottomSheetLayout(
+      context: context,
+      heightPercentage: heightPercentage,
+      child: child,
+    ),
   );
 }
 
@@ -69,9 +74,13 @@ void showFoodyModalBottomSheetWithBloc<
     isScrollControlled: true,
     backgroundColor: Colors.white,
     builder: (context) {
-      return  BlocProvider<T>(
+      return BlocProvider<T>(
         create: (context) => createBloc(context),
-        child: _modalLayout(context, child, heightPercentage),
+        child: FoodyBottomSheetLayout(
+          context: context,
+          heightPercentage: heightPercentage,
+          child: child,
+        ),
       );
     },
   );

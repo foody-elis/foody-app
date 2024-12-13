@@ -61,8 +61,7 @@ class SignUp extends StatelessWidget {
               const SignUpForm(),
               const SizedBox(height: 32),
               FoodyButton(
-                label:
-                    state.activeIndex == 0 ? 'Registrati' : 'Invia Richiesta',
+                label: 'Registrati',
                 width: MediaQuery.of(context).size.width,
                 onPressed: () => context.read<SignUpBloc>().add(
                     state.activeIndex == 0

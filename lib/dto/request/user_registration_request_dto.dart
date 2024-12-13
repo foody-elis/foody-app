@@ -13,7 +13,7 @@ class UserRegistrationRequestDto {
     required this.surname,
     required this.birthDate,
     required this.phoneNumber,
-    required this.avatar,
+    required this.avatarBase64,
   });
 
   factory UserRegistrationRequestDto.fromJson(Map<String, dynamic> json) =>
@@ -24,7 +24,7 @@ class UserRegistrationRequestDto {
   final String name;
   final String surname;
   final String phoneNumber;
-  final String avatar;
+  final String avatarBase64;
 
   @JsonKey(fromJson: dateTimeFromJson, toJson: dateTimeToJson)
   final DateTime birthDate;

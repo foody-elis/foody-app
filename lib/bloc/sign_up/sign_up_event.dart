@@ -13,6 +13,10 @@ class SignUpRestaurateur extends SignUpEvent {}
 
 class EditUser extends SignUpEvent {}
 
+class ImagePickerGallery extends SignUpEvent {}
+
+class ImagePickerCamera extends SignUpEvent {}
+
 class NameChanged extends SignUpEvent {
   const NameChanged({required this.name});
 

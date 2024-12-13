@@ -17,7 +17,7 @@ class SittingTimesFormList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocListener<SittingTimesFormListBloc, SittingTimesFormListState>(
+    return BlocConsumer<SittingTimesFormListBloc, SittingTimesFormListState>(
       listener: (context, state) {
         if (state.error != "") {
           showSnackBar(context: context, msg: state.error);
@@ -27,55 +27,60 @@ class SittingTimesFormList extends StatelessWidget {
             .read<FoodyBloc>()
             .add(ShowLoadingOverlayChanged(show: state.isLoading));
       },
-      child: Scaffold(
-        body: FoodySecondaryLayout(
-          // headerExpandedHeight: 0.3,
-          expandedBodyHeight: 0.8,
-          showBottomNavBar: false,
-          startWithExpandedBody:
+      builder: (context, state) {
+        return PopScope(
+          canPop: !state.isLoading,
+          child: Scaffold(
+            body: FoodySecondaryLayout(
+              // headerExpandedHeight: 0.3,
+              expandedBodyHeight: 0.8,
+              showBottomNavBar: false,
+              startWithExpandedBody:
               !context.read<SittingTimesFormListBloc>().isEditing,
-          expandedBody: const SittingTimesFormExpanded(),
-          title: "Orari del tuo ristorante",
-          subtitleWidget: const Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                "Inserisci gli intervalli di orari in cui i tuoi clienti potranno prenotarsi.",
-                style: TextStyle(color: Colors.grey),
+              expandedBody: const SittingTimesFormExpanded(),
+              title: "Orari del tuo ristorante",
+              subtitleWidget: const Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    "Inserisci gli intervalli di orari in cui i tuoi clienti potranno prenotarsi.",
+                    style: TextStyle(color: Colors.grey),
+                  ),
+                  SizedBox(height: 8),
+                ],
               ),
-              SizedBox(height: 8),
-            ],
-          ),
-          body: [
-            ListView.builder(
-              shrinkWrap: true,
-              itemCount: context
-                  .read<SittingTimesFormListBloc>()
-                  .state
-                  .weekDays
-                  .keys
-                  .length,
-              physics: const NeverScrollableScrollPhysics(),
-              itemBuilder: (context, index) {
-                String weekDay = context
-                    .read<SittingTimesFormListBloc>()
-                    .state
-                    .weekDays
-                    .keys
-                    .elementAt(index);
+              body: [
+                ListView.builder(
+                  shrinkWrap: true,
+                  itemCount: context
+                      .read<SittingTimesFormListBloc>()
+                      .state
+                      .weekDays
+                      .keys
+                      .length,
+                  physics: const NeverScrollableScrollPhysics(),
+                  itemBuilder: (context, index) {
+                    String weekDay = context
+                        .read<SittingTimesFormListBloc>()
+                        .state
+                        .weekDays
+                        .keys
+                        .elementAt(index);
 
-                return SittingTimesForm(weekDay: weekDay);
-              },
+                    return SittingTimesForm(weekDay: weekDay);
+                  },
+                ),
+              ],
             ),
-          ],
-        ),
-        floatingActionButton: FloatingActionButton(
-          onPressed: () {
-            context.read<SittingTimesFormListBloc>().add(FormSubmit());
-          },
-          child: const Icon(PhosphorIconsRegular.paperPlaneRight),
-        ),
-      ),
+            floatingActionButton: FloatingActionButton(
+              onPressed: () {
+                context.read<SittingTimesFormListBloc>().add(FormSubmit());
+              },
+              child: const Icon(PhosphorIconsRegular.paperPlaneRight),
+            ),
+          ),
+        );
+      },
     );
   }
 }

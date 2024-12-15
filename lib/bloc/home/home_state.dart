@@ -8,7 +8,7 @@ import '../../dto/response/category_response_dto.dart';
 
 class HomeState extends Equatable {
   final List<CategoryResponseDto> categories;
-  final List<RestaurantResponseDto> restaurants;
+  final List<DetailedRestaurantResponseDto> restaurants;
   final bool isFetching;
   final String apiError;
 
@@ -82,7 +82,7 @@ class HomeState extends Equatable {
 
   HomeState copyWith({
     List<CategoryResponseDto>? categories,
-    List<RestaurantResponseDto>? restaurants,
+    List<DetailedRestaurantResponseDto>? restaurants,
     bool? isFetching,
     String? apiError,
   }) {

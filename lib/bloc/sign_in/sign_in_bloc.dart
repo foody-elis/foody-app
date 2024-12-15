@@ -60,6 +60,8 @@ class SignInBloc extends Bloc<SignInEvent, SignInState> {
         )),
         onComplete: (response) {
           emit(state.copyWith(apiError: "Accesso effettuato con successo"));
+          emit(state.copyWith(apiError: ""));
+
           userRepository.add(User(
             jwt: response.accessToken,
             role: JwtDecoder.decode(response.accessToken)["role"],

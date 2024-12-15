@@ -6,6 +6,7 @@ import 'package:foody_app/routing/constants.dart';
 import 'package:foody_app/routing/navigation_service.dart';
 import 'package:foody_app/widgets/foody_card_restaurant.dart';
 import 'package:foody_app/widgets/foody_empty_data.dart';
+import 'package:intl/intl.dart';
 import 'package:skeletonizer/skeletonizer.dart';
 
 class Restaurants extends StatelessWidget {
@@ -43,11 +44,14 @@ class Restaurants extends StatelessWidget {
                           category: restaurant.categories.isEmpty
                               ? ""
                               : restaurant.categories.first.name,
-                          rating: 4.5,
+                          rating: restaurant.averageRating,
                           name: restaurant.name,
                           address:
                               "${restaurant.street}, ${restaurant.postalCode}, ${restaurant.city}",
-                          sittingTimes: const ["12:30", "13:00", "13:30"],
+                          sittingTimes: restaurant.sittingTimes
+                              .map((sittingTime) =>
+                                  DateFormat('HH:mm').format(sittingTime.start))
+                              .toList(),
                           onTap: () => NavigationService().navigateTo(
                             restaurantDetailsRoute,
                             arguments: {"restaurantId": restaurant.id},
@@ -58,7 +62,7 @@ class Restaurants extends StatelessWidget {
             ),
           ],
         );
-      },//gay
+      }, //gay
     );
   }
 }

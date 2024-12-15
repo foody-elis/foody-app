@@ -79,33 +79,31 @@ class FoodyCardRestaurant extends StatelessWidget {
                         )
                       ],
                     ),
-                    const SizedBox(height: 15),
+                    const SizedBox(height: 10),
                     Text(
                       name,
-                      style: const TextStyle(fontWeight: FontWeight.bold),
+                      style: const TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 20,
+                      ),
                     ),
-                    const SizedBox(height: 10),
+                    const SizedBox(height: 5),
                     Text(
                       address,
                       style: const TextStyle(color: Colors.grey),
                     ),
                     const SizedBox(height: 30),
                     Row(
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      spacing: 10,
                       children: [
-                        Row(
-                          children: sittingTimes
-                              .map(
-                                (sittingTime) => Skeleton.leaf(
-                                  child: FoodyTag(
-                                    width: 90,
-                                    label: sittingTime,
-                                    margin: const EdgeInsets.only(right: 10),
-                                  ),
-                                ),
-                              )
-                              .toList(),
+                        ...sittingTimes.map(
+                          (sittingTime) => Skeleton.leaf(
+                            child: FoodyTag(
+                              width: 90,
+                              label: sittingTime,
+                              elevation: 0,
+                            ),
+                          ),
                         ),
                         Skeleton.ignore(
                           child: SizedBox(

@@ -60,7 +60,7 @@ class SittingTimesInfo extends StatelessWidget {
           ),
           const SizedBox(height: 10),
           Row(
-            spacing: 5,
+            spacing: 10,
             children: [
               ...sittingTimes.map(
                 (sittingTime) => Skeleton.leaf(

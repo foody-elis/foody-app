@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:foody_app/utils/show_foody_modal_bottom_sheet.dart';
 import 'package:foody_app/widgets/foody_button.dart';
 import 'package:foody_app/widgets/foody_outlined_button.dart';
 import 'package:foody_app/widgets/foody_text_field.dart';
@@ -29,7 +30,7 @@ class FoodyDatePicker extends HookWidget {
     this.margin,
     this.padding,
     this.errorText,
-    this.isEditing = false
+    this.isEditing = false,
   })  : firstDate = firstDate ?? DateTime(1900, 1, 1),
         lastDate = lastDate ??= DateTime.now(),
         initialDate = initialDate ?? lastDate;
@@ -40,19 +41,16 @@ class FoodyDatePicker extends HookWidget {
     final isSelected = useState<bool>(isEditing);
 
     void onShowCalendarClick() async {
-      final res = await showModalBottomSheet(
-        backgroundColor: Colors.white,
+      final res = await showFoodyModalBottomSheet<DateTime?>(
         context: context,
-        builder: (BuildContext context) {
-          return _CalendarView(
-            selectedDate: selectedDate.value,
-            firstDate: firstDate,
-            lastDate: lastDate,
-          );
-        },
+        child: _CalendarView(
+          selectedDate: selectedDate.value,
+          firstDate: firstDate,
+          lastDate: lastDate,
+        ),
       );
 
-      if (res is DateTime) {
+      if (res != null) {
         selectedDate.value = res;
         isSelected.value = true;
         onChanged?.call(res);
@@ -65,7 +63,9 @@ class FoodyDatePicker extends HookWidget {
       child: FoodyTextField(
         title: "Data di nascita",
         hint: "-- / -- / ----",
-        label: isSelected.value ? DateFormat('dd/MM/yyyy').format(selectedDate.value) : '',
+        label: isSelected.value
+            ? DateFormat('dd/MM/yyyy').format(selectedDate.value)
+            : '',
         onTap: onShowCalendarClick,
         suffixIcon: const Icon(PhosphorIconsRegular.calendarDots),
         showCursor: false,
@@ -141,140 +141,128 @@ class _CalendarView extends HookWidget {
     final dayController =
         useFixedExtentScrollController(initialItem: currentDate.value.day - 1);
 
-    return Padding(
-      padding: const EdgeInsets.only(left: 16, right: 16, bottom: 32, top: 16),
-      child: Column(
-        children: [
-          Container(
-            width: MediaQuery.of(context).size.width * 35 / 100,
-            margin: const EdgeInsets.only(bottom: 20),
-            height: 6,
-            decoration: BoxDecoration(
-              color: Colors.grey[300],
-              borderRadius: BorderRadius.circular(20),
-            ),
-          ),
-          Text(
-            DateFormat('dd / MM / yyyy').format(currentDate.value.toLocal()),
-            style: const TextStyle(fontSize: 24.0, fontWeight: FontWeight.w600),
-          ),
-          const SizedBox(height: 15),
-          const Divider(thickness: 1),
-          SizedBox(
-            height: 200,
-            child: Row(
-              children: [
-                Expanded(
-                  child: CupertinoPicker.builder(
-                    scrollController: dayController,
-                    diameterRatio: 1.0,
-                    itemExtent: 60,
-                    onSelectedItemChanged: (value) {
-                      currentDate.value =
-                          currentDate.value.copyWith(day: value + 1);
-                    },
-                    itemBuilder: (context, index) {
-                      return Container(
-                        alignment: Alignment.center,
-                        child: Text(
-                          days[index].toString(),
-                          style: const TextStyle(fontSize: 16.0),
-                        ),
-                      );
-                    },
-                    childCount: days.length,
-                  ),
-                ),
-                Expanded(
-                  child: CupertinoPicker.builder(
-                    scrollController: monthController,
-                    diameterRatio: 1.0,
-                    itemExtent: 60,
-                    onSelectedItemChanged: (value) {
-                      final daysInMonth = getDaysInMonth(
-                        currentDate.value.year,
-                        value + 1,
-                      );
-
-                      if (currentDate.value.day > daysInMonth.length) {
-                        currentDate.value =
-                            currentDate.value.copyWith(day: daysInMonth.length);
-                      }
-
-                      currentDate.value =
-                          currentDate.value.copyWith(month: value + 1);
-                    },
-                    itemBuilder: (context, index) {
-                      return Container(
-                        alignment: Alignment.center,
-                        child: Text(
-                          months[index],
-                          style: const TextStyle(fontSize: 16.0),
-                        ),
-                      );
-                    },
-                    childCount: months.length,
-                  ),
-                ),
-                Expanded(
-                  child: CupertinoPicker.builder(
-                    scrollController: yearController,
-                    diameterRatio: 1.0,
-                    itemExtent: 60,
-                    onSelectedItemChanged: (value) {
-                      currentDate.value =
-                          currentDate.value.copyWith(year: _getYears()[value]);
-
-                      if (currentDate.value.month > lastDate.month) {
-                        currentDate.value = currentDate.value
-                            .copyWith(month: getMonths().length);
-                      }
-
-                      List<int> daysInMonth = getDaysInMonth(
-                          currentDate.value.year, currentDate.value.month);
-
-                      if (currentDate.value.day > daysInMonth.length) {
-                        currentDate.value =
-                            currentDate.value.copyWith(day: daysInMonth.last);
-                      }
-                    },
-                    itemBuilder: (context, index) {
-                      return Container(
-                        alignment: Alignment.center,
-                        child: Text(
-                          years[index].toString(),
-                          style: const TextStyle(fontSize: 16.0),
-                        ),
-                      );
-                    },
-                    childCount: years.length,
-                  ),
-                ),
-              ],
-            ),
-          ),
-          const Divider(thickness: 1),
-          const SizedBox(height: 20),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+    return Column(
+      children: [
+        Text(
+          DateFormat('dd / MM / yyyy').format(currentDate.value.toLocal()),
+          style: const TextStyle(fontSize: 24.0, fontWeight: FontWeight.w600),
+        ),
+        const SizedBox(height: 15),
+        const Divider(thickness: 1),
+        SizedBox(
+          height: 200,
+          child: Row(
             children: [
               Expanded(
-                child: FoodyOutlinedButton(
-                  label: 'Annulla',
-                  onPressed: () => Navigator.pop(context),
+                child: CupertinoPicker.builder(
+                  scrollController: dayController,
+                  diameterRatio: 1.0,
+                  itemExtent: 60,
+                  onSelectedItemChanged: (value) {
+                    currentDate.value =
+                        currentDate.value.copyWith(day: value + 1);
+                  },
+                  itemBuilder: (context, index) {
+                    return Container(
+                      alignment: Alignment.center,
+                      child: Text(
+                        days[index].toString(),
+                        style: const TextStyle(fontSize: 16.0),
+                      ),
+                    );
+                  },
+                  childCount: days.length,
                 ),
               ),
-              const SizedBox(width: 5),
               Expanded(
-                child: FoodyButton(
-                  label: 'Seleziona',
-                  onPressed: () => Navigator.pop(context, currentDate.value),
+                child: CupertinoPicker.builder(
+                  scrollController: monthController,
+                  diameterRatio: 1.0,
+                  itemExtent: 60,
+                  onSelectedItemChanged: (value) {
+                    final daysInMonth = getDaysInMonth(
+                      currentDate.value.year,
+                      value + 1,
+                    );
+
+                    if (currentDate.value.day > daysInMonth.length) {
+                      currentDate.value =
+                          currentDate.value.copyWith(day: daysInMonth.length);
+                    }
+
+                    currentDate.value =
+                        currentDate.value.copyWith(month: value + 1);
+                  },
+                  itemBuilder: (context, index) {
+                    return Container(
+                      alignment: Alignment.center,
+                      child: Text(
+                        months[index],
+                        style: const TextStyle(fontSize: 16.0),
+                      ),
+                    );
+                  },
+                  childCount: months.length,
+                ),
+              ),
+              Expanded(
+                child: CupertinoPicker.builder(
+                  scrollController: yearController,
+                  diameterRatio: 1.0,
+                  itemExtent: 60,
+                  onSelectedItemChanged: (value) {
+                    currentDate.value =
+                        currentDate.value.copyWith(year: _getYears()[value]);
+
+                    if (currentDate.value.month > lastDate.month) {
+                      currentDate.value =
+                          currentDate.value.copyWith(month: getMonths().length);
+                    }
+
+                    List<int> daysInMonth = getDaysInMonth(
+                        currentDate.value.year, currentDate.value.month);
+
+                    if (currentDate.value.day > daysInMonth.length) {
+                      currentDate.value =
+                          currentDate.value.copyWith(day: daysInMonth.last);
+                    }
+                  },
+                  itemBuilder: (context, index) {
+                    return Container(
+                      alignment: Alignment.center,
+                      child: Text(
+                        years[index].toString(),
+                        style: const TextStyle(fontSize: 16.0),
+                      ),
+                    );
+                  },
+                  childCount: years.length,
                 ),
               ),
             ],
-          )
-        ],
-      ),
+          ),
+        ),
+        const Divider(thickness: 1),
+        const SizedBox(height: 20),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: [
+            Expanded(
+              child: FoodyOutlinedButton(
+                label: 'Annulla',
+                onPressed: () => Navigator.pop(context),
+              ),
+            ),
+            const SizedBox(width: 5),
+            Expanded(
+              child: FoodyButton(
+                label: 'Seleziona',
+                onPressed: () => Navigator.pop(context, currentDate.value),
+              ),
+            ),
+          ],
+        )
+      ],
     );
   }
 

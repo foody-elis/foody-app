@@ -66,6 +66,7 @@ dependencies:
   flutter_portal: ^1.1.4
   package_info_plus: ^8.1.1
   image_picker: ^1.1.2
+  cached_network_image: ^3.4.1
 
 dev_dependencies:
   flutter_test:

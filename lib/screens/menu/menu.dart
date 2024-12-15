@@ -79,7 +79,7 @@ class Menu extends StatelessWidget {
             floatingActionButton: FloatingActionButton(
               onPressed: () => showFoodyModalBottomSheet(
                 context: context,
-                heightPercentage: 70,
+                maxHeightPercentage: 70,
                 child: BlocProvider<DishFormBloc>(
                   create: (_) => DishFormBloc(
                     foodyApiRepository: context.read<FoodyApiRepository>(),

@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:foody_app/bloc/sign_up/sign_up_bloc.dart';
@@ -33,8 +31,10 @@ class SignUpForm extends StatelessWidget {
                         context.read<SignUpBloc>().add(ImagePickerCamera()),
                     onGalleryTap: () =>
                         context.read<SignUpBloc>().add(ImagePickerGallery()),
+                    onRemoveTap: () =>
+                        context.read<SignUpBloc>().add(ImagePickerRemove()),
                   ),
-                  avatarPath: state.avatar == "" ? null : state.avatar,
+                  avatarUrl: state.avatar == "" ? null : state.avatar,
                 ),
               ),
               FoodyTextField(

@@ -78,8 +78,9 @@ class SignIn extends StatelessWidget {
               TextButton(
                 onPressed: () {
                   Navigator.of(context).pop();
-                  showFoodyModalBottomSheetWithBloc<SignUpBloc>(
+                  showFoodyModalBottomSheetWithBloc<void, SignUpBloc>(
                     context: context,
+                    maxHeightPercentage: 90,
                     createBloc: (context) => SignUpBloc(
                       foodyApiRepository: context.read<FoodyApiRepository>(),
                       userRepository: context.read<UserRepository>(),

@@ -1,7 +1,10 @@
 import 'dart:io';
 
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:phosphor_flutter/phosphor_flutter.dart';
+
+import '../utils/foody_default_shadow.dart';
 
 class FoodyAvatar extends StatelessWidget {
   const FoodyAvatar({super.key, this.avatarPath, this.avatarUrl, this.onTap})
@@ -12,82 +15,63 @@ class FoodyAvatar extends StatelessWidget {
   final String? avatarUrl;
   final void Function()? onTap;
 
-  Widget defaultAvatar() => InkWell(
-      customBorder: const CircleBorder(),
-      onTap: onTap != null
-          ? () {
-              FocusManager.instance.primaryFocus?.unfocus();
-              onTap!.call();
-            }
-          : null,
-      child: Container(
+  Widget _inkWell([Widget? child]) => InkWell(
+        customBorder: const CircleBorder(),
+        onTap: onTap != null
+            ? () {
+                FocusManager.instance.primaryFocus?.unfocus();
+                onTap!.call();
+              }
+            : null,
+        child: child,
+      );
+
+  Widget _inkWellInOverlay() => Positioned.fill(
+        child: Material(
+          color: Colors.transparent,
+          child: _inkWell(),
+        ),
+      );
+
+  Widget _circularImage(image) => ClipOval(
+        child: Stack(
+          children: [
+            image,
+            _inkWellInOverlay(),
+          ],
+        ),
+      );
+
+  Widget _defaultAvatarContainer() => Container(
         padding: const EdgeInsets.all(15.0),
         child: Image.asset(
           'assets/images/user.png',
           width: 50,
           height: 50,
         ),
-      ));
+      );
 
-  Widget localAvatar() => ClipOval(
-        child: Stack(
-          children: [
-            Image.file(
-              File(avatarPath!),
-              fit: BoxFit.cover,
-              width: 80,
-              height: 80,
-            ),
-            Positioned.fill(
-              child: Material(
-                color: Colors.transparent,
-                child: InkWell(
-                  onTap: onTap != null
-                      ? () {
-                          FocusManager.instance.primaryFocus?.unfocus();
-                          onTap!.call();
-                        }
-                      : null,
-                ),
-              ),
-            ),
-          ],
+  Widget _defaultAvatar() => _inkWell(_defaultAvatarContainer());
+
+  Widget _localAvatar() => _circularImage(
+        Image.file(
+          File(avatarPath!),
+          fit: BoxFit.cover,
+          width: 80,
+          height: 80,
         ),
       );
 
-  Widget remoteAvatar() => ClipOval(
-        child: Stack(
-          children: [
-            Image.network(
-              avatarUrl!,
-              fit: BoxFit.cover,
-              width: 80,
-              height: 80,
-              errorBuilder: (_, __, ___) => Image.asset(
-                'assets/images/user.png',
-                width: 50,
-                height: 50,
-              ),
-              loadingBuilder: (_, __, ___) => Image.asset(
-                'assets/images/user.png',
-                width: 50,
-                height: 50,
-              ),
-            ),
-            Positioned.fill(
-              child: Material(
-                color: Colors.transparent,
-                child: InkWell(
-                  onTap: onTap != null
-                      ? () {
-                          FocusManager.instance.primaryFocus?.unfocus();
-                          onTap!.call();
-                        }
-                      : null,
-                ),
-              ),
-            ),
-          ],
+  Widget _remoteAvatar() => _circularImage(
+        CachedNetworkImage(
+          fadeInDuration: const Duration(milliseconds: 300),
+          fadeOutDuration: const Duration(milliseconds: 300),
+          imageUrl: avatarUrl!,
+          fit: BoxFit.cover,
+          width: 80,
+          height: 80,
+          placeholder: (_, __) => _defaultAvatarContainer(),
+          errorWidget: (_, __, ___) => _defaultAvatarContainer(),
         ),
       );
 
@@ -95,26 +79,22 @@ class FoodyAvatar extends StatelessWidget {
   Widget build(BuildContext context) {
     return Material(
       color: Colors.transparent,
+      child: Padding(
+      padding: const EdgeInsets.all(10),
       child: Ink(
         decoration: BoxDecoration(
           shape: BoxShape.circle,
           color: Colors.white,
-          boxShadow: [
-            BoxShadow(
-              color: Colors.grey[300]!,
-              blurRadius: 10.0,
-              spreadRadius: 1.0,
-            )
-          ],
+          boxShadow: foodyDefaultShadow(),
         ),
         child: Stack(
           clipBehavior: Clip.none,
           children: [
             avatarPath == null && avatarUrl == null
-                ? defaultAvatar()
+                ? _defaultAvatar()
                 : avatarUrl == null
-                    ? localAvatar()
-                    : remoteAvatar(),
+                    ? _localAvatar()
+                    : _remoteAvatar(),
             if (onTap != null)
               Positioned(
                 bottom: 0,
@@ -122,7 +102,7 @@ class FoodyAvatar extends StatelessWidget {
                 child: Container(
                   decoration: BoxDecoration(
                     color: Colors.grey.shade200,
-                    borderRadius: BorderRadius.circular(100),
+                    shape: BoxShape.circle,
                   ),
                   padding: const EdgeInsets.all(5.0),
                   child: const Icon(
@@ -134,6 +114,6 @@ class FoodyAvatar extends StatelessWidget {
           ],
         ),
       ),
-    );
+    ),);
   }
 }

@@ -81,8 +81,9 @@ class Welcome extends StatelessWidget {
                     label: 'Registrati',
                     width: MediaQuery.of(context).size.width - 24,
                     onPressed: () =>
-                        showFoodyModalBottomSheetWithBloc<SignUpBloc>(
+                        showFoodyModalBottomSheetWithBloc<void, SignUpBloc>(
                       context: context,
+                      maxHeightPercentage: 90,
                       createBloc: (_) => SignUpBloc(
                         foodyApiRepository: context.read<FoodyApiRepository>(),
                         userRepository: context.read<UserRepository>(),
@@ -99,8 +100,9 @@ class Welcome extends StatelessWidget {
                     label: 'Accedi',
                     width: MediaQuery.of(context).size.width - 24,
                     onPressed: () {
-                      showFoodyModalBottomSheetWithBloc<SignInBloc>(
+                      showFoodyModalBottomSheetWithBloc<void, SignInBloc>(
                         context: context,
+                        maxHeightPercentage: 80,
                         createBloc: (_) => SignInBloc(
                           foodyApiRepository:
                               context.read<FoodyApiRepository>(),

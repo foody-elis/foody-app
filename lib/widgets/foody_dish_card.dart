@@ -33,7 +33,7 @@ class FoodyDishCard extends StatelessWidget {
         onTap: () => canEdit
             ? showFoodyModalBottomSheet(
                 context: context,
-                heightPercentage: 70,
+                maxHeightPercentage: 70,
                 child: BlocProvider<DishFormBloc>(
                   create: (_) => DishFormBloc(
                     foodyApiRepository: context.read<FoodyApiRepository>(),
@@ -46,7 +46,7 @@ class FoodyDishCard extends StatelessWidget {
               )
             : showFoodyModalBottomSheet(
                 context: context,
-                heightPercentage: 60,
+                maxHeightPercentage: 60,
                 child: DishDetails(dish: dish),
               ),
         shape: RoundedRectangleBorder(

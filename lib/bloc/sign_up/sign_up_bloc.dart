@@ -46,6 +46,7 @@ class SignUpBloc extends Bloc<SignUpEvent, SignUpState> {
     on<PhoneNumberChanged>(_onPhoneNumberChanged);
     on<ImagePickerGallery>(_onImagePickerGallery);
     on<ImagePickerCamera>(_onImagePickerCamera);
+    on<ImagePickerRemove>(_onImagePickerRemove);
   }
 
   bool _isEditFormValid(Emitter<SignUpState> emit) {
@@ -262,5 +263,11 @@ class SignUpBloc extends Bloc<SignUpEvent, SignUpState> {
   void _onImagePickerCamera(
       ImagePickerCamera event, Emitter<SignUpState> emit) async {
     await _onImagePicker(emit, ImageSource.camera);
+  }
+
+  void _onImagePickerRemove(
+      ImagePickerRemove event, Emitter<SignUpState> emit) {
+    emit(state.copyWith(avatar: ""));
+    _navigationService.goBack();
   }
 }

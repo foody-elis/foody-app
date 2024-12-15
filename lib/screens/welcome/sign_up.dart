@@ -35,66 +35,69 @@ class SignUp extends StatelessWidget {
       builder: (context, state) {
         return PopScope(
           canPop: !state.isLoading,
-          child: Column(
-            children: [
-              const Text(
-                'Registrazione',
-                style: TextStyle(
-                  color: Colors.black,
-                  fontSize: 22,
-                  fontWeight: FontWeight.w700,
-                ),
-              ),
-              const SizedBox(height: 24),
-              FoodySegmentedControl(
-                labels: const ["Consumatore", "Ristoratore"],
-                activeIndex: state.activeIndex,
-                icons: const [
-                  PhosphorIcons.forkKnife,
-                  PhosphorIcons.storefront
-                ],
-                onValueChanged: (value) => context
-                    .read<SignUpBloc>()
-                    .add(ActiveIndexChanged(activeIndex: value)),
-              ),
-              const SizedBox(height: 24),
-              const SignUpForm(),
-              const SizedBox(height: 32),
-              FoodyButton(
-                label: 'Registrati',
-                width: MediaQuery.of(context).size.width,
-                onPressed: () => context.read<SignUpBloc>().add(
-                    state.activeIndex == 0
-                        ? SignUpConsumer()
-                        : SignUpRestaurateur()),
-              ),
-              const SizedBox(height: 6),
-              TextButton(
-                onPressed: () {
-                  Navigator.of(context).pop();
-                  showFoodyModalBottomSheetWithBloc<SignInBloc>(
-                    context: context,
-                    createBloc: (context) => SignInBloc(
-                      foodyApiRepository: context.read<FoodyApiRepository>(),
-                      userRepository: context.read<UserRepository>(),
-                    ),
-                    child: const SignIn(),
-                  );
-                },
-                child: RichText(
-                  text: const TextSpan(
-                    text: 'Hai già un account? ',
-                    style: TextStyle(color: Colors.grey),
-                    children: [
-                      TextSpan(
-                        style: TextStyle(fontWeight: FontWeight.w700),
-                        text: 'Accedi',
-                      )
-                    ],
+          child: Expanded(
+            child: Column(
+              children: [
+                const Text(
+                  'Registrazione',
+                  style: TextStyle(
+                    color: Colors.black,
+                    fontSize: 22,
+                    fontWeight: FontWeight.w700,
                   ),
                 ),
-              ),
-            ],
+                const SizedBox(height: 24),
+                FoodySegmentedControl(
+                  labels: const ["Consumatore", "Ristoratore"],
+                  activeIndex: state.activeIndex,
+                  icons: const [
+                    PhosphorIcons.forkKnife,
+                    PhosphorIcons.storefront
+                  ],
+                  onValueChanged: (value) => context
+                      .read<SignUpBloc>()
+                      .add(ActiveIndexChanged(activeIndex: value)),
+                ),
+                const SizedBox(height: 24),
+                const SignUpForm(),
+                const SizedBox(height: 32),
+                FoodyButton(
+                  label: 'Registrati',
+                  width: MediaQuery.of(context).size.width,
+                  onPressed: () => context.read<SignUpBloc>().add(
+                      state.activeIndex == 0
+                          ? SignUpConsumer()
+                          : SignUpRestaurateur()),
+                ),
+                const SizedBox(height: 6),
+                TextButton(
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                    showFoodyModalBottomSheetWithBloc<void, SignInBloc>(
+                      context: context,
+                      maxHeightPercentage: 80,
+                      createBloc: (context) => SignInBloc(
+                        foodyApiRepository: context.read<FoodyApiRepository>(),
+                        userRepository: context.read<UserRepository>(),
+                      ),
+                      child: const SignIn(),
+                    );
+                  },
+                  child: RichText(
+                    text: const TextSpan(
+                      text: 'Hai già un account? ',
+                      style: TextStyle(color: Colors.grey),
+                      children: [
+                        TextSpan(
+                          style: TextStyle(fontWeight: FontWeight.w700),
+                          text: 'Accedi',
+                        )
+                      ],
+                    ),
+                  ),
+                ),
+              ],
+            ),
           ),
         );
       },

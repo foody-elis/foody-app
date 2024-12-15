@@ -17,6 +17,8 @@ class ImagePickerGallery extends SignUpEvent {}
 
 class ImagePickerCamera extends SignUpEvent {}
 
+class ImagePickerRemove extends SignUpEvent {}
+
 class NameChanged extends SignUpEvent {
   const NameChanged({required this.name});
 

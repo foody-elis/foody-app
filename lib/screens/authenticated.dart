@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:foody_app/bloc/auth/auth_bloc.dart';
 import 'package:foody_app/bloc/auth/auth_state.dart';
 import 'package:foody_app/bloc/bookings/bookings_bloc.dart';
@@ -16,15 +17,28 @@ import '../widgets/foody_page_view.dart';
 import 'chats.dart';
 import 'home/home.dart';
 
-class Authenticated extends StatelessWidget {
+class Authenticated extends HookWidget {
   const Authenticated({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final avatarPrecached = useState(false);
+
     return BlocConsumer<AuthBloc, AuthState>(
       listener: (context, state) {
         if (state.apiError != "") {
           showSnackBar(context: context, msg: state.apiError);
+        }
+
+        if (!avatarPrecached.value &&
+            state.userResponseDto != null &&
+            state.userResponseDto!.avatarUrl != null) {
+          precacheImage(
+            NetworkImage(state.userResponseDto!.avatarUrl!),
+            context,
+          );
+
+          avatarPrecached.value = true;
         }
       },
       builder: (context, state) {

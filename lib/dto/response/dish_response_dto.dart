@@ -9,7 +9,7 @@ class DishResponseDto {
     required this.name,
     required this.description,
     required this.price,
-    required this.photo,
+    required this.photoUrl,
     required this.restaurantId,
   });
 
@@ -20,7 +20,7 @@ class DishResponseDto {
   final String name;
   final String description;
   final double price;
-  final String photo;
+  final String? photoUrl;
   final int restaurantId;
 
   Map<String, dynamic> toJson() => _$DishResponseDtoToJson(this);

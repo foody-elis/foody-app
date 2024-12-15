@@ -1,10 +1,13 @@
 import 'package:equatable/equatable.dart';
+import 'package:foody_app/dto/response/detailed_restaurant_response_dto.dart';
 
 import '../../dto/response/category_response_dto.dart';
-import '../../dto/response/restaurant_response_dto.dart';
+import '../../dto/response/dish_response_dto.dart';
+import '../../dto/response/review_response_dto.dart';
+import '../../dto/response/sitting_time_response_dto.dart';
 
 class RestaurantDetailsState extends Equatable {
-  final RestaurantResponseDto restaurant;
+  final DetailedRestaurantResponseDto restaurant;
   final String apiError;
   final bool isFetching;
 
@@ -14,18 +17,18 @@ class RestaurantDetailsState extends Equatable {
     required this.isFetching,
   });
 
-  const RestaurantDetailsState.initial()
-      : restaurant = const RestaurantResponseDto(
+  RestaurantDetailsState.initial()
+      : restaurant = DetailedRestaurantResponseDto(
           id: -1,
           restaurateurId: 0,
           name: "Ristorante",
           phoneNumber: "0000000000",
           categories: [
-            CategoryResponseDto(id: 0, name: "Vegetariano"),
-            CategoryResponseDto(id: 0, name: "Vegetariano"),
-            CategoryResponseDto(id: 0, name: "Vegetariano"),
-            CategoryResponseDto(id: 0, name: "Vegetariano"),
-            CategoryResponseDto(id: 0, name: "Vegetariano"),
+            const CategoryResponseDto(id: 0, name: "Vegetariano"),
+            const CategoryResponseDto(id: 0, name: "Vegetariano"),
+            const CategoryResponseDto(id: 0, name: "Vegetariano"),
+            const CategoryResponseDto(id: 0, name: "Vegetariano"),
+            const CategoryResponseDto(id: 0, name: "Vegetariano"),
           ],
           seats: 0,
           province: "RM",
@@ -37,12 +40,47 @@ class RestaurantDetailsState extends Equatable {
           street: "Via Roma",
           photoUrl: '',
           averageRating: 0,
+          dishes: List.filled(
+            5,
+            const DishResponseDto(
+              id: 0,
+              name: "Pasta",
+              description: "Pasta alla norma",
+              price: 50,
+              photoUrl: null,
+              restaurantId: 0,
+            ),
+          ),
+          sittingTimes: List.filled(
+            3,
+            SittingTimeResponseDto(
+              id: 0,
+              start: DateTime.now(),
+              end: DateTime.now(),
+              weekDayInfoId: 0,
+            ),
+          ),
+          reviews: List.filled(
+            5,
+            const ReviewResponseDto(
+              id: 0,
+              title: "Buono",
+              description: "Davvero ottima cena",
+              rating: 4,
+              customerId: 0,
+              restaurantId: 0,
+              dishId: null,
+              customerAvatarUrl: null,
+              customerName: "Mario",
+              customerSurname: "Rossi",
+            ),
+          ),
         ),
         apiError = "",
         isFetching = false;
 
   RestaurantDetailsState copyWith({
-    RestaurantResponseDto? restaurant,
+    DetailedRestaurantResponseDto? restaurant,
     String? apiError,
     bool? isFetching,
   }) {

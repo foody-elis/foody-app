@@ -80,7 +80,7 @@ class DishFormBloc extends Bloc<DishFormEvent, DishFormState> {
         description: state.description,
         price: double.parse(state.price),
         // photo: state.photo,
-        photo: "sdads",
+        photoBase64: null,
         restaurantId: restaurantId,
       );
 
@@ -91,8 +91,7 @@ class DishFormBloc extends Bloc<DishFormEvent, DishFormState> {
             ? foodyApiRepository.dishes.add(bodyData)
             : foodyApiRepository.dishes.edit(bodyData),
         onComplete: (response) {
-          emit(state.copyWith(
-              apiError: "Piatto aggiunto con successo"));
+          emit(state.copyWith(apiError: "Piatto aggiunto con successo"));
           emit(state.copyWith(apiError: "", isLoading: false));
           menuBloc.add(FetchDishes());
           NavigationService().goBack();

@@ -34,7 +34,8 @@ class SignUpForm extends StatelessWidget {
                     onRemoveTap: () =>
                         context.read<SignUpBloc>().add(ImagePickerRemove()),
                   ),
-                  avatarUrl: state.avatar == "" ? null : state.avatar,
+                  avatarPath: state.avatarPath == "" ? null : state.avatarPath,
+                  avatarUrl: state.avatarUrl == "" ? null : state.avatarUrl,
                 ),
               ),
               FoodyTextField(

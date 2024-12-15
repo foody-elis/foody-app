@@ -20,7 +20,6 @@ class RestaurantResponseDto {
     required this.restaurateurId,
     required this.categories,
     required this.photoUrl,
-    required this.averageRating,
   });
 
   factory RestaurantResponseDto.fromJson(Map<String, dynamic> json) =>
@@ -40,7 +39,6 @@ class RestaurantResponseDto {
   final int restaurateurId;
   final List<CategoryResponseDto> categories;
   final String? photoUrl;
-  final double averageRating;
 
   Map<String, dynamic> toJson() => _$RestaurantResponseDtoToJson(this);
 }

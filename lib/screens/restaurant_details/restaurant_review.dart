@@ -1,21 +1,17 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating/flutter_rating.dart';
+import 'package:foody_app/dto/response/review_response_dto.dart';
 import 'package:skeletonizer/skeletonizer.dart';
 
 class RestaurantReview extends StatelessWidget {
   const RestaurantReview({
     super.key,
-    required this.username,
-    required this.rating,
-    required this.date,
     required this.review,
     required this.isLastReview,
   });
 
-  final String username;
-  final double rating;
-  final String date;
-  final String review;
+  final ReviewResponseDto review;
   final bool isLastReview;
 
   @override
@@ -29,8 +25,10 @@ class RestaurantReview extends StatelessWidget {
               height: 50,
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(100),
-                image: const DecorationImage(
-                  image: AssetImage("assets/images/user.png"),
+                image: DecorationImage(
+                  image: review.customerAvatarUrl == null
+                      ? const AssetImage("assets/images/user.png")
+                      : CachedNetworkImageProvider(review.customerAvatarUrl!),
                   fit: BoxFit.fill,
                 ),
               ),
@@ -41,14 +39,14 @@ class RestaurantReview extends StatelessWidget {
               children: [
                 Row(
                   children: [
-                    Text(
-                      username,
-                      style: const TextStyle(fontWeight: FontWeight.bold),
+                    const Text(
+                      "Nome Cognome",
+                      style: TextStyle(fontWeight: FontWeight.bold),
                     ),
                     const SizedBox(width: 5),
                     Skeleton.ignore(
                       child: StarRating(
-                        rating: rating,
+                        rating: review.rating.toDouble(),
                         size: 14,
                         mainAxisAlignment: MainAxisAlignment.start,
                         color: Colors.amber,
@@ -56,13 +54,15 @@ class RestaurantReview extends StatelessWidget {
                     ),
                   ],
                 ),
-                Text(date),
+                // Text(DateFormat("d MMM y").format(review.date)),
+                Text("10 nov 2024")
               ],
             )
           ],
         ),
         const SizedBox(height: 10),
-        Text(review),
+        Text(review.title, style: const TextStyle(fontWeight: FontWeight.bold)),
+        Text(review.description),
         if (isLastReview) const Divider(height: 40)
       ],
     );

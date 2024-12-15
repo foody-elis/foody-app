@@ -59,6 +59,7 @@ class RestaurantDetails extends HookWidget {
                     ),
                     const Divider(height: 40),
                     SittingTimesInfo(
+                      sittingTimes: state.restaurant.sittingTimes,
                       enableSkeletonizer: state.isFetching,
                       canEdit: isOwner,
                     ),
@@ -92,9 +93,13 @@ class RestaurantDetails extends HookWidget {
                       enableSkeletonizer: state.isFetching,
                       canEdit: isOwner,
                       restaurantId: state.restaurant.id,
+                      dishes: state.restaurant.dishes,
                     ),
                     const SizedBox(height: 20),
-                    RestaurantReviews(enableSkeletonizer: state.isFetching),
+                    RestaurantReviews(
+                      enableSkeletonizer: state.isFetching,
+                      reviews: state.restaurant.reviews,
+                    ),
                   ],
                 ),
               ),

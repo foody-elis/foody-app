@@ -1,6 +1,6 @@
 import 'package:equatable/equatable.dart';
 import 'package:foody_app/dto/response/booking_response_dto.dart';
-import 'package:foody_app/dto/response/restaurant_response_dto.dart';
+import 'package:foody_app/dto/response/detailed_restaurant_response_dto.dart';
 import 'package:foody_app/dto/response/sitting_time_response_dto.dart';
 import 'package:foody_app/dto/response/user_response_dto.dart';
 import 'package:foody_app/utils/booking_status.dart';
@@ -43,7 +43,7 @@ class BookingsState extends Equatable {
               role: Role.CUSTOMER,
               active: true,
             ),
-            restaurant: const RestaurantResponseDto(
+            restaurant: const DetailedRestaurantResponseDto(
               id: 0,
               name: "Pizzum",
               description: "",
@@ -59,6 +59,9 @@ class BookingsState extends Equatable {
               categories: [],
               photoUrl: '',
               averageRating: 0,
+              sittingTimes: [],
+              dishes: [],
+              reviews: [],
             ),
             sittingTime: SittingTimeResponseDto(
               id: 0,

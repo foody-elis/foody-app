@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:foody_app/bloc/restaurant_details/restaurant_details_bloc.dart';
+import 'package:foody_app/bloc/restaurant_details/restaurant_details_event.dart';
 import 'package:foody_app/dto/response/dish_response_dto.dart';
 import 'package:phosphor_flutter/phosphor_flutter.dart';
 import 'package:skeletonizer/skeletonizer.dart';
@@ -13,11 +16,13 @@ class RestaurantMenu extends StatelessWidget {
     required this.enableSkeletonizer,
     required this.canEdit,
     required this.restaurantId,
+    required this.dishes,
   });
 
   final bool enableSkeletonizer;
   final bool canEdit;
   final int restaurantId;
+  final List<DishResponseDto> dishes;
 
   @override
   Widget build(BuildContext context) {
@@ -35,10 +40,15 @@ class RestaurantMenu extends StatelessWidget {
             ),
             if (canEdit && !enableSkeletonizer)
               IconButton(
-                onPressed: () => NavigationService().navigateTo(
-                  menuRoute,
-                  arguments: {"restaurantId": restaurantId},
-                ),
+                onPressed: () async {
+                  await NavigationService().navigateTo(
+                    menuRoute,
+                    arguments: {"restaurantId": restaurantId},
+                  );
+
+                  if (!context.mounted) return;
+                  context.read<RestaurantDetailsBloc>().add(FetchRestaurant());
+                },
                 icon: const Icon(PhosphorIconsRegular.pencilSimple, size: 20),
               ),
           ],
@@ -47,19 +57,7 @@ class RestaurantMenu extends StatelessWidget {
         Skeletonizer(
           enabled: enableSkeletonizer,
           child: Column(
-            children: List.generate(
-              5,
-              (index) => FoodyDishCard(
-                dish: DishResponseDto(
-                    id: 0,
-                    name: "Nome piatto",
-                    description: "ingredienti",
-                    price: 9.99,
-                    photo: "",
-                    restaurantId: restaurantId,
-                ),
-              ),
-            ),
+            children: dishes.map((dish) => FoodyDishCard(dish: dish)).toList(),
           ),
         ),
       ],

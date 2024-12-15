@@ -1,5 +1,3 @@
-import 'package:foody_app/dto/response/restaurant_response_dto.dart';
-import 'package:foody_app/dto/response/user_response_dto.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 import '../../utils/time_json_serializer.dart';

@@ -138,9 +138,9 @@ class SignUpBloc extends Bloc<SignUpEvent, SignUpState> {
         password: state.password,
         phoneNumber: state.phoneNumber,
         birthDate: DateFormat("dd/MM/yyyy").parse(state.birthDate),
-        avatarBase64: state.avatar == ""
+        avatarBase64: state.avatarPath == ""
             ? ""
-            : base64Encode(File(state.avatar).readAsBytesSync()),
+            : base64Encode(File(state.avatarPath).readAsBytesSync()),
       )),
       onComplete: (response) {
         userRepository.add(User(
@@ -250,7 +250,7 @@ class SignUpBloc extends Bloc<SignUpEvent, SignUpState> {
     final pickedFile = await imagePicker.pickImage(source: source);
 
     if (pickedFile != null) {
-      emit(state.copyWith(avatar: pickedFile.path));
+      emit(state.copyWith(avatarPath: pickedFile.path, avatarUrl: ""));
       _navigationService.goBack();
     }
   }
@@ -267,7 +267,7 @@ class SignUpBloc extends Bloc<SignUpEvent, SignUpState> {
 
   void _onImagePickerRemove(
       ImagePickerRemove event, Emitter<SignUpState> emit) {
-    emit(state.copyWith(avatar: ""));
+    emit(state.copyWith(avatarPath: "", avatarUrl: ""));
     _navigationService.goBack();
   }
 }

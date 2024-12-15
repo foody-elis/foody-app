@@ -10,7 +10,8 @@ class SignUpState extends Equatable {
   final String confirmPassword;
   final String birthDate;
   final String phoneNumber;
-  final String avatar;
+  final String avatarPath;
+  final String avatarUrl;
   final String? nameError;
   final String? surnameError;
   final String? emailError;
@@ -30,7 +31,8 @@ class SignUpState extends Equatable {
     required this.confirmPassword,
     required this.birthDate,
     required this.phoneNumber,
-    required this.avatar,
+    required this.avatarPath,
+    required this.avatarUrl,
     required this.nameError,
     required this.surnameError,
     required this.emailError,
@@ -49,9 +51,11 @@ class SignUpState extends Equatable {
         email = user?.email ?? "",
         password = "",
         confirmPassword = "",
-        birthDate = user == null ? "" : DateFormat('dd/MM/yyyy').format(user.birthDate),
+        birthDate =
+            user == null ? "" : DateFormat('dd/MM/yyyy').format(user.birthDate),
         phoneNumber = user?.phoneNumber ?? "",
-        avatar = user?.avatarUrl ?? "",
+        avatarPath = "",
+        avatarUrl = user?.avatarUrl ?? "",
         nameError = null,
         surnameError = null,
         emailError = null,
@@ -71,7 +75,8 @@ class SignUpState extends Equatable {
     String? confirmPassword,
     String? birthDate,
     String? phoneNumber,
-    String? avatar,
+    String? avatarPath,
+    String? avatarUrl,
     String? nameError,
     String? surnameError,
     String? emailError,
@@ -91,7 +96,8 @@ class SignUpState extends Equatable {
       confirmPassword: confirmPassword ?? this.confirmPassword,
       birthDate: birthDate ?? this.birthDate,
       phoneNumber: phoneNumber ?? this.phoneNumber,
-      avatar: avatar ?? this.avatar,
+      avatarPath: avatarPath ?? this.avatarPath,
+      avatarUrl: avatarUrl ?? this.avatarUrl,
       nameError: nameError == "null" ? null : nameError ?? this.nameError,
       surnameError:
           surnameError == "null" ? null : surnameError ?? this.surnameError,
@@ -122,7 +128,8 @@ class SignUpState extends Equatable {
         confirmPassword,
         birthDate,
         phoneNumber,
-        avatar,
+        avatarPath,
+        avatarUrl,
         nameError,
         surnameError,
         emailError,

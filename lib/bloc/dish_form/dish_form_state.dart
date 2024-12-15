@@ -33,7 +33,7 @@ class DishFormState extends Equatable {
         name = dish?.name ?? "",
         description = dish?.description ?? "",
         price = dish?.price.toString() ?? "",
-        photo = dish?.photo ?? "",
+        photo = dish?.photoUrl ?? "",
         apiError = "",
         nameError = null,
         descriptionError = null,

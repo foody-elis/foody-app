@@ -1,4 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:foody_app/bloc/restaurant_details/restaurant_details_bloc.dart';
+import 'package:foody_app/bloc/restaurant_details/restaurant_details_event.dart';
+import 'package:foody_app/dto/response/sitting_time_response_dto.dart';
+import 'package:intl/intl.dart';
 import 'package:phosphor_flutter/phosphor_flutter.dart';
 import 'package:skeletonizer/skeletonizer.dart';
 
@@ -9,10 +14,12 @@ import '../../widgets/foody_tag.dart';
 class SittingTimesInfo extends StatelessWidget {
   const SittingTimesInfo({
     super.key,
+    required this.sittingTimes,
     this.enableSkeletonizer = false,
     this.canEdit = false,
   });
 
+  final List<SittingTimeResponseDto> sittingTimes;
   final bool canEdit;
   final bool enableSkeletonizer;
 
@@ -33,10 +40,17 @@ class SittingTimesInfo extends StatelessWidget {
               ),
               if (canEdit && !enableSkeletonizer)
                 IconButton(
-                  onPressed: () => NavigationService().navigateTo(
-                    sittingTimesFormRoute,
-                    arguments: {"isEditing": true},
-                  ),
+                  onPressed: () async {
+                    await NavigationService().navigateTo(
+                      sittingTimesFormRoute,
+                      arguments: {"isEditing": true},
+                    );
+
+                    if (!context.mounted) return;
+                    context
+                        .read<RestaurantDetailsBloc>()
+                        .add(FetchRestaurant());
+                  },
                   icon: const Icon(
                     PhosphorIconsRegular.pencilSimple,
                     size: 20,
@@ -46,14 +60,13 @@ class SittingTimesInfo extends StatelessWidget {
           ),
           const SizedBox(height: 10),
           Row(
+            spacing: 5,
             children: [
-              ...List.generate(
-                3,
-                (index) => const Skeleton.leaf(
+              ...sittingTimes.map(
+                (sittingTime) => Skeleton.leaf(
                   child: FoodyTag(
                     width: 90,
-                    label: "HH:mm",
-                    margin: EdgeInsets.only(right: 5),
+                    label: DateFormat('HH:mm').format(sittingTime.start),
                     elevation: 0,
                   ),
                 ),

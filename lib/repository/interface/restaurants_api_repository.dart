@@ -1,5 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:foody_app/dto/request/restaurant_request_dto.dart';
+import 'package:foody_app/dto/response/detailed_restaurant_response_dto.dart';
 import 'package:foody_app/dto/response/restaurant_response_dto.dart';
 import 'package:retrofit/http.dart';
 
@@ -13,11 +14,11 @@ abstract class RestaurantsApiRepository {
   Future<RestaurantResponseDto> save(@Body() RestaurantRequestDto _);
 
   @GET('')
-  Future<List<RestaurantResponseDto>> getAll();
+  Future<List<DetailedRestaurantResponseDto>> getAll();
 
   @GET('/restaurateur')
-  Future<RestaurantResponseDto> getMyRestaurant();
+  Future<DetailedRestaurantResponseDto> getMyRestaurant();
 
   @GET('/{id}')
-  Future<RestaurantResponseDto> getById(@Path() int id);
+  Future<DetailedRestaurantResponseDto> getById(@Path() int id);
 }

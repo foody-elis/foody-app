@@ -1,11 +1,17 @@
 import 'package:flutter/material.dart';
+import 'package:foody_app/dto/response/review_response_dto.dart';
 import 'package:foody_app/screens/restaurant_details/restaurant_review.dart';
 import 'package:skeletonizer/skeletonizer.dart';
 
 class RestaurantReviews extends StatelessWidget {
-  const RestaurantReviews({super.key, required this.enableSkeletonizer});
+  const RestaurantReviews({
+    super.key,
+    required this.enableSkeletonizer,
+    required this.reviews,
+  });
 
   final bool enableSkeletonizer;
+  final List<ReviewResponseDto> reviews;
 
   @override
   Widget build(BuildContext context) {
@@ -25,16 +31,15 @@ class RestaurantReviews extends StatelessWidget {
           Skeletonizer(
             enabled: enableSkeletonizer,
             child: Column(
-              children: List.generate(
-                5,
-                (index) => RestaurantReview(
-                  username: "Nome utente",
-                  rating: 4,
-                  date: "10 nov 2024",
-                  review: "Recensione " * 10,
-                  isLastReview: index != 4,
-                ),
-              ),
+              children: reviews.asMap().entries.map((e) {
+                final i = e.key;
+                final review = e.value;
+
+                return RestaurantReview(
+                  review: review,
+                  isLastReview: i != reviews.length - 1,
+                );
+              }).toList(),
             ),
           ),
         ],

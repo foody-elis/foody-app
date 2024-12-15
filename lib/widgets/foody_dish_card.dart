@@ -4,7 +4,6 @@ import 'package:flutter_rating/flutter_rating.dart';
 import 'package:foody_app/bloc/menu/menu_bloc.dart';
 import 'package:foody_app/dto/response/dish_response_dto.dart';
 import 'package:foody_app/screens/menu/dish_form.dart';
-import 'package:foody_app/screens/menu/menu.dart';
 import 'package:foody_app/screens/restaurant_details/dish_details.dart';
 import 'package:foody_app/utils/show_foody_modal_bottom_sheet.dart';
 import 'package:phosphor_flutter/phosphor_flutter.dart';

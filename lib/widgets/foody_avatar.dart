@@ -80,40 +80,41 @@ class FoodyAvatar extends StatelessWidget {
     return Material(
       color: Colors.transparent,
       child: Padding(
-      padding: const EdgeInsets.all(10),
-      child: Ink(
-        decoration: BoxDecoration(
-          shape: BoxShape.circle,
-          color: Colors.white,
-          boxShadow: foodyDefaultShadow(),
-        ),
-        child: Stack(
-          clipBehavior: Clip.none,
-          children: [
-            avatarPath == null && avatarUrl == null
-                ? _defaultAvatar()
-                : avatarUrl == null
-                    ? _localAvatar()
-                    : _remoteAvatar(),
-            if (onTap != null)
-              Positioned(
-                bottom: 0,
-                right: -10,
-                child: Container(
-                  decoration: BoxDecoration(
-                    color: Colors.grey.shade200,
-                    shape: BoxShape.circle,
-                  ),
-                  padding: const EdgeInsets.all(5.0),
-                  child: const Icon(
-                    PhosphorIconsRegular.camera,
-                    size: 24,
+        padding: const EdgeInsets.all(10),
+        child: Ink(
+          decoration: BoxDecoration(
+            shape: BoxShape.circle,
+            color: Colors.white,
+            boxShadow: foodyDefaultShadow(),
+          ),
+          child: Stack(
+            clipBehavior: Clip.none,
+            children: [
+              avatarPath == null && avatarUrl == null
+                  ? _defaultAvatar()
+                  : avatarUrl == null
+                      ? _localAvatar()
+                      : _remoteAvatar(),
+              if (onTap != null)
+                Positioned(
+                  bottom: 0,
+                  right: -10,
+                  child: Container(
+                    decoration: BoxDecoration(
+                      color: Colors.grey.shade200,
+                      shape: BoxShape.circle,
+                    ),
+                    padding: const EdgeInsets.all(5.0),
+                    child: const Icon(
+                      PhosphorIconsRegular.camera,
+                      size: 24,
+                    ),
                   ),
                 ),
-              ),
-          ],
+            ],
+          ),
         ),
       ),
-    ),);
+    );
   }
 }

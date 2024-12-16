@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
-import 'package:intl_phone_number_input/intl_phone_number_input.dart';
+import 'package:intl_phone_number_input_perci/intl_phone_number_input_perci.dart';
 import 'package:phosphor_flutter/phosphor_flutter.dart';
 
 class FoodyPhoneNumberField extends HookWidget {

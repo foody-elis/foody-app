@@ -1,6 +1,7 @@
 import 'package:animate_do/animate_do.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:foody_app/bloc/sign_in/sign_in_bloc.dart';
 import 'package:foody_app/bloc/sign_up/sign_up_bloc.dart';
 import 'package:foody_app/repository/interface/foody_api_repository.dart';
@@ -14,7 +15,7 @@ import 'package:lottie/lottie.dart';
 
 import '../../repository/interface/user_repository.dart';
 
-class Welcome extends StatelessWidget {
+class Welcome extends HookWidget {
   const Welcome({super.key});
 
   final duration = const Duration(milliseconds: 800);
@@ -29,15 +30,14 @@ class Welcome extends StatelessWidget {
         children: [
           Positioned(
             top: 30,
-            child: FadeInUp(
-              animate: true,
+            child: FadeInDown(
               duration: duration,
-              delay: const Duration(milliseconds: 1400),
               child: SizedBox(
                 width: 350,
                 height: 350,
-                child:
-                    Lottie.asset("assets/lottie/welcome.json", animate: true),
+                child: Lottie.asset(
+                  "assets/lottie/welcome.json",
+                ),
               ),
             ),
           ),
@@ -46,19 +46,21 @@ class Welcome extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               const SizedBox(height: 100),
-              FadeInUp(
+              FadeInDown(
                 duration: duration,
-                delay: const Duration(milliseconds: 1100),
+                delay: const Duration(milliseconds: 300),
                 child: Text(
                   'Foody',
                   style: GoogleFonts.palanquinDark(
-                      fontSize: 36, fontWeight: FontWeight.w600),
+                    fontSize: 36,
+                    fontWeight: FontWeight.w600,
+                  ),
                 ),
               ),
               const SizedBox(height: 5),
-              FadeInUp(
+              FadeInDown(
                 duration: duration,
-                delay: const Duration(milliseconds: 800),
+                delay: const Duration(milliseconds: 500),
                 child: const Text(
                   "Hai fame? Scorri, prenota e mangia!",
                   style: TextStyle(
@@ -74,9 +76,9 @@ class Welcome extends StatelessWidget {
             bottom: 0,
             child: Column(
               children: [
-                FadeInUp(
+                FadeInDown(
                   duration: duration,
-                  delay: const Duration(milliseconds: 500),
+                  delay: const Duration(milliseconds: 900),
                   child: FoodyButton(
                     label: 'Registrati',
                     width: MediaQuery.of(context).size.width - 24,
@@ -93,9 +95,9 @@ class Welcome extends StatelessWidget {
                   ),
                 ),
                 const SizedBox(height: 16),
-                FadeInUp(
+                FadeInDown(
                   duration: duration,
-                  delay: const Duration(milliseconds: 200),
+                  delay: const Duration(milliseconds: 1100),
                   child: FoodyOutlinedButton(
                     label: 'Accedi',
                     width: MediaQuery.of(context).size.width - 24,

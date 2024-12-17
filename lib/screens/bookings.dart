@@ -73,7 +73,6 @@ class Bookings extends HookWidget {
                     .toList(),
               ),
             ),
-            const SizedBox(height: 20),
             state.bookingsFiltered.isEmpty
                 ? SizedBox(
                     height: MediaQuery.of(context).size.height * 0.6,
@@ -81,11 +80,10 @@ class Bookings extends HookWidget {
                       spacing: 10,
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        SizedBox(
-                          width: 225,
+                        Lottie.asset(
+                          "assets/lottie/empty_bookings.json",
                           height: 225,
-                          child:
-                              Lottie.asset("assets/lottie/empty_bookings.json"),
+                          width: 350
                         ),
                         const Text(
                           "Nessuna prenotazione",

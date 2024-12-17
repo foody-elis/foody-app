@@ -15,7 +15,7 @@ import 'package:foody_app/widgets/foody_number_field.dart';
 import 'package:foody_app/widgets/foody_phone_number_field.dart';
 import 'package:foody_app/widgets/foody_secondary_layout.dart';
 import 'package:foody_app/widgets/foody_text_field.dart';
-import 'package:intl_phone_number_input/intl_phone_number_input.dart';
+import 'package:intl_phone_number_input_perci/intl_phone_number_input_perci.dart';
 import 'package:multi_dropdown/multi_dropdown.dart';
 import 'package:phosphor_flutter/phosphor_flutter.dart';
 

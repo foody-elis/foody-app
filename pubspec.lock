@@ -270,6 +270,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.0.0"
+  dlibphonenumber:
+    dependency: transitive
+    description:
+      name: dlibphonenumber
+      sha256: "9af890d44ad57ee84ebb7e5fb5d22ceae9bc12a89c70b5aca5076abdf76d3461"
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.1.29"
   draggable_home:
     dependency: "direct main"
     description:
@@ -581,14 +589,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "0.19.0"
-  intl_phone_number_input:
+  intl_phone_number_input_perci:
     dependency: "direct main"
     description:
-      name: intl_phone_number_input
-      sha256: "1c4328713a9503ab26a1fdbb6b00b4cada68c18aac922b35bedbc72eff1297c3"
+      name: intl_phone_number_input_perci
+      sha256: e7931ba45d839857a4cde0e62e126982f61803607c188f594f454ce5f53d6b5e
       url: "https://pub.dev"
     source: hosted
-    version: "0.7.4"
+    version: "0.7.5"
   io:
     dependency: transitive
     description:
@@ -653,30 +661,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "3.0.1"
-  libphonenumber_platform_interface:
-    dependency: transitive
-    description:
-      name: libphonenumber_platform_interface
-      sha256: f801f6c65523f56504b83f0890e6dad584ab3a7507dca65fec0eed640afea40f
-      url: "https://pub.dev"
-    source: hosted
-    version: "0.4.2"
-  libphonenumber_plugin:
-    dependency: transitive
-    description:
-      name: libphonenumber_plugin
-      sha256: c615021d9816fbda2b2587881019ed595ecdf54d999652d7e4cce0e1f026368c
-      url: "https://pub.dev"
-    source: hosted
-    version: "0.3.3"
-  libphonenumber_web:
-    dependency: transitive
-    description:
-      name: libphonenumber_web
-      sha256: "8186f420dbe97c3132283e52819daff1e55d60d6db46f7ea5ac42f42a28cc2ef"
-      url: "https://pub.dev"
-    source: hosted
-    version: "0.3.2"
   lints:
     dependency: transitive
     description:
@@ -747,7 +731,7 @@ packages:
       path: "."
       ref: main
       resolved-ref: "079987962761212b3afbf4b0f2b750f3ffc4d0f1"
-      url: "git@github.com:matteo-convertino/multiselect-dropdown.git"
+      url: "https://matteo-convertino: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@github.com/matteo-convertino/multiselect-dropdown.git"
     source: git
     version: "3.0.1"
   nested:
@@ -910,6 +894,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.5.1"
+  protobuf:
+    dependency: transitive
+    description:
+      name: protobuf
+      sha256: "68645b24e0716782e58948f8467fd42a880f255096a821f9e7d0ec625b00c84d"
+      url: "https://pub.dev"
+    source: hosted
+    version: "3.1.0"
   provider:
     dependency: transitive
     description:

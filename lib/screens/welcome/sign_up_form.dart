@@ -6,7 +6,7 @@ import 'package:foody_app/bloc/sign_up/sign_up_state.dart';
 import 'package:foody_app/widgets/foody_avatar.dart';
 import 'package:foody_app/widgets/foody_date_picker.dart';
 import 'package:intl/intl.dart';
-import 'package:intl_phone_number_input/intl_phone_number_input.dart';
+import 'package:intl_phone_number_input_perci/intl_phone_number_input_perci.dart';
 import 'package:phosphor_flutter/phosphor_flutter.dart';
 
 import '../../utils/show_foody_image_picker.dart';

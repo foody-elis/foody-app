@@ -7,5 +7,3 @@ class WelcomeEvent extends Equatable {
   List<Object> get props => [];
 }
 
-class LoadWelcomeLottie extends WelcomeEvent {}
-

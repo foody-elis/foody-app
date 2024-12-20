@@ -34,7 +34,7 @@ class RestaurantMenu extends StatelessWidget {
             const Text(
               "Menù",
               style: TextStyle(
-                fontSize: 18,
+                fontSize: 20,
                 fontWeight: FontWeight.bold,
               ),
             ),
@@ -53,10 +53,11 @@ class RestaurantMenu extends StatelessWidget {
               ),
           ],
         ),
-        const SizedBox(height: 5),
+        const SizedBox(height: 10),
         Skeletonizer(
           enabled: enableSkeletonizer,
           child: Column(
+            spacing: 10,
             children: dishes.map((dish) => FoodyDishCard(dish: dish)).toList(),
           ),
         ),

@@ -31,8 +31,10 @@ class SignUpForm extends StatelessWidget {
                         context.read<SignUpBloc>().add(ImagePickerCamera()),
                     onGalleryTap: () =>
                         context.read<SignUpBloc>().add(ImagePickerGallery()),
-                    onRemoveTap: () =>
-                        context.read<SignUpBloc>().add(ImagePickerRemove()),
+                    onRemoveTap: state.avatarPath == "" && state.avatarUrl == ""
+                        ? null
+                        : () =>
+                            context.read<SignUpBloc>().add(ImagePickerRemove()),
                   ),
                   avatarPath: state.avatarPath == "" ? null : state.avatarPath,
                   avatarUrl: state.avatarUrl == "" ? null : state.avatarUrl,

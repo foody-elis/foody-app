@@ -34,7 +34,7 @@ class SittingTimesInfo extends StatelessWidget {
               const Text(
                 "Orari in cui prenotare",
                 style: TextStyle(
-                  fontSize: 18,
+                  fontSize: 20,
                   fontWeight: FontWeight.bold,
                 ),
               ),

@@ -30,7 +30,11 @@ class Restaurants extends StatelessWidget {
               containersColor: Colors.grey.shade100,
               enabled: state.isFetching,
               child: state.restaurants.isEmpty
-                  ? const FoodyEmptyData(title: "Nessun ristorante trovato")
+                  ? const FoodyEmptyData(
+                      title: "Nessun ristorante trovato",
+                      lottieAsset: "empty_data.json",
+                      lottieHeight: 250,
+                    )
                   : ListView.builder(
                       padding: const EdgeInsets.only(top: 10),
                       shrinkWrap: true,

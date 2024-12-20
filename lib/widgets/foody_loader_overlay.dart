@@ -18,7 +18,7 @@ class FoodyLoaderOverlay extends StatelessWidget {
               children: [
                 SizedBox.expand(
                   child: ColoredBox(
-                    color: Colors.grey.withOpacity(0.4),
+                    color: Colors.grey.withOpacity(0.5),
                   ),
                 ),
                 Lottie.asset(

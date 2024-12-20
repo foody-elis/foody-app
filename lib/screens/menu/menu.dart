@@ -9,6 +9,7 @@ import 'package:foody_app/bloc/menu/menu_state.dart';
 import 'package:foody_app/repository/interface/foody_api_repository.dart';
 import 'package:foody_app/screens/menu/dish_form.dart';
 import 'package:foody_app/utils/show_foody_modal_bottom_sheet.dart';
+import 'package:foody_app/widgets/foody_empty_data.dart';
 import 'package:foody_app/widgets/foody_secondary_layout.dart';
 import 'package:lottie/lottie.dart';
 import 'package:phosphor_flutter/phosphor_flutter.dart';
@@ -41,39 +42,26 @@ class Menu extends StatelessWidget {
                 subtitle: "Gestisci i piatti all'interno del tuo menù",
                 body: state.dishes.isEmpty
                     ? [
-                        SizedBox(
-                          height: MediaQuery.of(context).size.height * 0.6,
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            crossAxisAlignment: CrossAxisAlignment.stretch,
-                            children: [
-                              Lottie.asset(
-                                height: 120,
-                                "assets/lottie/empty_menu.json",
-                                animate: false,
-                              ),
-                              const Text(
-                                "Nessun piatto nel menù",
-                                style: TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 20,
-                                ),
-                                textAlign: TextAlign.center,
-                              ),
-                            ],
-                          ),
+                        const FoodyEmptyData(
+                          title: "Nessun piatto nel menù",
+                          lottieAsset: "empty_menu.json",
+                          lottieHeight: 120,
+                          lottieAnimated: false,
                         )
                       ]
                     : state.dishes.map((dish) {
-                        return Dismissible(
-                          key: ValueKey(dish.id),
-                          onDismissed: (_) {
-                            state.dishes.removeWhere((e) => e.id == dish.id);
-                            context
-                                .read<MenuBloc>()
-                                .add(RemoveDish(dishId: dish.id));
-                          },
-                          child: FoodyDishCard(dish: dish, canEdit: true),
+                        return Padding(
+                          padding: const EdgeInsets.only(bottom: 10),
+                          child: Dismissible(
+                            key: ValueKey(dish.id),
+                            onDismissed: (_) {
+                              state.dishes.removeWhere((e) => e.id == dish.id);
+                              context
+                                  .read<MenuBloc>()
+                                  .add(RemoveDish(dishId: dish.id));
+                            },
+                            child: FoodyDishCard(dish: dish, canEdit: true),
+                          ),
                         );
                       }).toList()),
             floatingActionButton: FloatingActionButton(

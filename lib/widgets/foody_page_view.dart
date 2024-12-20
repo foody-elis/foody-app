@@ -36,22 +36,22 @@ class FoodyPageView extends HookWidget {
       },
       builder: (context, state) {
         return Scaffold(
-          extendBody: true,
-          body: PageView(
-            controller: pageController,
-            physics: const NeverScrollableScrollPhysics(),
-            children: [
-              home,
-              chats,
-              orders,
-              profile,
-            ],
-          ),
-          bottomNavigationBar: FadeInUp(
-            animate: state.canShow,
-            duration: const Duration(milliseconds: 500),
-            child: const FoodyBottomNavBar(),
-          ),
+            extendBody: true,
+            body: PageView(
+              controller: pageController,
+              physics: const NeverScrollableScrollPhysics(),
+              children: [
+                home,
+                chats,
+                orders,
+                profile,
+              ],
+            ),
+            bottomNavigationBar: FadeInUp(
+              animate: state.canShow,
+              duration: const Duration(milliseconds: 500),
+              child: const FoodyBottomNavBar(),
+            ),
         );
       },
     );

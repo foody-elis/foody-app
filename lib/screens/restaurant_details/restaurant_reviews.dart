@@ -15,35 +15,32 @@ class RestaurantReviews extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      top: false,
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          const Text(
-            "Recensioni",
-            style: TextStyle(
-              fontSize: 18,
-              fontWeight: FontWeight.bold,
-            ),
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        const Text(
+          "Recensioni",
+          style: TextStyle(
+            fontSize: 20,
+            fontWeight: FontWeight.bold,
           ),
-          const SizedBox(height: 20),
-          Skeletonizer(
-            enabled: enableSkeletonizer,
-            child: Column(
-              children: reviews.asMap().entries.map((e) {
-                final i = e.key;
-                final review = e.value;
+        ),
+        const SizedBox(height: 20),
+        Skeletonizer(
+          enabled: enableSkeletonizer,
+          child: Column(
+            children: reviews.asMap().entries.map((e) {
+              final i = e.key;
+              final review = e.value;
 
-                return RestaurantReview(
-                  review: review,
-                  isLastReview: i != reviews.length - 1,
-                );
-              }).toList(),
-            ),
+              return RestaurantReview(
+                review: review,
+                isLastReview: i != reviews.length - 1,
+              );
+            }).toList(),
           ),
-        ],
-      ),
+        ),
+      ],
     );
   }
 }

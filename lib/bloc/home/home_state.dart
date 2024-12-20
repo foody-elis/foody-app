@@ -62,7 +62,7 @@ class HomeState extends Equatable {
             ),
             reviews: List.filled(
               5,
-              const ReviewResponseDto(
+              ReviewResponseDto(
                 id: 0,
                 title: "Buono",
                 description: "Davvero ottima cena",
@@ -73,6 +73,7 @@ class HomeState extends Equatable {
                 customerAvatarUrl: null,
                 customerName: "Mario",
                 customerSurname: "Rossi",
+                createdAt: DateTime.now(),
               ),
             ),
           ),

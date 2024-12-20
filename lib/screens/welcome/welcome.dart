@@ -74,49 +74,55 @@ class Welcome extends HookWidget {
           ),
           Positioned(
             bottom: 0,
-            child: Column(
-              children: [
-                FadeInDown(
-                  duration: duration,
-                  delay: const Duration(milliseconds: 900),
-                  child: FoodyButton(
-                    label: 'Registrati',
-                    width: MediaQuery.of(context).size.width - 24,
-                    onPressed: () =>
-                        showFoodyModalBottomSheetWithBloc<void, SignUpBloc>(
-                      context: context,
-                      maxHeightPercentage: 90,
-                      createBloc: (_) => SignUpBloc(
-                        foodyApiRepository: context.read<FoodyApiRepository>(),
-                        userRepository: context.read<UserRepository>(),
-                      ),
-                      child: const SignUp(),
-                    ),
-                  ),
-                ),
-                const SizedBox(height: 16),
-                FadeInDown(
-                  duration: duration,
-                  delay: const Duration(milliseconds: 1100),
-                  child: FoodyOutlinedButton(
-                    label: 'Accedi',
-                    width: MediaQuery.of(context).size.width - 24,
-                    onPressed: () {
-                      showFoodyModalBottomSheetWithBloc<void, SignInBloc>(
+            child: SafeArea(
+              top: false,
+              left: false,
+              right: false,
+              child: Column(
+                children: [
+                  FadeInDown(
+                    duration: duration,
+                    delay: const Duration(milliseconds: 900),
+                    child: FoodyButton(
+                      label: 'Registrati',
+                      width: MediaQuery.of(context).size.width - 24,
+                      onPressed: () =>
+                          showFoodyModalBottomSheetWithBloc<void, SignUpBloc>(
                         context: context,
-                        maxHeightPercentage: 80,
-                        createBloc: (_) => SignInBloc(
+                        maxHeightPercentage: 90,
+                        createBloc: (_) => SignUpBloc(
                           foodyApiRepository:
                               context.read<FoodyApiRepository>(),
                           userRepository: context.read<UserRepository>(),
                         ),
-                        child: const SignIn(),
-                      );
-                    },
+                        child: const SignUp(),
+                      ),
+                    ),
                   ),
-                ),
-                const SizedBox(height: 16),
-              ],
+                  const SizedBox(height: 16),
+                  FadeInDown(
+                    duration: duration,
+                    delay: const Duration(milliseconds: 1100),
+                    child: FoodyOutlinedButton(
+                      label: 'Accedi',
+                      width: MediaQuery.of(context).size.width - 24,
+                      onPressed: () {
+                        showFoodyModalBottomSheetWithBloc<void, SignInBloc>(
+                          context: context,
+                          maxHeightPercentage: 80,
+                          createBloc: (_) => SignInBloc(
+                            foodyApiRepository:
+                                context.read<FoodyApiRepository>(),
+                            userRepository: context.read<UserRepository>(),
+                          ),
+                          child: const SignIn(),
+                        );
+                      },
+                    ),
+                  ),
+                  const SizedBox(height: 16),
+                ],
+              ),
             ),
           ),
         ],

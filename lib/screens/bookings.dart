@@ -9,6 +9,7 @@ import 'package:foody_app/repository/interface/user_repository.dart';
 import 'package:foody_app/utils/bookings_filter.dart';
 import 'package:foody_app/utils/show_snackbar.dart';
 import 'package:foody_app/widgets/foody_booking_card.dart';
+import 'package:foody_app/widgets/foody_empty_data.dart';
 import 'package:foody_app/widgets/foody_filter_chip.dart';
 import 'package:lottie/lottie.dart';
 import 'package:skeletonizer/skeletonizer.dart';
@@ -74,33 +75,20 @@ class Bookings extends HookWidget {
               ),
             ),
             state.bookingsFiltered.isEmpty
-                ? SizedBox(
-                    height: MediaQuery.of(context).size.height * 0.6,
-                    child: Column(
-                      spacing: 10,
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Lottie.asset(
-                          "assets/lottie/empty_bookings.json",
-                          height: 225,
-                          width: 350
-                        ),
-                        const Text(
-                          "Nessuna prenotazione",
-                          style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            fontSize: 18,
-                          ),
-                        ),
-                      ],
-                    ),
+                ? const FoodyEmptyData(
+                    title: "Nessuna prenotazione",
+                    lottieAsset: "empty_bookings.json",
+                    lottieHeight: 225,
+                    lottieWidth: 350,
                   )
                 : Skeletonizer(
                     enabled: state.isFetching,
                     child: Column(
-                      children: state.bookingsFiltered
-                          .map((booking) => FoodyBookingCard(booking: booking))
-                          .toList(),
+                      children: [
+                        const SizedBox(height: 20),
+                        ...state.bookingsFiltered.map(
+                            (booking) => FoodyBookingCard(booking: booking)),
+                      ],
                     ),
                   ),
           ],

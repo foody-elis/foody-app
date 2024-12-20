@@ -58,14 +58,16 @@ class FoodyBookingCard extends StatelessWidget {
                       ),
                       Row(
                         children: [
-                          ClipOval(
-                            child: Image.asset(
-                              'assets/images/user.png',
-                              width: 20,
-                              height: 20,
+                          if (isRestaurateur) ...[
+                            ClipOval(
+                              child: Image.asset(
+                                'assets/images/user.png',
+                                width: 20,
+                                height: 20,
+                              ),
                             ),
-                          ),
-                          const SizedBox(width: 10),
+                            const SizedBox(width: 10),
+                          ],
                           Flexible(
                             child: Text(
                               isRestaurateur

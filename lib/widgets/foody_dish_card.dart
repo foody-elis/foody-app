@@ -25,7 +25,8 @@ class FoodyDishCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Card(
-      margin: const EdgeInsets.only(bottom: 10),
+      surfaceTintColor: Theme.of(context).primaryColor,
+      margin: const EdgeInsets.all(0),
       child: ListTile(
         contentPadding: const EdgeInsets.only(right: 16, left: 10),
         minVerticalPadding: 10,
@@ -45,7 +46,7 @@ class FoodyDishCard extends StatelessWidget {
               )
             : showFoodyModalBottomSheet(
                 context: context,
-                maxHeightPercentage: 60,
+                draggable: true,
                 child: DishDetails(dish: dish),
               ),
         shape: RoundedRectangleBorder(
@@ -65,13 +66,13 @@ class FoodyDishCard extends StatelessWidget {
         title: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(dish.name),
+            Text(dish.name, overflow: TextOverflow.ellipsis),
             Skeleton.unite(
               child: StarRating(
                 rating: 4,
                 size: 12,
                 mainAxisAlignment: MainAxisAlignment.start,
-                color: Colors.amber,
+                color: Theme.of(context).primaryColor,
               ),
             ),
             const SizedBox(height: 10),

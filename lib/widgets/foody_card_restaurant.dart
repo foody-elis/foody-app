@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:foody_app/widgets/foody_button.dart';
 import 'package:foody_app/widgets/foody_rating_label.dart';
 import 'package:phosphor_flutter/phosphor_flutter.dart';
 import 'package:skeletonizer/skeletonizer.dart';
@@ -63,7 +64,7 @@ class FoodyCardRestaurant extends StatelessWidget {
                   right: 10,
                 ),
                 child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -93,39 +94,42 @@ class FoodyCardRestaurant extends StatelessWidget {
                       style: const TextStyle(color: Colors.grey),
                     ),
                     const SizedBox(height: 30),
-                    Row(
-                      spacing: 10,
-                      children: [
-                        ...sittingTimes.map(
-                          (sittingTime) => Skeleton.leaf(
-                            child: FoodyTag(
-                              width: 90,
-                              label: sittingTime,
-                              elevation: 0,
-                            ),
-                          ),
-                        ),
-                        Skeleton.ignore(
-                          child: SizedBox(
-                            height: 35,
-                            width: 35,
-                            child: IconButton.outlined(
-                              padding: EdgeInsets.zero,
-                              style: ButtonStyle(
-                                shape: WidgetStateProperty.all(
-                                  RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(10),
+                    sittingTimes.isEmpty
+                        ? const FoodyButton(label: "Prenota", height: 45)
+                        : Row(
+                            spacing: 10,
+                            children: [
+                              ...sittingTimes.map(
+                                (sittingTime) => Skeleton.leaf(
+                                  child: FoodyTag(
+                                    width: 90,
+                                    label: sittingTime,
+                                    elevation: 0,
                                   ),
                                 ),
                               ),
-                              icon: const Icon(PhosphorIconsRegular.plus),
-                              iconSize: 20,
-                              onPressed: () {},
-                            ),
+                              Skeleton.ignore(
+                                child: SizedBox(
+                                  height: 40,
+                                  width: 40,
+                                  child: IconButton.outlined(
+                                    padding: EdgeInsets.zero,
+                                    style: ButtonStyle(
+                                      shape: WidgetStateProperty.all(
+                                        RoundedRectangleBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(10),
+                                        ),
+                                      ),
+                                    ),
+                                    icon: const Icon(PhosphorIconsRegular.plus),
+                                    iconSize: 20,
+                                    onPressed: () {},
+                                  ),
+                                ),
+                              ),
+                            ],
                           ),
-                        ),
-                      ],
-                    )
                   ],
                 ),
               ),

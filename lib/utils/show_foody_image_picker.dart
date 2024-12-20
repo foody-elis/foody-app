@@ -6,41 +6,42 @@ void showFoodyImagePicker({
   required BuildContext context,
   required void Function() onCameraTap,
   required Function() onGalleryTap,
-  required Function() onRemoveTap,
+  Function()? onRemoveTap,
 }) {
-  Widget imagePickerSelection({
-    required String label,
-    required IconData icon,
-    void Function()? onTap,
-    Color? color,
-  }) =>
-      ListTile(
-        title: Text(label, style: TextStyle(color: color)),
-        leading: Icon(icon, color: color),
-        onTap: onTap,
-      );
-
   showFoodyModalBottomSheet(
     context: context,
     child: Column(
       children: [
-        imagePickerSelection(
+        _imagePickerItem(
           label: "Scatta foto",
           icon: PhosphorIconsRegular.camera,
           onTap: onCameraTap,
         ),
-        imagePickerSelection(
+        _imagePickerItem(
           label: "Scegli dalla galleria",
           icon: PhosphorIconsRegular.image,
           onTap: onGalleryTap,
         ),
-        imagePickerSelection(
-          label: "Rimuovi immagine",
-          icon: PhosphorIconsRegular.trashSimple,
-          onTap: onRemoveTap,
-          color: Theme.of(context).colorScheme.error,
-        ),
+        if (onRemoveTap != null)
+          _imagePickerItem(
+            label: "Rimuovi immagine",
+            icon: PhosphorIconsRegular.trashSimple,
+            onTap: onRemoveTap,
+            color: Theme.of(context).colorScheme.error,
+          ),
       ],
     ),
   );
 }
+
+Widget _imagePickerItem({
+  required String label,
+  required IconData icon,
+  void Function()? onTap,
+  Color? color,
+}) =>
+    ListTile(
+      title: Text(label, style: TextStyle(color: color)),
+      leading: Icon(icon, color: color),
+      onTap: onTap,
+    );

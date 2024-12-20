@@ -26,19 +26,6 @@ class Profile extends StatelessWidget {
             Column(
               children: [
                 FoodyAvatar(avatarUrl: state.userResponseDto?.avatarUrl),
-
-                /*ClipOval(
-                  child: Container(
-                    padding: const EdgeInsets.all(15.0),
-                    color: Colors.white,
-                    child: Image.asset(
-                      'assets/images/user.png',
-                      // fit: BoxFit.fill,
-                      width: 50,
-                      height: 50,
-                    ),
-                  ),
-                ),*/
                 const SizedBox(height: 10),
                 Text(
                   "${state.userResponseDto?.name} "

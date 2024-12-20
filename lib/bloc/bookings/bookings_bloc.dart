@@ -30,6 +30,8 @@ class BookingsBloc extends Bloc<BookingsEvent, BookingsState> {
         emit(state.copyWith(bookings: response));
         _applyFilter(emit);
       },
+      onFailed: (_) => emit(state.copyWith(bookings: [], bookingsFiltered: [])),
+      onError: () => emit(state.copyWith(bookings: [], bookingsFiltered: [])),
       errorToEmit: (msg) => emit(state.copyWith(apiError: msg)),
     );
 
@@ -59,7 +61,6 @@ class BookingsBloc extends Bloc<BookingsEvent, BookingsState> {
             (b) => switch (state.filter) {
               BookingsFilter.today => _isToday(b.date),
               BookingsFilter.yesterday => _isYesterday(b.date),
-              BookingsFilter.tomorrow => _isTomorrow(b.date),
               BookingsFilter.all => true,
               BookingsFilter.active => b.status == BookingStatus.ACTIVE,
               BookingsFilter.canceled => b.status == BookingStatus.CANCELLED,

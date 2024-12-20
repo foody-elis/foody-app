@@ -48,12 +48,10 @@ class FoodySecondaryLayout extends HookWidget {
               ScrollDirection.forward));
 
       useEffect(() {
-        if (showBottomNavBar) {
-          scrollController.addListener(onScroll);
-        }
+        scrollController.addListener(onScroll);
 
         return () => scrollController.removeListener(onScroll);
-      }, [scrollController]);
+      }, []);
     }
 
     final foodyDraggableHome = FoodyDraggableHome(

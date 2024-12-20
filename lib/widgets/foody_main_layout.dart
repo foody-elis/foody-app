@@ -23,7 +23,7 @@ class FoodyMainLayout extends HookWidget {
     useEffect(() {
       scrollController.addListener(onScroll);
       return () => scrollController.removeListener(onScroll);
-    }, [scrollController]);
+    }, []);
 
     final customScrollView = CustomScrollView(
       physics: const AlwaysScrollableScrollPhysics(),

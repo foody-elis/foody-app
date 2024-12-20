@@ -13,51 +13,38 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
   final FoodyApiRepository foodyApiRepository;
 
   HomeBloc({required this.foodyApiRepository}) : super(HomeState.initial()) {
-    on<FetchCategoriesAndRestaurants>(_onFetchCategoriesAndRestaurants, transformer: droppable());
+    on<FetchCategoriesAndRestaurants>(
+      _onFetchCategoriesAndRestaurants,
+      transformer: droppable(),
+    );
 
     add(FetchCategoriesAndRestaurants());
   }
 
-  Future<bool> _fetchCategories(Emitter<HomeState> emit) async {
-    bool error = false;
+  Future<void> _fetchCategories(Emitter<HomeState> emit) async =>
+      callApi<List<CategoryResponseDto>>(
+        api: foodyApiRepository.categories.getAll,
+        onComplete: (response) => emit(state.copyWith(categories: response)),
+        onFailed: (_) => emit(state.copyWith(categories: [])),
+        onError: () => emit(state.copyWith(categories: [])),
+        errorToEmit: (msg) => emit(state.copyWith(apiError: msg)),
+      );
 
-    // emit(state.copyWith(categories: []));
-
-    await callApi<List<CategoryResponseDto>>(
-      api: foodyApiRepository.categories.getAll,
-      onComplete: (response) => emit(state.copyWith(categories: response)),
-      errorToEmit: (msg) {
-        emit(state.copyWith(apiError: msg));
-        error = true;
-      },
-    );
-
-    return error;
-  }
-
-  Future<bool> _fetchRestaurants(Emitter<HomeState> emit) async {
-    bool error = false;
-
-    await callApi<List<DetailedRestaurantResponseDto>>(
-      api: foodyApiRepository.restaurants.getAll,
-      onComplete: (response) => emit(state.copyWith(restaurants: response)),
-      errorToEmit: (msg) {
-        emit(state.copyWith(apiError: msg));
-        error = true;
-      },
-    );
-
-    return error;
-  }
+  Future<void> _fetchRestaurants(Emitter<HomeState> emit) async =>
+      callApi<List<DetailedRestaurantResponseDto>>(
+        api: foodyApiRepository.restaurants.getAll,
+        onComplete: (response) => emit(state.copyWith(restaurants: response)),
+        onFailed: (_) => emit(state.copyWith(restaurants: [])),
+        onError: () => emit(state.copyWith(restaurants: [])),
+        errorToEmit: (msg) => emit(state.copyWith(apiError: msg)),
+      );
 
   void _onFetchCategoriesAndRestaurants(
       FetchCategoriesAndRestaurants event, Emitter<HomeState> emit) async {
-    // print(await _fetchCategories(emit));
-    // print(await _fetchRestaurants(emit));
     emit(state.copyWith(isFetching: true));
 
-    if(!await _fetchCategories(emit) && !await _fetchRestaurants(emit)) {
-      emit(state.copyWith(isFetching: false));
-    }
+    await Future.wait([_fetchCategories(emit), _fetchRestaurants(emit)]);
+
+    emit(state.copyWith(isFetching: false));
   }
 }

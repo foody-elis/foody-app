@@ -19,14 +19,14 @@ class RestaurantDescription extends StatelessWidget {
         const Text(
           "Descrizione",
           style: TextStyle(
-            fontSize: 18,
+            fontSize: 20,
             fontWeight: FontWeight.bold,
           ),
         ),
         const SizedBox(height: 5),
         Skeletonizer(
           enabled: enableSkeletonizer,
-          child: Text("$description a " * 10),
+          child: Text(description),
         ),
       ],
     );

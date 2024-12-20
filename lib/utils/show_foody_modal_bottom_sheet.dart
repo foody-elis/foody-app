@@ -6,6 +6,7 @@ Future<T?> showFoodyModalBottomSheet<T>({
   required BuildContext context,
   required Widget child,
   int? maxHeightPercentage,
+  bool draggable = false,
 }) =>
     showModalBottomSheet<T>(
       context: context,
@@ -14,6 +15,7 @@ Future<T?> showFoodyModalBottomSheet<T>({
       builder: (context) => FoodyBottomSheetLayout(
         context: context,
         maxHeightPercentage: maxHeightPercentage,
+        draggable: draggable,
         child: child,
       ),
     );
@@ -23,6 +25,7 @@ Future<T?> showFoodyModalBottomSheetWithBloc<T,
   required BuildContext context,
   required Widget child,
   int? maxHeightPercentage,
+  bool draggable = false,
   required B Function(BuildContext) createBloc,
 }) =>
     showModalBottomSheet(
@@ -35,6 +38,7 @@ Future<T?> showFoodyModalBottomSheetWithBloc<T,
           child: FoodyBottomSheetLayout(
             context: context,
             maxHeightPercentage: maxHeightPercentage,
+            draggable: draggable,
             child: child,
           ),
         );

@@ -45,6 +45,7 @@ class RestaurantInfo extends StatelessWidget {
                 ),
             ],
           ),
+          const SizedBox(height: 5),
           Row(
             children: [
               const Icon(

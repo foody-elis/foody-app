@@ -15,6 +15,7 @@ class ReviewResponseDto {
     required this.customerName,
     required this.customerSurname,
     required this.customerAvatarUrl,
+    required this.createdAt,
   });
 
   factory ReviewResponseDto.fromJson(Map<String, dynamic> json) =>
@@ -30,6 +31,7 @@ class ReviewResponseDto {
   final String customerName;
   final String customerSurname;
   final String? customerAvatarUrl;
+  final DateTime createdAt;
 
   Map<String, dynamic> toJson() => _$ReviewResponseDtoToJson(this);
 }

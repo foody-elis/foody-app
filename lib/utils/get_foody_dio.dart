@@ -1,7 +1,7 @@
 import 'package:dio/dio.dart';
 import 'token_inteceptor.dart';
 
-Dio getFoodyDio({TokenInterceptor? tokenInterceptor, String baseUrl = 'http://172.16.216.234:8080/api/v1'}) {
+Dio getFoodyDio({TokenInterceptor? tokenInterceptor, String baseUrl = 'http://192.168.25.20:8080/api/v1'}) {
   Dio dio = Dio(
     BaseOptions(
       baseUrl: baseUrl,

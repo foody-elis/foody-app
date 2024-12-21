@@ -78,7 +78,8 @@ class RestaurantDetails extends HookWidget {
                           enableSkeletonizer: state.isFetching,
                           canEdit: isOwner,
                         ),
-                        if (state.restaurant.sittingTimes.isNotEmpty) ...[
+                        if (state.restaurant.sittingTimes.isNotEmpty ||
+                            isOwner) ...[
                           const Divider(height: 40),
                           SittingTimesInfo(
                             sittingTimes: state.restaurant.sittingTimes,
@@ -132,7 +133,7 @@ class RestaurantDetails extends HookWidget {
                 ],
               ),
             ),
-            if (!isOwner)
+            if (!isOwner && !state.isFetching)
               Positioned(
                 bottom: 0,
                 child: AnimatedContainer(

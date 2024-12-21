@@ -28,6 +28,7 @@ class RestaurantReviews extends StatelessWidget {
         const SizedBox(height: 20),
         Skeletonizer(
           enabled: enableSkeletonizer,
+          containersColor: Colors.grey.shade200,
           child: Column(
             children: reviews.asMap().entries.map((e) {
               final i = e.key;

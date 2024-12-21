@@ -79,7 +79,7 @@ class FoodyDishCard extends StatelessWidget {
           ],
         ),
         subtitle: Text(
-          "€ ${dish.price}",
+          "${dish.price} €",
           style: const TextStyle(fontWeight: FontWeight.bold),
         ),
         trailing: Skeleton.ignore(

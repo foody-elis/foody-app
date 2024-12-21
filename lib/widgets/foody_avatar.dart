@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:phosphor_flutter/phosphor_flutter.dart';
+import 'package:skeletonizer/skeletonizer.dart';
 
 import '../utils/foody_default_shadow.dart';
 
@@ -104,33 +105,35 @@ class FoodyAvatar extends StatelessWidget {
             color: Colors.white,
             boxShadow: showShadow ? foodyDefaultShadow() : null,
           ),
-          child: Stack(
-            clipBehavior: Clip.none,
-            children: [
-              avatarPath == null && avatarUrl == null
-                  ? defaultAvatar()
-                  : avatarUrl == null
-                      ? localAvatar()
-                      : remoteAvatar(),
-              if (onTap != null)
-                Positioned(
-                  bottom: 0,
-                  right: -10,
-                  child: inkWell(
-                    Container(
-                      decoration: BoxDecoration(
-                        color: Colors.grey.shade200,
-                        shape: BoxShape.circle,
-                      ),
-                      padding: const EdgeInsets.all(5.0),
-                      child: const Icon(
-                        PhosphorIconsRegular.camera,
-                        size: 24,
+          child: Skeleton.ignore(
+            child: Stack(
+              clipBehavior: Clip.none,
+              children: [
+                avatarPath == null && avatarUrl == null
+                    ? defaultAvatar()
+                    : avatarUrl == null
+                        ? localAvatar()
+                        : remoteAvatar(),
+                if (onTap != null)
+                  Positioned(
+                    bottom: 0,
+                    right: -10,
+                    child: inkWell(
+                      Container(
+                        decoration: BoxDecoration(
+                          color: Colors.grey.shade200,
+                          shape: BoxShape.circle,
+                        ),
+                        padding: const EdgeInsets.all(5.0),
+                        child: const Icon(
+                          PhosphorIconsRegular.camera,
+                          size: 24,
+                        ),
                       ),
                     ),
                   ),
-                ),
-            ],
+              ],
+            ),
           ),
         ),
       ),

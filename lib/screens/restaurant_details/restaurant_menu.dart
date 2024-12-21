@@ -56,6 +56,7 @@ class RestaurantMenu extends StatelessWidget {
         const SizedBox(height: 10),
         Skeletonizer(
           enabled: enableSkeletonizer,
+          containersColor: Colors.grey.shade200,
           child: Column(
             spacing: 10,
             children: dishes.map((dish) => FoodyDishCard(dish: dish)).toList(),

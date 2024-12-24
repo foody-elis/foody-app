@@ -3,13 +3,14 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:foody_app/bloc/dish_form/dish_form_bloc.dart';
 import 'package:foody_app/bloc/dish_form/dish_form_event.dart';
 import 'package:foody_app/bloc/dish_form/dish_form_state.dart';
-import 'package:foody_app/bloc/menu/menu_event.dart';
 import 'package:phosphor_flutter/phosphor_flutter.dart';
 
 import '../../bloc/foody/foody_bloc.dart';
 import '../../bloc/foody/foody_event.dart';
+import '../../utils/show_foody_image_picker.dart';
 import '../../utils/show_snackbar.dart';
 import '../../widgets/foody_button.dart';
+import '../../widgets/foody_circular_image.dart';
 import '../../widgets/foody_text_field.dart';
 
 class DishForm extends StatelessWidget {
@@ -42,7 +43,28 @@ class DishForm extends StatelessWidget {
                   fontWeight: FontWeight.w700,
                 ),
               ),
-              const SizedBox(height: 24),
+              const SizedBox(height: 12),
+              FoodyCircularImage(
+                onTap: () => showFoodyImagePicker(
+                  context: context,
+                  onCameraTap: () =>
+                      context.read<DishFormBloc>().add(ImagePickerCamera()),
+                  onGalleryTap: () =>
+                      context.read<DishFormBloc>().add(ImagePickerGallery()),
+                  onRemoveTap: state.photoPath == "" && state.photoUrl == ""
+                      ? null
+                      : () =>
+                          context.read<DishFormBloc>().add(ImagePickerRemove()),
+                ),
+                size: 150,
+                defaultWidget: Icon(
+                  PhosphorIconsRegular.forkKnife,
+                  size: 40,
+                  color: Theme.of(context).primaryColor,
+                ),
+                imageLocalPath: state.photoPath == "" ? null : state.photoPath,
+                imageUrl: state.photoUrl == "" ? null : state.photoUrl,
+              ),
               FoodyTextField(
                 required: true,
                 title: 'Nome',
@@ -92,9 +114,8 @@ class DishForm extends StatelessWidget {
                       height: 60,
                       width: 60,
                       child: IconButton(
-                        onPressed: () => context
-                            .read<DishFormBloc>()
-                            .add(Remove()),
+                        onPressed: () =>
+                            context.read<DishFormBloc>().add(Remove()),
                         icon: const Icon(
                           PhosphorIconsRegular.trash,
                           color: Colors.white,

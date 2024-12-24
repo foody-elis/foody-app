@@ -7,7 +7,8 @@ part '../generated/interface/dishes_api_repository.g.dart';
 
 @RestApi()
 abstract class DishesApiRepository {
-  factory DishesApiRepository(Dio dio, {String? baseUrl}) = _DishesApiRepository;
+  factory DishesApiRepository(Dio dio, {String? baseUrl}) =
+      _DishesApiRepository;
 
   @GET('/restaurant/{id}')
   Future<List<DishResponseDto>> getAllByRestaurant(@Path() int id);
@@ -15,10 +16,9 @@ abstract class DishesApiRepository {
   @POST('')
   Future<DishResponseDto> add(@Body() DishRequestDto _);
 
-  @PUT('')
-  Future<DishResponseDto> edit(@Body() DishRequestDto _);
+  @PUT('/{id}')
+  Future<DishResponseDto> edit(@Path() int id, @Body() DishRequestDto _);
 
   @DELETE('/{id}')
   Future<void> delete(@Path() int id);
-
 }

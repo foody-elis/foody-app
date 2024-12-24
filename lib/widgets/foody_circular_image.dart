@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'dart:math';
 
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
@@ -15,9 +16,9 @@ class FoodyCircularImage extends StatelessWidget {
     this.imageUrl,
     this.onTap,
     this.showShadow = true,
-    this.height = 80,
-    this.width = 80,
+    this.size = 80,
     this.padding = 15,
+    this.defaultWidget,
   }) : assert(
           (imageAssetPath != null ? 1 : 0) +
                   (imageLocalPath != null ? 1 : 0) +
@@ -31,9 +32,11 @@ class FoodyCircularImage extends StatelessWidget {
   final String? imageUrl;
   final void Function()? onTap;
   final bool showShadow;
-  final double height;
-  final double width;
+  final double size;
   final double padding;
+  final Widget? defaultWidget;
+
+  final double bottomRightIconSize = 24;
 
   @override
   Widget build(BuildContext context) {
@@ -70,12 +73,13 @@ class FoodyCircularImage extends StatelessWidget {
             shape: BoxShape.circle,
             color: Theme.of(context).primaryColor.withOpacity(0.2),
           ),
-          width: width,
-          height: height,
-          child: Image.asset(
-            'assets/images/user.png',
-            color: Theme.of(context).primaryColor,
-          ),
+          width: size,
+          height: size,
+          child: defaultWidget ??
+              Image.asset(
+                'assets/images/user.png',
+                color: Theme.of(context).primaryColor,
+              ),
         );
 
     Widget defaultAvatar() => inkWell(defaultAvatarContainer());
@@ -84,8 +88,8 @@ class FoodyCircularImage extends StatelessWidget {
           Image.asset(
             imageAssetPath!,
             fit: BoxFit.cover,
-            width: width,
-            height: height,
+            width: size,
+            height: size,
           ),
         );
 
@@ -93,8 +97,8 @@ class FoodyCircularImage extends StatelessWidget {
           Image.file(
             File(imageLocalPath!),
             fit: BoxFit.cover,
-            width: width,
-            height: height,
+            width: size,
+            height: size,
           ),
         );
 
@@ -104,8 +108,8 @@ class FoodyCircularImage extends StatelessWidget {
             fadeOutDuration: const Duration(milliseconds: 300),
             imageUrl: imageUrl!,
             fit: BoxFit.cover,
-            width: width,
-            height: height,
+            width: size,
+            height: size,
             placeholder: (_, __) => defaultAvatarContainer(),
             errorWidget: (_, __, ___) => defaultAvatarContainer(),
           ),
@@ -136,8 +140,8 @@ class FoodyCircularImage extends StatelessWidget {
                             : remoteAvatar(),
                 if (onTap != null)
                   Positioned(
-                    bottom: 0,
-                    right: -10,
+                    top: (size / 2) * (1 + 1 / sqrt(2)) - 14.5,
+                    left: (size / 2) * (1 + 1 / sqrt(2)) - 14.5,
                     child: inkWell(
                       Container(
                         decoration: BoxDecoration(
@@ -145,9 +149,9 @@ class FoodyCircularImage extends StatelessWidget {
                           shape: BoxShape.circle,
                         ),
                         padding: const EdgeInsets.all(5.0),
-                        child: const Icon(
+                        child: Icon(
                           PhosphorIconsRegular.camera,
-                          size: 24,
+                          size: bottomRightIconSize,
                         ),
                       ),
                     ),

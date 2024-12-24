@@ -6,7 +6,8 @@ class DishFormState extends Equatable {
   final String name;
   final String description;
   final String price;
-  final String photo;
+  final String photoPath;
+  final String photoUrl;
   final String apiError;
   final String? nameError;
   final String? descriptionError;
@@ -19,7 +20,8 @@ class DishFormState extends Equatable {
     required this.name,
     required this.description,
     required this.price,
-    required this.photo,
+    required this.photoPath,
+    required this.photoUrl,
     required this.apiError,
     required this.nameError,
     required this.descriptionError,
@@ -33,7 +35,8 @@ class DishFormState extends Equatable {
         name = dish?.name ?? "",
         description = dish?.description ?? "",
         price = dish?.price.toString() ?? "",
-        photo = dish?.photoUrl ?? "",
+        photoPath = "",
+        photoUrl = dish?.photoUrl ?? "",
         apiError = "",
         nameError = null,
         descriptionError = null,
@@ -45,7 +48,8 @@ class DishFormState extends Equatable {
     String? name,
     String? description,
     String? price,
-    String? photo,
+    String? photoPath,
+    String? photoUrl,
     String? apiError,
     String? nameError,
     String? descriptionError,
@@ -58,7 +62,8 @@ class DishFormState extends Equatable {
       name: name ?? this.name,
       description: description ?? this.description,
       price: price ?? this.price,
-      photo: photo ?? this.photo,
+      photoPath: photoPath ?? this.photoPath,
+      photoUrl: photoUrl ?? this.photoUrl,
       apiError: apiError ?? this.apiError,
       nameError: nameError == "null" ? null : nameError ?? this.nameError,
       descriptionError: descriptionError == "null"
@@ -75,7 +80,8 @@ class DishFormState extends Equatable {
         name,
         description,
         price,
-        photo,
+        photoPath,
+        photoUrl,
         apiError,
         nameError,
         descriptionError,

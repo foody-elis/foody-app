@@ -27,8 +27,7 @@ class RestaurantReview extends StatelessWidget {
               children: [
                 const FoodyCircularImage(
                   showShadow: false,
-                  width: 40,
-                  height: 40,
+                  size: 40,
                   padding: 10,
                 ),
                 const SizedBox(width: 10),

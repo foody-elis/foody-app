@@ -11,7 +11,6 @@ import 'package:foody_app/screens/menu/dish_form.dart';
 import 'package:foody_app/utils/show_foody_modal_bottom_sheet.dart';
 import 'package:foody_app/widgets/foody_empty_data.dart';
 import 'package:foody_app/widgets/foody_secondary_layout.dart';
-import 'package:lottie/lottie.dart';
 import 'package:phosphor_flutter/phosphor_flutter.dart';
 
 import '../../utils/show_snackbar.dart';
@@ -67,7 +66,6 @@ class Menu extends StatelessWidget {
             floatingActionButton: FloatingActionButton(
               onPressed: () => showFoodyModalBottomSheet(
                 context: context,
-                maxHeightPercentage: 70,
                 child: BlocProvider<DishFormBloc>(
                   create: (_) => DishFormBloc(
                     foodyApiRepository: context.read<FoodyApiRepository>(),

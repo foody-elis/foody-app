@@ -34,7 +34,7 @@ class FoodyDishCard extends StatelessWidget {
         onTap: () => canEdit
             ? showFoodyModalBottomSheet(
                 context: context,
-                maxHeightPercentage: 70,
+                // maxHeightPercentage: 70,
                 child: BlocProvider<DishFormBloc>(
                   create: (_) => DishFormBloc(
                     foodyApiRepository: context.read<FoodyApiRepository>(),
@@ -54,11 +54,15 @@ class FoodyDishCard extends StatelessWidget {
           borderRadius: BorderRadius.circular(10),
         ),
         visualDensity: const VisualDensity(vertical: 3),
-        leading: const FoodyCircularImage(
-          imageAssetPath: "assets/images/piatto_pasta.jpg",
+        leading: FoodyCircularImage(
+          defaultWidget: Icon(
+            PhosphorIconsRegular.forkKnife,
+            size: 24,
+            color: Theme.of(context).primaryColor,
+          ),
+          imageUrl: dish.photoUrl,
           showShadow: false,
-          width: 70,
-          height: 70,
+          size: 70,
         ),
         title: Column(
           crossAxisAlignment: CrossAxisAlignment.start,

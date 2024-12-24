@@ -1,3 +1,6 @@
+import 'dart:convert';
+import 'dart:io';
+
 import 'package:bloc_concurrency/bloc_concurrency.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:foody_app/bloc/dish_form/dish_form_state.dart';
@@ -5,6 +8,7 @@ import 'package:foody_app/bloc/menu/menu_event.dart';
 import 'package:foody_app/dto/request/dish_request_dto.dart';
 import 'package:foody_app/dto/response/dish_response_dto.dart';
 import 'package:foody_app/routing/navigation_service.dart';
+import 'package:image_picker/image_picker.dart';
 
 import '../../repository/interface/foody_api_repository.dart';
 import '../../utils/call_api.dart';
@@ -16,6 +20,7 @@ class DishFormBloc extends Bloc<DishFormEvent, DishFormState> {
   final DishResponseDto? dish;
   final int restaurantId;
   final MenuBloc menuBloc;
+  final NavigationService _navigationService = NavigationService();
 
   DishFormBloc({
     required this.foodyApiRepository,
@@ -29,6 +34,9 @@ class DishFormBloc extends Bloc<DishFormEvent, DishFormState> {
     on<PriceChanged>(_onPriceChanged);
     on<PhotoChanged>(_onPhotoChanged);
     on<Remove>(_onRemove);
+    on<ImagePickerGallery>(_onImagePickerGallery);
+    on<ImagePickerCamera>(_onImagePickerCamera);
+    on<ImagePickerRemove>(_onImagePickerRemove);
   }
 
   bool _isFormValid(Emitter<DishFormState> emit) {
@@ -65,11 +73,6 @@ class DishFormBloc extends Bloc<DishFormEvent, DishFormState> {
       isValid = false;
     }
 
-    /*if (state.photo.isEmpty) {
-      emit(state.copyWith(photoError: "L'immagine è obbligatoria"));
-      isValid = false;
-    }*/
-
     return isValid;
   }
 
@@ -79,8 +82,9 @@ class DishFormBloc extends Bloc<DishFormEvent, DishFormState> {
         name: state.name,
         description: state.description,
         price: double.parse(state.price),
-        // photo: state.photo,
-        photoBase64: null,
+        photoBase64: state.photoPath == ""
+            ? null
+            : base64Encode(File(state.photoPath).readAsBytesSync()),
         restaurantId: restaurantId,
       );
 
@@ -89,9 +93,12 @@ class DishFormBloc extends Bloc<DishFormEvent, DishFormState> {
       await callApi<DishResponseDto>(
         api: () => dish == null
             ? foodyApiRepository.dishes.add(bodyData)
-            : foodyApiRepository.dishes.edit(bodyData),
+            : foodyApiRepository.dishes.edit(dish!.id, bodyData),
         onComplete: (response) {
-          emit(state.copyWith(apiError: "Piatto aggiunto con successo"));
+          emit(state.copyWith(
+              apiError: dish == null
+                  ? "Piatto aggiunto con successo"
+                  : "Piatto modificato con successo"));
           emit(state.copyWith(apiError: "", isLoading: false));
           menuBloc.add(FetchDishes());
           NavigationService().goBack();
@@ -118,12 +125,39 @@ class DishFormBloc extends Bloc<DishFormEvent, DishFormState> {
   }
 
   void _onPhotoChanged(PhotoChanged event, Emitter<DishFormState> emit) {
-    emit(state.copyWith(photo: event.photo, photoError: "null"));
+    emit(state.copyWith(photoPath: event.photo, photoError: "null"));
   }
 
   void _onRemove(Remove event, Emitter<DishFormState> emit) async {
     emit(state.copyWith(isLoading: true));
 
     menuBloc.add(RemoveDish(dishId: state.id!, isFromBottomSheet: true));
+  }
+
+  Future<void> _onImagePicker(
+      Emitter<DishFormState> emit, ImageSource source) async {
+    final imagePicker = ImagePicker();
+    final pickedFile = await imagePicker.pickImage(source: source);
+
+    if (pickedFile != null) {
+      emit(state.copyWith(photoPath: pickedFile.path, photoUrl: ""));
+      _navigationService.goBack();
+    }
+  }
+
+  void _onImagePickerGallery(
+      ImagePickerGallery event, Emitter<DishFormState> emit) async {
+    await _onImagePicker(emit, ImageSource.gallery);
+  }
+
+  void _onImagePickerCamera(
+      ImagePickerCamera event, Emitter<DishFormState> emit) async {
+    await _onImagePicker(emit, ImageSource.camera);
+  }
+
+  void _onImagePickerRemove(
+      ImagePickerRemove event, Emitter<DishFormState> emit) {
+    emit(state.copyWith(photoPath: "", photoUrl: ""));
+    _navigationService.goBack();
   }
 }

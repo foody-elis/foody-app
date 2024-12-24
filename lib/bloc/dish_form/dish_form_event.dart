@@ -1,5 +1,4 @@
 import 'package:equatable/equatable.dart';
-import 'package:foody_app/bloc/menu/menu_event.dart';
 
 class DishFormEvent extends Equatable {
   const DishFormEvent();
@@ -11,6 +10,12 @@ class DishFormEvent extends Equatable {
 class Save extends DishFormEvent {}
 
 class Remove extends DishFormEvent {}
+
+class ImagePickerGallery extends DishFormEvent {}
+
+class ImagePickerCamera extends DishFormEvent {}
+
+class ImagePickerRemove extends DishFormEvent {}
 
 class NameChanged extends DishFormEvent {
   const NameChanged({required this.name});

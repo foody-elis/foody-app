@@ -11,6 +11,7 @@ import 'package:skeletonizer/skeletonizer.dart';
 
 import '../bloc/dish_form/dish_form_bloc.dart';
 import '../repository/interface/foody_api_repository.dart';
+import 'foody_circular_image.dart';
 
 class FoodyDishCard extends StatelessWidget {
   const FoodyDishCard({
@@ -53,15 +54,11 @@ class FoodyDishCard extends StatelessWidget {
           borderRadius: BorderRadius.circular(10),
         ),
         visualDensity: const VisualDensity(vertical: 3),
-        leading: Container(
-          width: 80,
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(10),
-            image: const DecorationImage(
-              image: AssetImage("assets/images/piatto_pasta.jpg"),
-              fit: BoxFit.fill,
-            ),
-          ),
+        leading: const FoodyCircularImage(
+          imageAssetPath: "assets/images/piatto_pasta.jpg",
+          showShadow: false,
+          width: 70,
+          height: 70,
         ),
         title: Column(
           crossAxisAlignment: CrossAxisAlignment.start,

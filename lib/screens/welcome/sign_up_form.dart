@@ -3,13 +3,13 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:foody_app/bloc/sign_up/sign_up_bloc.dart';
 import 'package:foody_app/bloc/sign_up/sign_up_event.dart';
 import 'package:foody_app/bloc/sign_up/sign_up_state.dart';
-import 'package:foody_app/widgets/foody_avatar.dart';
 import 'package:foody_app/widgets/foody_date_picker.dart';
 import 'package:intl/intl.dart';
 import 'package:intl_phone_number_input_perci/intl_phone_number_input_perci.dart';
 import 'package:phosphor_flutter/phosphor_flutter.dart';
 
 import '../../utils/show_foody_image_picker.dart';
+import '../../widgets/foody_circular_image.dart';
 import '../../widgets/foody_phone_number_field.dart';
 import '../../widgets/foody_text_field.dart';
 
@@ -24,7 +24,7 @@ class SignUpForm extends StatelessWidget {
 
         List<Widget> formComponents() => [
               Center(
-                child: FoodyAvatar(
+                child: FoodyCircularImage(
                   onTap: () => showFoodyImagePicker(
                     context: context,
                     onCameraTap: () =>
@@ -36,8 +36,9 @@ class SignUpForm extends StatelessWidget {
                         : () =>
                             context.read<SignUpBloc>().add(ImagePickerRemove()),
                   ),
-                  avatarPath: state.avatarPath == "" ? null : state.avatarPath,
-                  avatarUrl: state.avatarUrl == "" ? null : state.avatarUrl,
+                  imageLocalPath:
+                      state.avatarPath == "" ? null : state.avatarPath,
+                  imageUrl: state.avatarUrl == "" ? null : state.avatarUrl,
                 ),
               ),
               FoodyTextField(

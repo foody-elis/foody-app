@@ -7,21 +7,28 @@ import 'package:skeletonizer/skeletonizer.dart';
 
 import '../utils/foody_default_shadow.dart';
 
-class FoodyAvatar extends StatelessWidget {
-  const FoodyAvatar({
+class FoodyCircularImage extends StatelessWidget {
+  const FoodyCircularImage({
     super.key,
-    this.avatarPath,
-    this.avatarUrl,
+    this.imageAssetPath,
+    this.imageLocalPath,
+    this.imageUrl,
     this.onTap,
     this.showShadow = true,
-    this.height = 50,
-    this.width = 50,
+    this.height = 80,
+    this.width = 80,
     this.padding = 15,
-  }) : assert(avatarPath == null || avatarUrl == null,
-            'You cannot set avatarPath and avatarUrl at the same time');
+  }) : assert(
+          (imageAssetPath != null ? 1 : 0) +
+                  (imageLocalPath != null ? 1 : 0) +
+                  (imageUrl != null ? 1 : 0) <=
+              1,
+          'You cannot set imageAssetPath, imageLocalPath and imageUrl at the same time',
+        );
 
-  final String? avatarPath;
-  final String? avatarUrl;
+  final String? imageAssetPath;
+  final String? imageLocalPath;
+  final String? imageUrl;
   final void Function()? onTap;
   final bool showShadow;
   final double height;
@@ -63,22 +70,31 @@ class FoodyAvatar extends StatelessWidget {
             shape: BoxShape.circle,
             color: Theme.of(context).primaryColor.withOpacity(0.2),
           ),
+          width: width,
+          height: height,
           child: Image.asset(
             'assets/images/user.png',
             color: Theme.of(context).primaryColor,
-            width: width,
-            height: height,
           ),
         );
 
     Widget defaultAvatar() => inkWell(defaultAvatarContainer());
 
+    Widget assetAvatar() => circularImage(
+          Image.asset(
+            imageAssetPath!,
+            fit: BoxFit.cover,
+            width: width,
+            height: height,
+          ),
+        );
+
     Widget localAvatar() => circularImage(
           Image.file(
-            File(avatarPath!),
+            File(imageLocalPath!),
             fit: BoxFit.cover,
-            width: width + 30,
-            height: height + 30,
+            width: width,
+            height: height,
           ),
         );
 
@@ -86,10 +102,10 @@ class FoodyAvatar extends StatelessWidget {
           CachedNetworkImage(
             fadeInDuration: const Duration(milliseconds: 300),
             fadeOutDuration: const Duration(milliseconds: 300),
-            imageUrl: avatarUrl!,
+            imageUrl: imageUrl!,
             fit: BoxFit.cover,
-            width: width + 30,
-            height: height + 30,
+            width: width,
+            height: height,
             placeholder: (_, __) => defaultAvatarContainer(),
             errorWidget: (_, __, ___) => defaultAvatarContainer(),
           ),
@@ -109,11 +125,15 @@ class FoodyAvatar extends StatelessWidget {
             child: Stack(
               clipBehavior: Clip.none,
               children: [
-                avatarPath == null && avatarUrl == null
+                imageAssetPath == null &&
+                        imageLocalPath == null &&
+                        imageUrl == null
                     ? defaultAvatar()
-                    : avatarUrl == null
-                        ? localAvatar()
-                        : remoteAvatar(),
+                    : imageAssetPath != null
+                        ? assetAvatar()
+                        : imageUrl == null
+                            ? localAvatar()
+                            : remoteAvatar(),
                 if (onTap != null)
                   Positioned(
                     bottom: 0,

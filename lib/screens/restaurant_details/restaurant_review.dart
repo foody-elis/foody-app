@@ -1,10 +1,9 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_rating/flutter_rating.dart';
 import 'package:foody_app/dto/response/review_response_dto.dart';
-import 'package:foody_app/widgets/foody_avatar.dart';
 import 'package:intl/intl.dart';
 import 'package:skeletonizer/skeletonizer.dart';
+
+import '../../widgets/foody_circular_image.dart';
 
 class RestaurantReview extends StatelessWidget {
   const RestaurantReview({
@@ -26,10 +25,10 @@ class RestaurantReview extends StatelessWidget {
           children: [
             Row(
               children: [
-                const FoodyAvatar(
+                const FoodyCircularImage(
                   showShadow: false,
-                  width: 20,
-                  height: 20,
+                  width: 40,
+                  height: 40,
                   padding: 10,
                 ),
                 const SizedBox(width: 10),

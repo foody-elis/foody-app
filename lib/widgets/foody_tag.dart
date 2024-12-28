@@ -8,6 +8,7 @@ class FoodyTag extends StatelessWidget {
     this.width = 90,
     this.margin = EdgeInsets.zero,
     this.elevation = 3,
+    this.onTap,
   });
 
   final String label;
@@ -15,6 +16,7 @@ class FoodyTag extends StatelessWidget {
   final double? width;
   final EdgeInsetsGeometry margin;
   final double elevation;
+  final void Function()? onTap;
 
   @override
   Widget build(BuildContext context) {
@@ -32,7 +34,7 @@ class FoodyTag extends StatelessWidget {
           margin: EdgeInsets.zero,
           child: InkWell(
             borderRadius: BorderRadius.circular(10),
-            onTap: () {},
+            onTap: onTap,
             child: Center(
               child: Text(
                 label,

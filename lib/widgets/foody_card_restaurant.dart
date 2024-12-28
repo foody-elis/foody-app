@@ -69,7 +69,7 @@ class FoodyCardRestaurant extends StatelessWidget {
                   borderRadius: BorderRadius.circular(10),
                 ),
                 child: imageUrl == null
-                    ? defaultImage()
+                    ? roundedImage(defaultImage())
                     : roundedImage(
                         CachedNetworkImage(
                           fadeInDuration: const Duration(milliseconds: 300),

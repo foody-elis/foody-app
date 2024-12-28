@@ -19,6 +19,8 @@ import '../../bloc/bottom_nav_bar/bottom_nav_bar_bloc.dart';
 import '../../bloc/bottom_nav_bar/bottom_nav_bar_event.dart';
 import '../../bloc/foody/foody_bloc.dart';
 import '../../bloc/foody/foody_event.dart';
+import '../../routing/constants.dart';
+import '../../routing/navigation_service.dart';
 
 class RestaurantDetails extends HookWidget {
   const RestaurantDetails({super.key});
@@ -167,11 +169,21 @@ class RestaurantDetails extends HookWidget {
                     horizontal: 10,
                     vertical: 10,
                   ),
-                  child: const SafeArea(
+                  child: SafeArea(
                     top: false,
                     child: FoodyButton(
                       label: "PRENOTA",
                       height: 50,
+                      onPressed: () => NavigationService().navigateTo(
+                        bookingFormRoute,
+                        arguments: {
+                          "restaurantId": context
+                              .read<RestaurantDetailsBloc>()
+                              .state
+                              .restaurant
+                              .id,
+                        },
+                      ),
                     ),
                   ),
                 ),

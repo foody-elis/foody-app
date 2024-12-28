@@ -19,10 +19,12 @@ class RestaurantImage extends StatelessWidget {
           color: Theme.of(context).primaryColor.withOpacity(0.2),
           width: double.infinity,
           height: double.infinity,
-          child: Icon(
-            PhosphorIconsRegular.image,
-            size: 45,
-            color: Theme.of(context).primaryColor,
+          child: Skeleton.ignore(
+            child: Icon(
+              PhosphorIconsRegular.image,
+              size: 45,
+              color: Theme.of(context).primaryColor,
+            ),
           ),
         );
 

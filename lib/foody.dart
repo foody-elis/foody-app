@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart' hide Router;
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_portal/flutter_portal.dart';
 import 'package:foody_app/bloc/foody/foody_bloc.dart';
 import 'package:foody_app/bloc/foody/foody_state.dart';
@@ -30,6 +31,8 @@ class Foody extends StatelessWidget {
                   FoodyLoaderOverlay(isLoading: state.showLoadingOverlay),
               child: child!,
             ),
+            localizationsDelegates: GlobalMaterialLocalizations.delegates,
+            supportedLocales: const [Locale('it')],
           ),
         );
       },

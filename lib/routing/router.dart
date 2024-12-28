@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:foody_app/bloc/auth/auth_bloc.dart';
+import 'package:foody_app/bloc/booking_form/booking_form_bloc.dart';
 import 'package:foody_app/bloc/bottom_nav_bar/bottom_nav_bar_bloc.dart';
 import 'package:foody_app/bloc/menu/menu_bloc.dart';
 import 'package:foody_app/bloc/restaurant_details/restaurant_details_bloc.dart';
@@ -11,6 +12,7 @@ import 'package:foody_app/bloc/welcome/welcome_bloc.dart';
 import 'package:foody_app/repository/interface/foody_api_repository.dart';
 import 'package:foody_app/repository/interface/user_repository.dart';
 import 'package:foody_app/screens/authenticated.dart';
+import 'package:foody_app/screens/booking_form/booking_form.dart';
 import 'package:foody_app/screens/edit_profile.dart';
 import 'package:foody_app/screens/menu/menu.dart';
 import 'package:foody_app/screens/restaurant_details/restaurant_details.dart';
@@ -110,6 +112,17 @@ class Router {
               user: arguments!["user"],
             ),
             child: const EditProfile(),
+          ),
+        );
+      case bookingFormRoute:
+        return CupertinoPageRoute(
+          builder: (_) => BlocProvider<BookingFormBloc>(
+            create: (context) => BookingFormBloc(
+              foodyApiRepository: context.read<FoodyApiRepository>(),
+              restaurantId: arguments!["restaurantId"],
+              sittingTime: arguments["sittingTime"],
+            ),
+            child: const BookingForm(),
           ),
         );
       default:

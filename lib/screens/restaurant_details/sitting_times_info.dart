@@ -68,6 +68,19 @@ class SittingTimesInfo extends StatelessWidget {
                     width: 90,
                     label: DateFormat('HH:mm').format(sittingTime.start),
                     elevation: 0,
+                    onTap: canEdit
+                        ? null
+                        : () => NavigationService().navigateTo(
+                              bookingFormRoute,
+                              arguments: {
+                                "restaurantId": context
+                                    .read<RestaurantDetailsBloc>()
+                                    .state
+                                    .restaurant
+                                    .id,
+                                "sittingTime": sittingTime,
+                              },
+                            ),
                   ),
                 ),
               ),
@@ -86,7 +99,18 @@ class SittingTimesInfo extends StatelessWidget {
                     ),
                     icon: const Icon(PhosphorIconsRegular.plus),
                     iconSize: 20,
-                    onPressed: () {},
+                    onPressed: canEdit
+                        ? () {}
+                        : () => NavigationService().navigateTo(
+                              bookingFormRoute,
+                              arguments: {
+                                "restaurantId": context
+                                    .read<RestaurantDetailsBloc>()
+                                    .state
+                                    .restaurant
+                                    .id,
+                              },
+                            ),
                   ),
                 ),
               ),

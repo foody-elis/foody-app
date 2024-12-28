@@ -1,5 +1,7 @@
 import 'dart:async';
+import 'dart:io';
 
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
@@ -20,6 +22,7 @@ import 'package:multi_dropdown/multi_dropdown.dart';
 import 'package:phosphor_flutter/phosphor_flutter.dart';
 
 import '../bloc/restaurant_form/restaurant_form_event.dart';
+import '../utils/show_foody_image_picker.dart';
 
 class RestaurantForm extends HookWidget {
   const RestaurantForm({super.key});
@@ -52,6 +55,29 @@ class RestaurantForm extends HookWidget {
             .add(ShowLoadingOverlayChanged(show: state.isLoading));
       },
       builder: (context, state) {
+        Widget defaultImage() => Column(
+              spacing: 5,
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Icon(
+                  PhosphorIconsRegular.image,
+                  size: 45,
+                  color: Theme.of(context).primaryColor,
+                ),
+                Text(
+                  "Inserisci un'immagine",
+                  style: TextStyle(
+                    color: Theme.of(context).primaryColor,
+                  ),
+                ),
+              ],
+            );
+
+        Widget roundedImage(Widget child) => ClipRRect(
+              borderRadius: BorderRadius.circular(10),
+              child: child,
+            );
+
         return PopScope(
           canPop: !state.isLoading,
           child: Scaffold(
@@ -61,6 +87,58 @@ class RestaurantForm extends HookWidget {
                   "Compila il form per aggiungere il tuo ristorante sulla piattaforma e invia la richiesta.",
               showBottomNavBar: false,
               body: [
+                Material(
+                  child: InkWell(
+                    borderRadius: BorderRadius.circular(10),
+                    onTap: () => showFoodyImagePicker(
+                      context: context,
+                      onCameraTap: () => context
+                          .read<RestaurantFormBloc>()
+                          .add(ImagePickerCamera()),
+                      onGalleryTap: () => context
+                          .read<RestaurantFormBloc>()
+                          .add(ImagePickerGallery()),
+                      onRemoveTap: state.photoPath == "" && state.photoUrl == ""
+                          ? null
+                          : () => context
+                              .read<RestaurantFormBloc>()
+                              .add(ImagePickerRemove()),
+                    ),
+                    child: Ink(
+                        width: double.infinity,
+                        height: 200,
+                        decoration: BoxDecoration(
+                          color:
+                              Theme.of(context).primaryColor.withOpacity(0.1),
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                        child: state.photoUrl != ""
+                            ? roundedImage(
+                                CachedNetworkImage(
+                                  fadeInDuration:
+                                      const Duration(milliseconds: 300),
+                                  fadeOutDuration:
+                                      const Duration(milliseconds: 300),
+                                  imageUrl: state.photoUrl,
+                                  fit: BoxFit.fill,
+                                  width: double.infinity,
+                                  height: double.infinity,
+                                  placeholder: (_, __) => defaultImage(),
+                                  errorWidget: (_, __, ___) => defaultImage(),
+                                ),
+                              )
+                            : state.photoPath != ""
+                                ? roundedImage(
+                                    Image.file(
+                                      File(state.photoPath),
+                                      fit: BoxFit.fill,
+                                      width: double.infinity,
+                                      height: double.infinity,
+                                    ),
+                                  )
+                                : defaultImage()),
+                  ),
+                ),
                 FoodyTextField(
                   title: "Nome",
                   required: true,

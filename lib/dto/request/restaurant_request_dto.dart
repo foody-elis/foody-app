@@ -15,7 +15,8 @@ class RestaurantRequestDto {
     required this.postalCode,
     required this.seats,
     required this.categories,
-});
+    required this.photoBase64,
+  });
 
   factory RestaurantRequestDto.fromJson(Map<String, dynamic> json) =>
       _$RestaurantRequestDtoFromJson(json);
@@ -30,7 +31,7 @@ class RestaurantRequestDto {
   final String postalCode;
   final int seats;
   final List<int> categories;
-
+  final String? photoBase64;
 
   Map<String, dynamic> toJson() => _$RestaurantRequestDtoToJson(this);
 }

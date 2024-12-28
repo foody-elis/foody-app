@@ -8,3 +8,9 @@ class RestaurantDetailsEvent extends Equatable {
 }
 
 class FetchRestaurant extends RestaurantDetailsEvent {}
+
+class ImagePickerGallery extends RestaurantDetailsEvent {}
+
+class ImagePickerCamera extends RestaurantDetailsEvent {}
+
+class ImagePickerRemove extends RestaurantDetailsEvent {}

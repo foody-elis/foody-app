@@ -10,12 +10,15 @@ import 'package:foody_app/screens/restaurant_details/restaurant_info.dart';
 import 'package:foody_app/screens/restaurant_details/restaurant_menu.dart';
 import 'package:foody_app/screens/restaurant_details/restaurant_reviews.dart';
 import 'package:foody_app/screens/restaurant_details/sitting_times_info.dart';
+import 'package:foody_app/utils/show_snackbar.dart';
 import 'package:foody_app/widgets/foody_button.dart';
 import 'package:foody_app/widgets/foody_rating_label.dart';
 import 'package:skeletonizer/skeletonizer.dart';
 
 import '../../bloc/bottom_nav_bar/bottom_nav_bar_bloc.dart';
 import '../../bloc/bottom_nav_bar/bottom_nav_bar_event.dart';
+import '../../bloc/foody/foody_bloc.dart';
+import '../../bloc/foody/foody_event.dart';
 
 class RestaurantDetails extends HookWidget {
   const RestaurantDetails({super.key});
@@ -51,7 +54,16 @@ class RestaurantDetails extends HookWidget {
       }, []);
     }
 
-    return BlocBuilder<RestaurantDetailsBloc, RestaurantDetailsState>(
+    return BlocConsumer<RestaurantDetailsBloc, RestaurantDetailsState>(
+      listener: (context, state) {
+        if (state.apiError != "") {
+          showSnackBar(context: context, msg: state.apiError);
+        }
+
+        context
+            .read<FoodyBloc>()
+            .add(ShowLoadingOverlayChanged(show: state.isUpdatingImage));
+      },
       builder: (context, state) {
         return Stack(
           alignment: Alignment.center,
@@ -62,7 +74,7 @@ class RestaurantDetails extends HookWidget {
                 children: [
                   RestaurantImage(
                     enableSkeletonizer: state.isFetching,
-                    canEdit: isOwner,
+                    photoUrl: state.restaurant.photoUrl,
                   ),
                   Padding(
                     padding: const EdgeInsets.only(

@@ -87,18 +87,19 @@ class DishFormBloc extends Bloc<DishFormEvent, DishFormState> {
             : base64Encode(File(state.photoPath).readAsBytesSync()),
         restaurantId: restaurantId,
       );
+      final isEditing = dish != null;
 
       emit(state.copyWith(isLoading: true));
 
       await callApi<DishResponseDto>(
-        api: () => dish == null
-            ? foodyApiRepository.dishes.add(bodyData)
-            : foodyApiRepository.dishes.edit(dish!.id, bodyData),
+        api: () => isEditing
+            ? foodyApiRepository.dishes.edit(dish!.id, bodyData)
+            : foodyApiRepository.dishes.add(bodyData),
         onComplete: (response) {
           emit(state.copyWith(
-              apiError: dish == null
-                  ? "Piatto aggiunto con successo"
-                  : "Piatto modificato con successo"));
+              apiError: isEditing
+                  ? "Piatto modificato con successo"
+                  : "Piatto aggiunto con successo"));
           emit(state.copyWith(apiError: "", isLoading: false));
           menuBloc.add(FetchDishes());
           NavigationService().goBack();

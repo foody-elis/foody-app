@@ -44,7 +44,7 @@ class Restaurants extends StatelessWidget {
                         final restaurant = state.restaurants[index];
 
                         return FoodyCardRestaurant(
-                          imagePath: "assets/images/ristorante.jpg",
+                          imageUrl: restaurant.photoUrl,
                           category: restaurant.categories.isEmpty
                               ? ""
                               : restaurant.categories.first.name,

@@ -139,7 +139,7 @@ class SignUpBloc extends Bloc<SignUpEvent, SignUpState> {
         phoneNumber: state.phoneNumber,
         birthDate: DateFormat("dd/MM/yyyy").parse(state.birthDate),
         avatarBase64: state.avatarPath == ""
-            ? ""
+            ? null
             : base64Encode(File(state.avatarPath).readAsBytesSync()),
       )),
       onComplete: (response) {
@@ -153,6 +153,7 @@ class SignUpBloc extends Bloc<SignUpEvent, SignUpState> {
           userRepository: userRepository,
         ));
         emit(state.copyWith(apiError: "Registazione effettuata con successo"));
+        emit(state.copyWith(apiError: ""));
         onComplete();
       },
       errorToEmit: (msg) => emit(state.copyWith(apiError: msg)),

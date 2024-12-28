@@ -1,3 +1,6 @@
+import 'dart:convert';
+import 'dart:io';
+
 import 'package:bloc_concurrency/bloc_concurrency.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:foody_app/bloc/restaurant_form/restaurant_form_event.dart';
@@ -7,6 +10,7 @@ import 'package:foody_app/dto/response/category_response_dto.dart';
 import 'package:foody_app/dto/response/restaurant_response_dto.dart';
 import 'package:foody_app/repository/interface/user_repository.dart';
 import 'package:foody_app/utils/call_api.dart';
+import 'package:image_picker/image_picker.dart';
 
 import '../../repository/interface/foody_api_repository.dart';
 import '../../routing/constants.dart';
@@ -36,6 +40,9 @@ class RestaurantFormBloc
     on<CapChanged>(_onCapChanged);
     on<SeatsChanged>(_onSeatsChanged);
     on<SelectedCategoriesChanged>(_onSelectedCategoriesChanged);
+    on<ImagePickerGallery>(_onImagePickerGallery);
+    on<ImagePickerCamera>(_onImagePickerCamera);
+    on<ImagePickerRemove>(_onImagePickerRemove);
 
     add(FetchCategories());
   }
@@ -125,27 +132,42 @@ class RestaurantFormBloc
     if (_isFormValid(emit)) {
       emit(state.copyWith(isLoading: true));
 
+      final bodyData = RestaurantRequestDto(
+        name: state.name,
+        phoneNumber: state.phoneNumber,
+        street: state.street,
+        postalCode: state.postalCode,
+        city: state.city,
+        civicNumber: state.civicNumber,
+        description: state.description,
+        province: state.province,
+        seats: state.seats,
+        categories: state.selectedCategories,
+        photoBase64: state.photoPath == ""
+            ? null
+            : base64Encode(File(state.photoPath).readAsBytesSync()),
+      );
+      final isEditing = restaurant != null;
+
       await callApi<RestaurantResponseDto>(
-        api: () => foodyApiRepository.restaurants.save(RestaurantRequestDto(
-          name: state.name,
-          phoneNumber: state.phoneNumber,
-          street: state.street,
-          postalCode: state.postalCode,
-          city: state.city,
-          civicNumber: state.civicNumber,
-          description: state.description,
-          province: state.province,
-          seats: state.seats,
-          categories: state.selectedCategories,
-        )),
+        api: () => isEditing
+            ? foodyApiRepository.restaurants.edit(restaurant!.id, bodyData)
+            : foodyApiRepository.restaurants.save(bodyData),
         onComplete: (restaurant) {
-          emit(state.copyWith(apiError: "Creazione del ristorante successo"));
+          emit(state.copyWith(
+              apiError: isEditing
+                  ? "Informazioni aggiornate con successo"
+                  : "Creazione del ristorante effettuata con successo"));
+          emit(state.copyWith(apiError: ""));
 
-          final user = userRepository.get()!;
-          user.restaurantId = restaurant.id;
-          userRepository.update(user);
+          if (!isEditing) {
+            final user = userRepository.get()!;
+            user.restaurantId = restaurant.id;
+            userRepository.update(user);
+          }
 
-          _navigationService.resetToScreen(sittingTimesFormRoute);
+          _navigationService.resetToScreen(
+              isEditing ? authenticatedRoute : sittingTimesFormRoute);
         },
         errorToEmit: (msg) => emit(state.copyWith(apiError: msg)),
       );
@@ -200,7 +222,7 @@ class RestaurantFormBloc
 
   void _onFetchCategories(
       FetchCategories event, Emitter<RestaurantFormState> emit) async {
-    emit(state.copyWith(isFetchingCategories: true));
+    emit(state.copyWith(isLoading: true));
 
     await callApi<List<CategoryResponseDto>>(
       api: foodyApiRepository.categories.getAll,
@@ -208,7 +230,7 @@ class RestaurantFormBloc
       errorToEmit: (msg) => emit(state.copyWith(apiError: msg)),
     );
 
-    emit(state.copyWith(isFetchingCategories: false));
+    emit(state.copyWith(isLoading: false));
   }
 
   void _onSelectedCategoriesChanged(
@@ -216,17 +238,30 @@ class RestaurantFormBloc
     emit(state.copyWith(selectedCategories: event.selectedCategories));
   }
 
-  /*void _onFetchRestaurant(
-      FetchRestaurant event, Emitter<RestaurantFormState> emit) async {
-    emit(state.copyWith(isFetchingRestaurant: true));
+  Future<void> _onImagePicker(
+      Emitter<RestaurantFormState> emit, ImageSource source) async {
+    final imagePicker = ImagePicker();
+    final pickedFile = await imagePicker.pickImage(source: source);
 
-    await callApi<RestaurantResponseDto>(
-      api: foodyApiRepository.restaurants.getMyRestaurant,
-      onComplete: (response) => emit(state.copyWith(
-        restaurant: response,
-        isFetchingRestaurant: false,
-      )),
-      errorToEmit: (msg) => emit(state.copyWith(apiError: msg)),
-    );
-  }*/
+    if (pickedFile != null) {
+      emit(state.copyWith(photoPath: pickedFile.path, photoUrl: ""));
+      _navigationService.goBack();
+    }
+  }
+
+  void _onImagePickerGallery(
+      ImagePickerGallery event, Emitter<RestaurantFormState> emit) async {
+    await _onImagePicker(emit, ImageSource.gallery);
+  }
+
+  void _onImagePickerCamera(
+      ImagePickerCamera event, Emitter<RestaurantFormState> emit) async {
+    await _onImagePicker(emit, ImageSource.camera);
+  }
+
+  void _onImagePickerRemove(
+      ImagePickerRemove event, Emitter<RestaurantFormState> emit) {
+    emit(state.copyWith(photoPath: "", photoUrl: ""));
+    _navigationService.goBack();
+  }
 }

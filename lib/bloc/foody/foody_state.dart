@@ -1,4 +1,5 @@
 import 'package:equatable/equatable.dart';
+
 import '../../routing/constants.dart';
 
 class FoodyState extends Equatable {

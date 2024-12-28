@@ -76,11 +76,12 @@ class RestaurantInfo extends StatelessWidget {
             ],
           ),
           const SizedBox(height: 20),
-          FoodyHorizontalTags(
-            enableSkeletonizer: enableSkeletonizer,
-            itemCount: restaurant.categories.length,
-            tagBuilder: (context, index) => restaurant.categories[index].name,
-          ),
+          if (restaurant.categories.isNotEmpty)
+            FoodyHorizontalTags(
+              enableSkeletonizer: enableSkeletonizer,
+              itemCount: restaurant.categories.length,
+              tagBuilder: (context, index) => restaurant.categories[index].name,
+            ),
         ],
       ),
     );

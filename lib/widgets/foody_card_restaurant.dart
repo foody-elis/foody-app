@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:foody_app/widgets/foody_button.dart';
 import 'package:foody_app/widgets/foody_rating_label.dart';
@@ -9,7 +10,7 @@ import 'foody_tag.dart';
 class FoodyCardRestaurant extends StatelessWidget {
   const FoodyCardRestaurant({
     super.key,
-    required this.imagePath,
+    required this.imageUrl,
     required this.category,
     required this.rating,
     required this.name,
@@ -18,7 +19,7 @@ class FoodyCardRestaurant extends StatelessWidget {
     this.onTap,
   });
 
-  final String imagePath;
+  final String? imageUrl;
   final String category;
   final double rating;
   final String name;
@@ -28,6 +29,23 @@ class FoodyCardRestaurant extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    Widget defaultImage() => Container(
+        color: Theme.of(context).primaryColor.withOpacity(0.2),
+        height: 200,
+        child: Icon(
+          PhosphorIconsRegular.image,
+          size: 45,
+          color: Theme.of(context).primaryColor,
+        ));
+
+    Widget roundedImage(Widget child) => ClipRRect(
+          borderRadius: const BorderRadius.only(
+            topLeft: Radius.circular(10),
+            topRight: Radius.circular(10),
+          ),
+          child: child,
+        );
+
     return SizedBox(
       height: 400,
       child: Card(
@@ -44,6 +62,29 @@ class FoodyCardRestaurant extends StatelessWidget {
           child: Column(
             children: [
               Container(
+                width: double.infinity,
+                height: 200,
+                decoration: BoxDecoration(
+                  color: Theme.of(context).primaryColor.withOpacity(0.1),
+                  borderRadius: BorderRadius.circular(10),
+                ),
+                child: imageUrl == null
+                    ? defaultImage()
+                    : roundedImage(
+                        CachedNetworkImage(
+                          fadeInDuration: const Duration(milliseconds: 300),
+                          fadeOutDuration: const Duration(milliseconds: 300),
+                          imageUrl: imageUrl!,
+                          fit: BoxFit.fill,
+                          width: double.infinity,
+                          height: double.infinity,
+                          placeholder: (_, __) => defaultImage(),
+                          errorWidget: (_, __, ___) => defaultImage(),
+                        ),
+                      ),
+              ),
+
+              /*Container(
                 height: 200,
                 decoration: BoxDecoration(
                   borderRadius: const BorderRadius.only(
@@ -56,7 +97,7 @@ class FoodyCardRestaurant extends StatelessWidget {
                     fit: BoxFit.cover,
                   ),
                 ),
-              ),
+              ),*/
               Padding(
                 padding: const EdgeInsets.only(
                   top: 10,

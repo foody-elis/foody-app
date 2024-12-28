@@ -8,10 +8,15 @@ part '../generated/interface/restaurants_api_repository.g.dart';
 
 @RestApi()
 abstract class RestaurantsApiRepository {
-  factory RestaurantsApiRepository(Dio dio, {String? baseUrl}) = _RestaurantsApiRepository;
+  factory RestaurantsApiRepository(Dio dio, {String? baseUrl}) =
+      _RestaurantsApiRepository;
 
   @POST('')
   Future<RestaurantResponseDto> save(@Body() RestaurantRequestDto _);
+
+  @PUT('/{id}')
+  Future<RestaurantResponseDto> edit(
+      @Path() int id, @Body() RestaurantRequestDto _);
 
   @GET('')
   Future<List<DetailedRestaurantResponseDto>> getAll();

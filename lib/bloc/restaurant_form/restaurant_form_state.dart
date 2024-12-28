@@ -11,6 +11,8 @@ class RestaurantFormState extends Equatable {
   final String city;
   final String province;
   final String postalCode;
+  final String photoPath;
+  final String photoUrl;
   final int seats;
   final String? nameError;
   final String? descriptionError;
@@ -35,6 +37,8 @@ class RestaurantFormState extends Equatable {
     required this.city,
     required this.province,
     required this.postalCode,
+    required this.photoPath,
+    required this.photoUrl,
     required this.seats,
     required this.nameError,
     required this.descriptionError,
@@ -59,6 +63,8 @@ class RestaurantFormState extends Equatable {
         city = restaurant?.city ?? "",
         province = restaurant?.province ?? "",
         postalCode = restaurant?.postalCode ?? "",
+        photoPath = "",
+        photoUrl = restaurant?.photoUrl ?? "",
         seats = restaurant?.seats ?? 1,
         nameError = null,
         descriptionError = null,
@@ -82,6 +88,8 @@ class RestaurantFormState extends Equatable {
     String? city,
     String? province,
     String? postalCode,
+    String? photoPath,
+    String? photoUrl,
     int? seats,
     String? nameError,
     String? descriptionError,
@@ -92,7 +100,6 @@ class RestaurantFormState extends Equatable {
     String? provinceError,
     String? capError,
     String? apiError,
-    bool? isFetchingCategories,
     List<CategoryResponseDto>? allCategories,
     List<int>? selectedCategories,
     bool? isLoading,
@@ -107,6 +114,8 @@ class RestaurantFormState extends Equatable {
       city: city ?? this.city,
       province: province ?? this.province,
       postalCode: postalCode ?? this.postalCode,
+      photoPath: photoPath ?? this.photoPath,
+      photoUrl: photoUrl ?? this.photoUrl,
       seats: seats ?? this.seats,
       nameError: nameError == "null" ? null : nameError ?? this.nameError,
       descriptionError: descriptionError == "null"
@@ -125,7 +134,7 @@ class RestaurantFormState extends Equatable {
           provinceError == "null" ? null : provinceError ?? this.provinceError,
       capError: capError == "null" ? null : capError ?? this.capError,
       apiError: apiError ?? this.apiError,
-      isLoading: isFetchingCategories ?? this.isLoading,
+      isLoading: isLoading ?? this.isLoading,
       allCategories: allCategories ?? this.allCategories,
       selectedCategories: selectedCategories ?? this.selectedCategories,
     );
@@ -141,6 +150,8 @@ class RestaurantFormState extends Equatable {
         city,
         province,
         postalCode,
+        photoPath,
+        photoUrl,
         seats,
         nameError,
         descriptionError,

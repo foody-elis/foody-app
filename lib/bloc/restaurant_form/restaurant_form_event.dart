@@ -13,6 +13,12 @@ class FetchCategories extends RestaurantFormEvent {}
 
 class FetchRestaurant extends RestaurantFormEvent {}
 
+class ImagePickerGallery extends RestaurantFormEvent {}
+
+class ImagePickerCamera extends RestaurantFormEvent {}
+
+class ImagePickerRemove extends RestaurantFormEvent {}
+
 class NameChanged extends RestaurantFormEvent {
   const NameChanged({required this.name});
 

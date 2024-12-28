@@ -24,12 +24,10 @@ class UserRegistrationRequestDto {
   final String name;
   final String surname;
   final String phoneNumber;
-  final String avatarBase64;
+  final String? avatarBase64;
 
   @JsonKey(fromJson: dateTimeFromJson, toJson: dateTimeToJson)
   final DateTime birthDate;
 
   Map<String, dynamic> toJson() => _$UserRegistrationRequestDtoToJson(this);
 }
-
-

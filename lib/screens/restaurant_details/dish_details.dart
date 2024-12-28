@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_rating/flutter_rating.dart';
 import 'package:foody_app/dto/response/dish_response_dto.dart';
+import 'package:foody_app/widgets/foody_circular_image.dart';
+import 'package:phosphor_flutter/phosphor_flutter.dart';
 
 class DishDetails extends StatelessWidget {
   const DishDetails({
@@ -19,16 +21,15 @@ class DishDetails extends StatelessWidget {
       children: [
         Align(
           alignment: Alignment.center,
-          child: Container(
-            height: 180,
-            width: 180,
-            decoration: const BoxDecoration(
-              shape: BoxShape.circle,
-              image: DecorationImage(
-                image: AssetImage("assets/images/piatto_pasta.jpg"),
-                fit: BoxFit.fill,
-              ),
+          child: FoodyCircularImage(
+            defaultWidget: Icon(
+              PhosphorIconsRegular.forkKnife,
+              size: 40,
+              color: Theme.of(context).primaryColor,
             ),
+            imageUrl: dish.photoUrl,
+            showShadow: false,
+            size: 150,
           ),
         ),
         const SizedBox(height: 20),

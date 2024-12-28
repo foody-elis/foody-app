@@ -3,25 +3,26 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:phosphor_flutter/phosphor_flutter.dart';
 
 class FoodyTextField extends HookWidget {
-  const FoodyTextField(
-      {super.key,
-      required this.title,
-      this.hint,
-      this.obscureText = false,
-      this.padding,
-      this.margin,
-      this.suffixIcon,
-      this.onTap,
-      this.onChanged,
-      this.showCursor = true,
-      this.readOnly = false,
-      this.errorText,
-      this.required = false,
-      this.textArea = false,
-      this.label,
-      this.maxLength,
-      this.keyboardType,
-      this.initialLabel});
+  const FoodyTextField({
+    super.key,
+    required this.title,
+    this.hint,
+    this.obscureText = false,
+    this.padding,
+    this.margin,
+    this.suffixIcon,
+    this.onTap,
+    this.onChanged,
+    this.showCursor = true,
+    this.readOnly = false,
+    this.errorText,
+    this.required = false,
+    this.textArea = false,
+    this.label,
+    this.maxLength,
+    this.keyboardType,
+    this.initialLabel,
+  });
 
   final String title;
   final String? hint;

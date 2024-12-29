@@ -1,15 +1,19 @@
-import 'package:animate_do/animate_do.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:foody_app/bloc/booking_form/booking_form_bloc.dart';
+import 'package:foody_app/bloc/booking_form/booking_form_event.dart';
 import 'package:foody_app/bloc/booking_form/booking_form_state.dart';
 import 'package:foody_app/screens/booking_form/calendar_step.dart';
+import 'package:foody_app/screens/booking_form/confirmation_step.dart';
+import 'package:foody_app/screens/booking_form/seats_step.dart';
 import 'package:foody_app/screens/booking_form/sitting_time_step.dart';
 import 'package:foody_app/screens/booking_form/stepper.dart';
 import 'package:foody_app/utils/show_snackbar.dart';
+import 'package:phosphor_flutter/phosphor_flutter.dart';
 
 import '../../bloc/foody/foody_bloc.dart';
 import '../../bloc/foody/foody_event.dart';
+import '../../routing/navigation_service.dart';
 
 class BookingForm extends StatelessWidget {
   const BookingForm({super.key});
@@ -30,7 +34,21 @@ class BookingForm extends StatelessWidget {
         return PopScope(
           canPop: !state.isLoading,
           child: Scaffold(
-            appBar: AppBar(centerTitle: true, title: const Text("Prenota")),
+            appBar: AppBar(
+              centerTitle: true,
+              title: const Text("Prenota"),
+              leading: IconButton(
+                onPressed: () =>
+                    context.read<BookingFormBloc>().add(PreviousStep()),
+                icon: const Icon(PhosphorIconsLight.arrowLeft),
+              ),
+              actions: [
+                IconButton(
+                  onPressed: () => NavigationService().goBack(),
+                  icon: const Icon(PhosphorIconsLight.x),
+                )
+              ],
+            ),
             body: Padding(
               padding: const EdgeInsets.only(
                 left: 20,
@@ -43,24 +61,20 @@ class BookingForm extends StatelessWidget {
                 children: [
                   BookingFormStepper(activeStep: state.activeStep),
                   const BookingFormCalendarStep(),
-                  if (state.activeStep == 1)
-                    FadeInUp(
-                      delay: const Duration(milliseconds: 300),
-                      duration: const Duration(milliseconds: 300),
-                      child: const BookingFormSittingTimeStep(),
-                    ),
-
-                  /*AnimatedSwitcher(
-                    duration: const Duration(milliseconds: 300),
-                    child: switch (state.activeStep) {
-                      0 => const BookingFormCalendarStep(),
-                      1 => const BookingFormSittingTimeStep(),
-                      2 => const BookingFormSeatsStep(),
-                      3 => const BookingFormConfirmationStep(),
-                      _ => null,
-                    },
-                  ),*/
+                  const BookingFormSittingTimeStep(),
+                  const BookingFormSeatsStep(),
+                  const BookingFormConfirmationStep(),
                 ],
+              ),
+            ),
+            floatingActionButton: AnimatedOpacity(
+              opacity: state.activeStep == 3 ? 1.0 : 0.0,
+              duration: const Duration(milliseconds: 200),
+              child: FloatingActionButton(
+                onPressed: state.activeStep == 3
+                    ? () => context.read<BookingFormBloc>().add(Submit())
+                    : null,
+                child: const Icon(PhosphorIconsRegular.check),
               ),
             ),
           ),

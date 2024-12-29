@@ -1,23 +1,47 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:foody_app/bloc/booking_form/booking_form_event.dart';
+import 'package:foody_app/widgets/foody_tag_outlined.dart';
+
+import '../../bloc/booking_form/booking_form_bloc.dart';
+import '../../bloc/booking_form/booking_form_state.dart';
+import 'generic_step.dart';
 
 class BookingFormSeatsStep extends StatelessWidget {
   const BookingFormSeatsStep({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      spacing: 20,
-      children: [
-        const Text(
-          "Scegli il numero di posti al tavolo",
-          style: TextStyle(
-            fontSize: 16,
-            fontWeight: FontWeight.bold,
+    return BlocBuilder<BookingFormBloc, BookingFormState>(
+      builder: (context, state) {
+        return BookingFormGenericStep(
+          step: 2,
+          title: "Scegli il numero di posti al tavolo",
+          titleWhenPassed: "Numero di posti",
+          childWhenPassed: () => Text(
+            state.seats == 1
+                ? "${state.seats} persona"
+                : "${state.seats} persone",
+            style: const TextStyle(fontStyle: FontStyle.italic),
           ),
-        ),
-        Text("ccc")
-      ],
+          childHeight: 40,
+          child: (constraints) {
+            return ListView.builder(
+              padding: null,
+              scrollDirection: Axis.horizontal,
+              itemCount: 40,
+              itemBuilder: (context, index) => FoodyTagOutlined(
+                width: (constraints.maxWidth / 4) - 5,
+                margin: const EdgeInsets.only(right: 5),
+                label: "${++index}",
+                onTap: () => context
+                    .read<BookingFormBloc>()
+                    .add(SeatsChanged(seats: index)),
+              ),
+            );
+          },
+        );
+      },
     );
   }
 }

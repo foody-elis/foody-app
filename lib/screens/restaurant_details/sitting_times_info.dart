@@ -73,11 +73,10 @@ class SittingTimesInfo extends StatelessWidget {
                         : () => NavigationService().navigateTo(
                               bookingFormRoute,
                               arguments: {
-                                "restaurantId": context
+                                "restaurant": context
                                     .read<RestaurantDetailsBloc>()
                                     .state
-                                    .restaurant
-                                    .id,
+                                    .restaurant,
                                 "sittingTime": sittingTime,
                               },
                             ),
@@ -104,11 +103,10 @@ class SittingTimesInfo extends StatelessWidget {
                         : () => NavigationService().navigateTo(
                               bookingFormRoute,
                               arguments: {
-                                "restaurantId": context
+                                "restaurant": context
                                     .read<RestaurantDetailsBloc>()
                                     .state
-                                    .restaurant
-                                    .id,
+                                    .restaurant,
                               },
                             ),
                   ),

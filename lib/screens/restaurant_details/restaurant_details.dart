@@ -177,11 +177,10 @@ class RestaurantDetails extends HookWidget {
                       onPressed: () => NavigationService().navigateTo(
                         bookingFormRoute,
                         arguments: {
-                          "restaurantId": context
+                          "restaurant": context
                               .read<RestaurantDetailsBloc>()
                               .state
-                              .restaurant
-                              .id,
+                              .restaurant,
                         },
                       ),
                     ),

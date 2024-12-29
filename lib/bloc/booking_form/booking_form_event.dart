@@ -10,6 +10,10 @@ class BookingFormEvent extends Equatable {
 
 class Submit extends BookingFormEvent {}
 
+class FetchSittingTimes extends BookingFormEvent {}
+
+class PreviousStep extends BookingFormEvent {}
+
 class DateChanged extends BookingFormEvent {
   const DateChanged({required this.date});
 

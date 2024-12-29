@@ -9,7 +9,7 @@ class BookingFormState extends Equatable {
   final String apiError;
   final bool isLoading;
 
-  final List<SittingTimeResponseDto> sittingTimes;
+  final Map<int, List<SittingTimeResponseDto>> sittingTimesForWeekDays;
 
   const BookingFormState({
     required this.date,
@@ -18,16 +18,24 @@ class BookingFormState extends Equatable {
     required this.activeStep,
     required this.apiError,
     required this.isLoading,
-    required this.sittingTimes,
+    required this.sittingTimesForWeekDays,
   });
 
   BookingFormState.initial(this.sittingTime)
       : date = sittingTime == null ? null : DateTime.now(),
         seats = null,
-        activeStep = 0,
+        activeStep = sittingTime == null ? 0 : 2,
         apiError = "",
         isLoading = false,
-        sittingTimes = [];
+        sittingTimesForWeekDays = {
+          1: [],
+          2: [],
+          3: [],
+          4: [],
+          5: [],
+          6: [],
+          7: []
+        };
 
   BookingFormState copyWith({
     dynamic date,
@@ -37,6 +45,7 @@ class BookingFormState extends Equatable {
     String? apiError,
     bool? isLoading,
     List<SittingTimeResponseDto>? sittingTimes,
+    Map<int, List<SittingTimeResponseDto>>? sittingTimesForWeekDays,
   }) {
     return BookingFormState(
       date: date == "null" ? null : date ?? this.date,
@@ -46,7 +55,8 @@ class BookingFormState extends Equatable {
       activeStep: activeStep ?? this.activeStep,
       apiError: apiError ?? this.apiError,
       isLoading: isLoading ?? this.isLoading,
-      sittingTimes: sittingTimes ?? this.sittingTimes,
+      sittingTimesForWeekDays:
+          sittingTimesForWeekDays ?? this.sittingTimesForWeekDays,
     );
   }
 
@@ -58,6 +68,6 @@ class BookingFormState extends Equatable {
         activeStep,
         apiError,
         isLoading,
-        sittingTimes,
+        sittingTimesForWeekDays,
       ];
 }

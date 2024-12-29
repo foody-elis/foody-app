@@ -4,7 +4,9 @@ import 'package:foody_app/bloc/booking_form/booking_form_event.dart';
 import 'package:foody_app/bloc/booking_form/booking_form_state.dart';
 import 'package:foody_app/dto/request/booking_request_dto.dart';
 import 'package:foody_app/dto/response/booking_response_dto.dart';
+import 'package:foody_app/dto/response/restaurant_response_dto.dart';
 import 'package:foody_app/dto/response/sitting_time_response_dto.dart';
+import 'package:foody_app/routing/constants.dart';
 import 'package:foody_app/routing/navigation_service.dart';
 
 import '../../repository/interface/foody_api_repository.dart';
@@ -12,58 +14,64 @@ import '../../utils/call_api.dart';
 
 class BookingFormBloc extends Bloc<BookingFormEvent, BookingFormState> {
   final FoodyApiRepository foodyApiRepository;
-  final int restaurantId;
+  final RestaurantResponseDto restaurant;
   final SittingTimeResponseDto? sittingTime;
   final NavigationService _navigationService = NavigationService();
 
   BookingFormBloc({
     required this.foodyApiRepository,
-    required this.restaurantId,
+    required this.restaurant,
     required this.sittingTime,
   }) : super(BookingFormState.initial(sittingTime)) {
     on<Submit>(_onSubmit, transformer: droppable());
+    on<FetchSittingTimes>(_onFetchSittingTimes, transformer: droppable());
     on<DateChanged>(_onDateChanged);
     on<SittingTimeChanged>(_onSittingTimeChanged);
     on<SeatsChanged>(_onSeatsChanged);
     on<StepChanged>(_onStepChanged);
+    on<PreviousStep>(_onPreviousStep);
+
+    add(FetchSittingTimes());
   }
 
-  /*bool _isFormValid(Emitter<DishFormState> emit) {
-    bool isValid = true;
+  void _onFetchSittingTimes(
+      FetchSittingTimes event, Emitter<BookingFormState> emit) async {
+    List<Future<void>> fetchSittingTimesByWeekDayFutures = [];
+    final sittingTimesForWeekDays = Map.of(state.sittingTimesForWeekDays);
 
-    if (state.name.isEmpty) {
-      emit(state.copyWith(nameError: "Il nome è obbligatorio"));
-      isValid = false;
-    } else if (state.name.length > 100) {
-      emit(state.copyWith(
-          nameError: "Il nome non può contenere più di 100 caratteri"));
-      isValid = false;
+    for (int weekDay in state.sittingTimesForWeekDays.keys) {
+      fetchSittingTimesByWeekDayFutures
+          .add(callApi<List<SittingTimeResponseDto>>(
+        api: () => foodyApiRepository.sittingTimes
+            .getAllByRestaurantAndWeekDay(restaurant.id, weekDay),
+        onComplete: (sittingTimes) {
+          final now = DateTime.now();
+
+          if (now.weekday == weekDay) {
+            sittingTimesForWeekDays[weekDay] = sittingTimes
+                .where((sittingTime) =>
+                    sittingTime.start.hour > now.hour ||
+                    sittingTime.start.hour == now.hour &&
+                        sittingTime.start.minute > now.minute)
+                .toList();
+          } else {
+            sittingTimesForWeekDays[weekDay] = sittingTimes;
+          }
+        },
+        errorToEmit: (e) => emit(state.copyWith(apiError: e)),
+        throwException: true,
+      ));
     }
 
-    if (state.description.isEmpty) {
-      emit(state.copyWith(descriptionError: "La descrizione è obbligatoria"));
-      isValid = false;
-    } else if (state.description.length > 65535) {
-      emit(state.copyWith(
-          descriptionError:
-              "La descrizione non può contenere più di 65535 caratteri"));
-      isValid = false;
-    }
+    emit(state.copyWith(isLoading: true));
 
-    if (state.price.isEmpty) {
-      emit(state.copyWith(priceError: "Il prezzo è obbligatorio"));
-      isValid = false;
-    } else if (double.tryParse(state.price) == null) {
-      emit(state.copyWith(priceError: "Il prezzo non è valido"));
-      isValid = false;
-    } else if (state.price.length > 8) {
-      emit(state.copyWith(
-          priceError: "Il prezzo non può contenere più di 8 caratteri"));
-      isValid = false;
-    }
+    try {
+      await Future.wait(fetchSittingTimesByWeekDayFutures);
+      emit(state.copyWith(sittingTimesForWeekDays: sittingTimesForWeekDays));
+    } catch (_) {}
 
-    return isValid;
-  }*/
+    emit(state.copyWith(isLoading: false));
+  }
 
   void _onSubmit(Submit event, Emitter<BookingFormState> emit) async {
     emit(state.copyWith(isLoading: true));
@@ -74,13 +82,13 @@ class BookingFormBloc extends Bloc<BookingFormEvent, BookingFormState> {
           date: state.date!,
           seats: state.seats!,
           sittingTimeId: state.sittingTime!.id,
-          restaurantId: restaurantId,
+          restaurantId: restaurant.id,
         ),
       ),
-      onComplete: (response) {
-        print("BOOKING DONE");
-        // portarlo su una schermata solo di "PRENOTAZIONE EFFETTUATA CON SUCCESSO!"
-      },
+      onComplete: (booking) => _navigationService.replaceScreen(
+        bookingCompletedRoute,
+        arguments: {"booking": booking},
+      ),
       errorToEmit: (msg) => emit(state.copyWith(apiError: msg)),
     );
 
@@ -88,35 +96,39 @@ class BookingFormBloc extends Bloc<BookingFormEvent, BookingFormState> {
   }
 
   void _onDateChanged(DateChanged event, Emitter<BookingFormState> emit) async {
-    emit(state.copyWith(date: event.date, isLoading: true));
-
-    await Future.delayed(const Duration(seconds: 1));
-
-    await callApi<List<SittingTimeResponseDto>>(
-      api: () => foodyApiRepository.sittingTimes.getAllByRestaurantAndWeekDay(
-        restaurantId,
-        event.date.weekday,
-      ),
-      onComplete: (sittingTimes) => emit(state.copyWith(
-        sittingTimes: sittingTimes,
-        activeStep: 1,
-      )),
-      errorToEmit: (msg) => emit(state.copyWith(apiError: msg)),
-    );
-
-    emit(state.copyWith(isLoading: false));
+    emit(state.copyWith(date: event.date, activeStep: 1));
   }
 
   void _onSittingTimeChanged(
       SittingTimeChanged event, Emitter<BookingFormState> emit) {
-    emit(state.copyWith(sittingTime: event.sittingTime));
+    emit(state.copyWith(sittingTime: event.sittingTime, activeStep: 2));
   }
 
   void _onSeatsChanged(SeatsChanged event, Emitter<BookingFormState> emit) {
-    emit(state.copyWith(seats: event.seats));
+    emit(state.copyWith(seats: event.seats, activeStep: 3));
   }
 
   void _onStepChanged(StepChanged event, Emitter<BookingFormState> emit) {
     emit(state.copyWith(activeStep: event.step));
+    _clearStepValue(emit);
+  }
+
+  void _onPreviousStep(PreviousStep event, Emitter<BookingFormState> emit) {
+    if (state.activeStep == 0) {
+      _navigationService.goBack();
+    } else {
+      emit(state.copyWith(activeStep: state.activeStep - 1));
+      _clearStepValue(emit);
+    }
+  }
+
+  void _clearStepValue(Emitter<BookingFormState> emit) {
+    if (state.activeStep == 0) {
+      emit(state.copyWith(date: "null", sittingTime: "null", seats: -1));
+    } else if (state.activeStep == 1) {
+      emit(state.copyWith(sittingTime: "null", seats: -1));
+    } else if (state.activeStep == 2) {
+      emit(state.copyWith(seats: -1));
+    }
   }
 }

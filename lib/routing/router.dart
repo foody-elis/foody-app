@@ -12,6 +12,7 @@ import 'package:foody_app/bloc/welcome/welcome_bloc.dart';
 import 'package:foody_app/repository/interface/foody_api_repository.dart';
 import 'package:foody_app/repository/interface/user_repository.dart';
 import 'package:foody_app/screens/authenticated.dart';
+import 'package:foody_app/screens/booking_completed.dart';
 import 'package:foody_app/screens/booking_form/booking_form.dart';
 import 'package:foody_app/screens/edit_profile.dart';
 import 'package:foody_app/screens/menu/menu.dart';
@@ -119,11 +120,15 @@ class Router {
           builder: (_) => BlocProvider<BookingFormBloc>(
             create: (context) => BookingFormBloc(
               foodyApiRepository: context.read<FoodyApiRepository>(),
-              restaurantId: arguments!["restaurantId"],
+              restaurant: arguments!["restaurant"],
               sittingTime: arguments["sittingTime"],
             ),
             child: const BookingForm(),
           ),
+        );
+      case bookingCompletedRoute:
+        return CupertinoPageRoute(
+          builder: (_) => BookingCompleted(booking: arguments!["booking"]),
         );
       default:
         return CupertinoPageRoute(

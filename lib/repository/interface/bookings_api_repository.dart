@@ -17,6 +17,6 @@ abstract class BookingsApiRepository {
   @GET('/customer')
   Future<List<BookingResponseDto>> getByCustomer();
 
-  @POST('/')
+  @POST('')
   Future<BookingResponseDto> save(@Body() BookingRequestDto _);
 }

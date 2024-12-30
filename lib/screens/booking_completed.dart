@@ -24,7 +24,7 @@ class BookingCompleted extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: const Text(
-          "Prenotazione effettuata",
+          "Prenotazione confermata",
           style: TextStyle(fontWeight: FontWeight.bold),
         ),
         centerTitle: true,
@@ -40,38 +40,51 @@ class BookingCompleted extends StatelessWidget {
       body: Column(
         mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: [
-          Lottie.asset(
-            "assets/lottie/booking_completed.json",
-            repeat: false,
+          Column(
+            children: [
+              Lottie.asset(
+                "assets/lottie/booking_completed.json",
+                repeat: false,
+              ),
+            ],
           ),
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 20),
-            child: ListView.separated(
-              shrinkWrap: true,
-              physics: const NeverScrollableScrollPhysics(),
-              itemCount: bookingSummary.length,
-              itemBuilder: (context, index) {
-                final key = bookingSummary.keys.elementAt(index);
-                final value = bookingSummary[key]!;
+            child: Column(
+              spacing: 30,
+              children: [
+                const Text(
+                  "Grazie per la tua prenotazione",
+                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 24),
+                ),
+                ListView.separated(
+                  shrinkWrap: true,
+                  physics: const NeverScrollableScrollPhysics(),
+                  itemCount: bookingSummary.length,
+                  itemBuilder: (context, index) {
+                    final key = bookingSummary.keys.elementAt(index);
+                    final value = bookingSummary[key]!;
 
-                return ListTile(
-                  title: Text(
-                    key,
-                    style: const TextStyle(
-                      fontWeight: FontWeight.bold,
-                      fontSize: 14,
-                    ),
-                  ),
-                  trailing: Text(
-                    value,
-                    style: const TextStyle(fontSize: 14),
-                    textAlign: TextAlign.right,
-                  ),
-                );
-              },
-              separatorBuilder: (context, index) => const Divider(),
+                    return ListTile(
+                      title: Text(
+                        key,
+                        style: const TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 14,
+                        ),
+                      ),
+                      trailing: Text(
+                        value,
+                        style: const TextStyle(fontSize: 14),
+                        textAlign: TextAlign.right,
+                      ),
+                    );
+                  },
+                  separatorBuilder: (context, index) => const Divider(),
+                ),
+              ],
             ),
-          ),
+          )
         ],
       ),
     );

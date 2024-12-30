@@ -2,6 +2,7 @@ import 'package:animate_do/animate_do.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:foody_app/bloc/booking_form/booking_form_bloc.dart';
+import 'package:phosphor_flutter/phosphor_flutter.dart';
 
 class BookingFormConfirmationStep extends StatelessWidget {
   const BookingFormConfirmationStep({super.key});
@@ -16,19 +17,44 @@ class BookingFormConfirmationStep extends StatelessWidget {
         duration: const Duration(milliseconds: 300),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
-          spacing: 20,
+          spacing: 10,
           children: [
             const Divider(height: 10),
             Text(
               restaurant.name,
               style: const TextStyle(
-                fontSize: 16,
+                fontSize: 32,
                 fontWeight: FontWeight.bold,
               ),
             ),
-            Text(
-                "${restaurant.street}, ${restaurant.postalCode}, ${restaurant.city}"),
-            Text(restaurant.phoneNumber)
+            Row(
+              children: [
+                const Icon(
+                  PhosphorIconsRegular.mapPin,
+                  color: Colors.grey,
+                  size: 20,
+                ),
+                const SizedBox(width: 5),
+                Text(
+                  "${restaurant.street}, ${restaurant.postalCode}, ${restaurant.city}",
+                  style: const TextStyle(fontSize: 14, color: Colors.grey),
+                ),
+              ],
+            ),
+            Row(
+              children: [
+                const Icon(
+                  PhosphorIconsRegular.phone,
+                  color: Colors.grey,
+                  size: 20,
+                ),
+                const SizedBox(width: 5),
+                Text(
+                  restaurant.phoneNumber,
+                  style: const TextStyle(fontSize: 14, color: Colors.grey),
+                ),
+              ],
+            ),
           ],
         ),
       );

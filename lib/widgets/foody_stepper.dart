@@ -30,6 +30,7 @@ class FoodyStepper extends StatelessWidget {
       disableScroll: true,
       showTitle: false,
       finishedStepBackgroundColor: Theme.of(context).colorScheme.primary,
+      defaultStepBorderType: BorderType.normal,
       finishedStepBorderType: BorderType.normal,
       finishedStepBorderColor: Theme.of(context).colorScheme.primary,
       showLoadingAnimation: false,

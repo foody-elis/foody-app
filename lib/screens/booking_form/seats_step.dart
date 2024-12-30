@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:foody_app/bloc/booking_form/booking_form_event.dart';
-import 'package:foody_app/widgets/foody_tag_outlined.dart';
+import 'package:foody_app/widgets/foody_tag.dart';
 
 import '../../bloc/booking_form/booking_form_bloc.dart';
 import '../../bloc/booking_form/booking_form_state.dart';
+import '../../widgets/foody_tag_outlined.dart';
 import 'generic_step.dart';
 
 class BookingFormSeatsStep extends StatelessWidget {
@@ -18,11 +19,18 @@ class BookingFormSeatsStep extends StatelessWidget {
           step: 2,
           title: "Scegli il numero di posti al tavolo",
           titleWhenPassed: "Numero di posti",
-          childWhenPassed: () => Text(
+          /*childWhenPassed: () => Text(
             state.seats == 1
                 ? "${state.seats} persona"
                 : "${state.seats} persone",
             style: const TextStyle(fontStyle: FontStyle.italic),
+          ),*/
+          childWhenPassed: (constraints) => FoodyTagOutlined(
+            elevation: 0,
+            width: (constraints.maxWidth / 4) - 5,
+            label: state.seats.toString(),
+            /*onTap: () => context.read<BookingFormBloc>().add(
+                  SittingTimeChanged(sittingTime: sittingTime)),*/
           ),
           childHeight: 40,
           child: (constraints) {
@@ -30,7 +38,7 @@ class BookingFormSeatsStep extends StatelessWidget {
               padding: null,
               scrollDirection: Axis.horizontal,
               itemCount: 40,
-              itemBuilder: (context, index) => FoodyTagOutlined(
+              itemBuilder: (context, index) => FoodyTag(
                 width: (constraints.maxWidth / 4) - 5,
                 margin: const EdgeInsets.only(right: 5),
                 label: "${++index}",

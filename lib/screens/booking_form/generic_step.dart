@@ -30,7 +30,7 @@ class BookingFormGenericStep extends HookWidget {
 
   @override
   Widget build(BuildContext context) {
-    final showChild = useState(true);
+    final showChild = useState(false);
 
     return BlocConsumer<BookingFormBloc, BookingFormState>(
       listener: (context, state) {

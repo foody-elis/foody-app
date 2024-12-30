@@ -2,11 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:foody_app/bloc/home/home_bloc.dart';
 import 'package:foody_app/bloc/home/home_state.dart';
-import 'package:foody_app/routing/constants.dart';
-import 'package:foody_app/routing/navigation_service.dart';
 import 'package:foody_app/widgets/foody_card_restaurant.dart';
 import 'package:foody_app/widgets/foody_empty_data.dart';
-import 'package:intl/intl.dart';
 import 'package:skeletonizer/skeletonizer.dart';
 
 class Restaurants extends StatelessWidget {
@@ -27,7 +24,6 @@ class Restaurants extends StatelessWidget {
               ),
             ),
             Skeletonizer(
-              containersColor: Colors.grey.shade100,
               enabled: state.isFetching,
               child: state.restaurants.isEmpty
                   ? const FoodyEmptyData(
@@ -43,24 +39,7 @@ class Restaurants extends StatelessWidget {
                       itemBuilder: (context, index) {
                         final restaurant = state.restaurants[index];
 
-                        return FoodyCardRestaurant(
-                          imageUrl: restaurant.photoUrl,
-                          category: restaurant.categories.isEmpty
-                              ? ""
-                              : restaurant.categories.first.name,
-                          rating: restaurant.averageRating,
-                          name: restaurant.name,
-                          address:
-                              "${restaurant.street}, ${restaurant.postalCode}, ${restaurant.city}",
-                          sittingTimes: restaurant.sittingTimes
-                              .map((sittingTime) =>
-                                  DateFormat('HH:mm').format(sittingTime.start))
-                              .toList(),
-                          onTap: () => NavigationService().navigateTo(
-                            restaurantDetailsRoute,
-                            arguments: {"restaurantId": restaurant.id},
-                          ),
-                        );
+                        return FoodyCardRestaurant(restaurant: restaurant);
                       },
                     ),
             ),

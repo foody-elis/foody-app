@@ -44,7 +44,28 @@ class BookingForm extends StatelessWidget {
               ),
               actions: [
                 IconButton(
-                  onPressed: () => NavigationService().goBack(),
+                  onPressed: () => showDialog(
+                    context: context,
+                    builder: (_) => AlertDialog(
+                      title: const Text("Annulla prenotazione"),
+                      content: const Text(
+                        "Sei sicuro di voler annullare la prenotazione?",
+                      ),
+                      actions: [
+                        TextButton(
+                          child: const Text("No"),
+                          onPressed: () => NavigationService().goBack(),
+                        ),
+                        TextButton(
+                          child: const Text("Sì"),
+                          onPressed: () => {
+                            NavigationService().goBack(),
+                            NavigationService().goBack(),
+                          },
+                        ),
+                      ],
+                    ),
+                  ),
                   icon: const Icon(PhosphorIconsLight.x),
                 )
               ],

@@ -79,7 +79,7 @@ class Profile extends StatelessWidget {
                 actions: [
                   TextButton(
                     child: const Text("No"),
-                    onPressed: () => Navigator.pop(context),
+                    onPressed: () => NavigationService().goBack(),
                   ),
                   TextButton(
                     child: const Text("Esci"),

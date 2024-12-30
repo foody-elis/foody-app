@@ -1,42 +1,35 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:foody_app/dto/response/detailed_restaurant_response_dto.dart';
 import 'package:foody_app/widgets/foody_button.dart';
 import 'package:foody_app/widgets/foody_rating_label.dart';
+import 'package:intl/intl.dart';
 import 'package:phosphor_flutter/phosphor_flutter.dart';
 import 'package:skeletonizer/skeletonizer.dart';
 
+import '../routing/constants.dart';
+import '../routing/navigation_service.dart';
 import 'foody_tag.dart';
 
 class FoodyCardRestaurant extends StatelessWidget {
   const FoodyCardRestaurant({
     super.key,
-    required this.imageUrl,
-    required this.category,
-    required this.rating,
-    required this.name,
-    required this.address,
-    required this.sittingTimes,
-    this.onTap,
+    required this.restaurant,
   });
 
-  final String? imageUrl;
-  final String category;
-  final double rating;
-  final String name;
-  final String address;
-  final List<String> sittingTimes;
-  final void Function()? onTap;
+  final DetailedRestaurantResponseDto restaurant;
 
   @override
   Widget build(BuildContext context) {
     Widget defaultImage() => Container(
-        color: Theme.of(context).primaryColor.withOpacity(0.2),
-        height: 200,
-        child: Icon(
-          PhosphorIconsRegular.image,
-          size: 45,
-          color: Theme.of(context).primaryColor,
-        ));
+          color: Theme.of(context).primaryColor.withOpacity(0.2),
+          height: 200,
+          child: Icon(
+            PhosphorIconsRegular.image,
+            size: 45,
+            color: Theme.of(context).primaryColor,
+          ),
+        );
 
     Widget roundedImage(Widget child) => ClipRRect(
           borderRadius: const BorderRadius.only(
@@ -58,46 +51,33 @@ class FoodyCardRestaurant extends StatelessWidget {
         ),
         child: InkWell(
           borderRadius: BorderRadius.circular(10),
-          onTap: onTap,
+          onTap: () => NavigationService().navigateTo(
+            restaurantDetailsRoute,
+            arguments: {"restaurantId": restaurant.id},
+          ),
           child: Column(
             children: [
-              Container(
+              SizedBox(
                 width: double.infinity,
                 height: 200,
-                decoration: BoxDecoration(
-                  color: Theme.of(context).primaryColor.withOpacity(0.1),
-                  borderRadius: BorderRadius.circular(10),
-                ),
-                child: imageUrl == null
-                    ? roundedImage(defaultImage())
-                    : roundedImage(
-                        CachedNetworkImage(
-                          fadeInDuration: const Duration(milliseconds: 300),
-                          fadeOutDuration: const Duration(milliseconds: 300),
-                          imageUrl: imageUrl!,
-                          fit: BoxFit.fill,
-                          width: double.infinity,
-                          height: double.infinity,
-                          placeholder: (_, __) => defaultImage(),
-                          errorWidget: (_, __, ___) => defaultImage(),
-                        ),
-                      ),
+                child: Skeletonizer.of(context).enabled
+                    ? Container(color: Colors.grey.shade100)
+                    : restaurant.photoUrl == null
+                        ? roundedImage(defaultImage())
+                        : roundedImage(
+                            CachedNetworkImage(
+                              fadeInDuration: const Duration(milliseconds: 300),
+                              fadeOutDuration:
+                                  const Duration(milliseconds: 300),
+                              imageUrl: restaurant.photoUrl!,
+                              fit: BoxFit.fill,
+                              width: double.infinity,
+                              height: double.infinity,
+                              placeholder: (_, __) => defaultImage(),
+                              errorWidget: (_, __, ___) => defaultImage(),
+                            ),
+                          ),
               ),
-
-              /*Container(
-                height: 200,
-                decoration: BoxDecoration(
-                  borderRadius: const BorderRadius.only(
-                    topLeft: Radius.circular(10),
-                    topRight: Radius.circular(10),
-                  ),
-                  // color: Colors.blueGrey,
-                  image: DecorationImage(
-                    image: AssetImage(imagePath),
-                    fit: BoxFit.cover,
-                  ),
-                ),
-              ),*/
               Padding(
                 padding: const EdgeInsets.only(
                   top: 10,
@@ -111,19 +91,22 @@ class FoodyCardRestaurant extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Text(
-                          category,
+                          restaurant.categories.isEmpty
+                              ? ""
+                              : restaurant.categories.first.name,
                           style: const TextStyle(
                             fontStyle: FontStyle.italic,
                           ),
                         ),
                         Skeleton.unite(
-                          child: FoodyRatingLabel(rating: rating.toString()),
+                          child: FoodyRatingLabel(
+                              rating: restaurant.averageRating.toString()),
                         )
                       ],
                     ),
                     const SizedBox(height: 10),
                     Text(
-                      name,
+                      restaurant.name,
                       style: const TextStyle(
                         fontWeight: FontWeight.bold,
                         fontSize: 20,
@@ -131,21 +114,36 @@ class FoodyCardRestaurant extends StatelessWidget {
                     ),
                     const SizedBox(height: 5),
                     Text(
-                      address,
+                      "${restaurant.street}, ${restaurant.postalCode}, ${restaurant.city}",
                       style: const TextStyle(color: Colors.grey),
                     ),
                     const SizedBox(height: 30),
-                    sittingTimes.isEmpty
-                        ? const FoodyButton(label: "Prenota", height: 45)
+                    restaurant.sittingTimes.isEmpty
+                        ? FoodyButton(
+                            label: "Prenota",
+                            height: 45,
+                            onPressed: () => NavigationService().navigateTo(
+                              bookingFormRoute,
+                              arguments: {"restaurant": restaurant},
+                            ),
+                          )
                         : Row(
                             spacing: 10,
                             children: [
-                              ...sittingTimes.map(
+                              ...restaurant.sittingTimes.map(
                                 (sittingTime) => Skeleton.leaf(
                                   child: FoodyTag(
                                     width: 90,
-                                    label: sittingTime,
+                                    label: DateFormat('HH:mm')
+                                        .format(sittingTime.start),
                                     elevation: 0,
+                                    onTap: () => NavigationService().navigateTo(
+                                      bookingFormRoute,
+                                      arguments: {
+                                        "restaurant": restaurant,
+                                        "sittingTime": sittingTime,
+                                      },
+                                    ),
                                   ),
                                 ),
                               ),
@@ -165,7 +163,11 @@ class FoodyCardRestaurant extends StatelessWidget {
                                     ),
                                     icon: const Icon(PhosphorIconsRegular.plus),
                                     iconSize: 20,
-                                    onPressed: () {},
+                                    onPressed: () =>
+                                        NavigationService().navigateTo(
+                                      bookingFormRoute,
+                                      arguments: {"restaurant": restaurant},
+                                    ),
                                   ),
                                 ),
                               ),

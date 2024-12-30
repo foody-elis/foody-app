@@ -10,9 +10,13 @@ import '../../repository/interface/foody_api_repository.dart';
 class MenuBloc extends Bloc<MenuEvent, MenuState> {
   final FoodyApiRepository foodyApiRepository;
   final int restaurantId;
+  final bool canEdit;
 
-  MenuBloc({required this.foodyApiRepository, required this.restaurantId})
-      : super(MenuState.initial()) {
+  MenuBloc({
+    required this.foodyApiRepository,
+    required this.restaurantId,
+    required this.canEdit,
+  }) : super(MenuState.initial()) {
     on<FetchDishes>(_onFetchDishes);
     on<RemoveDish>(_onRemoveDish);
 
@@ -49,7 +53,6 @@ class MenuBloc extends Bloc<MenuEvent, MenuState> {
       errorToEmit: (msg) => emit(state.copyWith(apiError: msg)),
       onFailed: (_) => emit(state.copyWith(isLoading: false)),
       onError: () => emit(state.copyWith(isLoading: false)),
-      
     );
   }
 }

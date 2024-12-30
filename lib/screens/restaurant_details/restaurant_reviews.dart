@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:foody_app/dto/response/review_response_dto.dart';
+import 'package:foody_app/routing/navigation_service.dart';
 import 'package:foody_app/screens/restaurant_details/restaurant_review.dart';
 import 'package:skeletonizer/skeletonizer.dart';
+
+import '../../widgets/foody_outlined_button.dart';
 
 class RestaurantReviews extends StatelessWidget {
   const RestaurantReviews({
@@ -29,8 +32,9 @@ class RestaurantReviews extends StatelessWidget {
         Skeletonizer(
           enabled: enableSkeletonizer,
           containersColor: Colors.grey.shade200,
-          child: Column(
-            children: reviews.asMap().entries.map((e) {
+          child:
+              Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
+            ...reviews.asMap().entries.map((e) {
               final i = e.key;
               final review = e.value;
 
@@ -38,8 +42,16 @@ class RestaurantReviews extends StatelessWidget {
                 review: review,
                 isLastReview: i != reviews.length - 1,
               );
-            }).toList(),
-          ),
+            }),
+            const SizedBox(height: 20),
+            Skeleton.ignore(
+              child: FoodyOutlinedButton(
+                height: 50,
+                label: "Leggi le recensioni",
+                onPressed: () => NavigationService().goBack(),
+              ),
+            ),
+          ]),
         ),
       ],
     );

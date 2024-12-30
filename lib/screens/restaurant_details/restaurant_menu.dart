@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:foody_app/bloc/restaurant_details/restaurant_details_bloc.dart';
 import 'package:foody_app/bloc/restaurant_details/restaurant_details_event.dart';
 import 'package:foody_app/dto/response/dish_response_dto.dart';
+import 'package:foody_app/widgets/foody_outlined_button.dart';
 import 'package:phosphor_flutter/phosphor_flutter.dart';
 import 'package:skeletonizer/skeletonizer.dart';
 
@@ -43,7 +44,7 @@ class RestaurantMenu extends StatelessWidget {
                 onPressed: () async {
                   await NavigationService().navigateTo(
                     menuRoute,
-                    arguments: {"restaurantId": restaurantId},
+                    arguments: {"restaurantId": restaurantId, "canEdit": true},
                   );
 
                   if (!context.mounted) return;
@@ -55,11 +56,27 @@ class RestaurantMenu extends StatelessWidget {
         ),
         const SizedBox(height: 10),
         Skeletonizer(
-          enabled: enableSkeletonizer,
-          containersColor: Colors.grey.shade200,
+          enabled: true,
           child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
             spacing: 10,
-            children: dishes.map((dish) => FoodyDishCard(dish: dish)).toList(),
+            children: [
+              ...dishes.map((dish) => FoodyDishCard(dish: dish)),
+              const SizedBox.shrink(),
+              Skeleton.ignore(
+                child: FoodyOutlinedButton(
+                  height: 50,
+                  label: "Leggi il menù",
+                  onPressed: () => NavigationService().navigateTo(
+                    menuRoute,
+                    arguments: {
+                      "restaurantId": restaurantId,
+                      "canEdit": canEdit
+                    },
+                  ),
+                ),
+              ),
+            ],
           ),
         ),
       ],

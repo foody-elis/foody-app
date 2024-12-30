@@ -32,13 +32,17 @@ class Menu extends StatelessWidget {
             .add(ShowLoadingOverlayChanged(show: state.isLoading));
       },
       builder: (context, state) {
+        final canEdit = context.read<MenuBloc>().canEdit;
+
         return PopScope(
           canPop: !state.isLoading,
           child: Scaffold(
             body: FoodySecondaryLayout(
                 showBottomNavBar: false,
                 title: "Menù",
-                subtitle: "Gestisci i piatti all'interno del tuo menù",
+                subtitle: canEdit
+                    ? "Gestisci i piatti all'interno del tuo menù"
+                    : "Visualizza i piatti del ristorante",
                 body: state.dishes.isEmpty
                     ? [
                         const FoodyEmptyData(
@@ -59,7 +63,7 @@ class Menu extends StatelessWidget {
                                   .read<MenuBloc>()
                                   .add(RemoveDish(dishId: dish.id));
                             },
-                            child: FoodyDishCard(dish: dish, canEdit: true),
+                            child: FoodyDishCard(dish: dish, canEdit: canEdit),
                           ),
                         );
                       }).toList()),

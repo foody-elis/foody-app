@@ -122,7 +122,7 @@ class FoodyCircularImage extends StatelessWidget {
         child: Ink(
           decoration: BoxDecoration(
             shape: BoxShape.circle,
-            color: Colors.white,
+            color: Colors.grey.shade200,
             boxShadow: showShadow ? foodyDefaultShadow() : null,
           ),
           child: Skeleton.ignore(

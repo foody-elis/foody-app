@@ -26,7 +26,9 @@ class FoodyDishCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Card(
-      surfaceTintColor: Theme.of(context).primaryColor,
+      surfaceTintColor: Skeletonizer.maybeOf(context)?.enabled == true
+          ? Colors.grey.shade200
+          : Theme.of(context).primaryColor,
       margin: const EdgeInsets.all(0),
       child: ListTile(
         contentPadding: const EdgeInsets.only(right: 16, left: 10),

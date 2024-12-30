@@ -95,7 +95,8 @@ class Router {
           builder: (_) => BlocProvider<MenuBloc>(
             create: (context) => MenuBloc(
               foodyApiRepository: context.read<FoodyApiRepository>(),
-              restaurantId: arguments?["restaurantId"],
+              restaurantId: arguments!["restaurantId"],
+              canEdit: arguments["canEdit"],
             ),
             child: const Menu(),
           ),

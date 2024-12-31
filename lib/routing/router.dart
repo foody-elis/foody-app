@@ -7,6 +7,7 @@ import 'package:foody_app/bloc/bottom_nav_bar/bottom_nav_bar_bloc.dart';
 import 'package:foody_app/bloc/menu/menu_bloc.dart';
 import 'package:foody_app/bloc/restaurant_details/restaurant_details_bloc.dart';
 import 'package:foody_app/bloc/restaurant_form/restaurant_form_bloc.dart';
+import 'package:foody_app/bloc/reviews/reviews_bloc.dart';
 import 'package:foody_app/bloc/sign_up/sign_up_bloc.dart';
 import 'package:foody_app/bloc/welcome/welcome_bloc.dart';
 import 'package:foody_app/repository/interface/foody_api_repository.dart';
@@ -18,6 +19,7 @@ import 'package:foody_app/screens/edit_profile.dart';
 import 'package:foody_app/screens/menu/menu.dart';
 import 'package:foody_app/screens/restaurant_details/restaurant_details.dart';
 import 'package:foody_app/screens/restaurant_form.dart';
+import 'package:foody_app/screens/reviews/reviews.dart';
 import 'package:foody_app/screens/settings.dart';
 
 import '../bloc/add_sitting_times_list/sitting_times_form_list_bloc.dart';
@@ -130,6 +132,16 @@ class Router {
       case bookingCompletedRoute:
         return CupertinoPageRoute(
           builder: (_) => BookingCompleted(booking: arguments!["booking"]),
+        );
+      case reviewsRoute:
+        return CupertinoPageRoute(
+          builder: (_) => BlocProvider<ReviewsBloc>(
+            create: (context) => ReviewsBloc(
+              foodyApiRepository: context.read<FoodyApiRepository>(),
+              restaurantId: arguments!["restaurantId"],
+            ),
+            child: const Reviews(),
+          ),
         );
       default:
         return CupertinoPageRoute(

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_rating/flutter_rating.dart';
 import 'package:foody_app/dto/response/dish_response_dto.dart';
 import 'package:foody_app/widgets/foody_circular_image.dart';
+import 'package:foody_app/widgets/foody_rating.dart';
 import 'package:phosphor_flutter/phosphor_flutter.dart';
 
 class DishDetails extends StatelessWidget {
@@ -61,12 +61,12 @@ class DishDetails extends StatelessWidget {
         Column(
           spacing: 10,
           children: [
-            StarRating(
-              rating: 4,
+            FoodyRating(
+              rating: dish.averageRating,
               size: 20,
               color: Theme.of(context).primaryColor,
             ),
-            const Text("5 valutazioni su Foody"),
+            const Text("Valutazioni lasciate su Foody"),
           ],
         ),
         const Divider(height: 40),

@@ -18,13 +18,13 @@ import 'dish_form_event.dart';
 class DishFormBloc extends Bloc<DishFormEvent, DishFormState> {
   final FoodyApiRepository foodyApiRepository;
   final DishResponseDto? dish;
-  final int restaurantId;
+  // final int restaurantId;
   final MenuBloc menuBloc;
   final NavigationService _navigationService = NavigationService();
 
   DishFormBloc({
     required this.foodyApiRepository,
-    required this.restaurantId,
+    // required this.restaurantId,
     this.dish,
     required this.menuBloc,
   }) : super(DishFormState.initial(dish)) {
@@ -85,7 +85,7 @@ class DishFormBloc extends Bloc<DishFormEvent, DishFormState> {
         photoBase64: state.photoPath == ""
             ? null
             : base64Encode(File(state.photoPath).readAsBytesSync()),
-        restaurantId: restaurantId,
+        restaurantId: menuBloc.restaurantId,
       );
       final isEditing = dish != null;
 
@@ -102,7 +102,7 @@ class DishFormBloc extends Bloc<DishFormEvent, DishFormState> {
                   : "Piatto aggiunto con successo"));
           emit(state.copyWith(apiError: "", isLoading: false));
           menuBloc.add(FetchDishes());
-          NavigationService().goBack();
+          _navigationService.goBack();
         },
         errorToEmit: (msg) => emit(state.copyWith(apiError: msg)),
         onFailed: (_) => emit(state.copyWith(isLoading: false)),

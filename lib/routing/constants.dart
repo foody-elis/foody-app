@@ -10,3 +10,4 @@ const String settingsRoute = 'setting';
 const String editProfileRoute = 'edit_profile';
 const String bookingFormRoute = 'booking_form';
 const String bookingCompletedRoute = 'booking_completed';
+const String reviewsRoute = 'reviews';

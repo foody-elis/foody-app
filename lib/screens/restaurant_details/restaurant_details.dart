@@ -138,6 +138,7 @@ class RestaurantDetails extends HookWidget {
                         const SizedBox(height: 20),
                         RestaurantReviews(
                           enableSkeletonizer: state.isFetching,
+                          restaurantId: state.restaurant.id,
                           reviews: state.restaurant.reviews,
                         ),
                         const SizedBox(height: 110),

@@ -1,27 +1,26 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:foody_app/bloc/dish_form/dish_form_bloc.dart';
 import 'package:foody_app/bloc/foody/foody_bloc.dart';
 import 'package:foody_app/bloc/foody/foody_event.dart';
-import 'package:foody_app/bloc/menu/menu_bloc.dart';
-import 'package:foody_app/bloc/menu/menu_event.dart';
-import 'package:foody_app/bloc/menu/menu_state.dart';
+import 'package:foody_app/bloc/review_form/review_form_bloc.dart';
+import 'package:foody_app/bloc/reviews/reviews_bloc.dart';
+import 'package:foody_app/bloc/reviews/reviews_state.dart';
 import 'package:foody_app/repository/interface/foody_api_repository.dart';
-import 'package:foody_app/screens/menu/dish_form.dart';
-import 'package:foody_app/utils/show_foody_modal_bottom_sheet.dart';
+import 'package:foody_app/screens/reviews/review_form.dart';
 import 'package:foody_app/widgets/foody_empty_data.dart';
+import 'package:foody_app/widgets/foody_review.dart';
 import 'package:foody_app/widgets/foody_secondary_layout.dart';
 import 'package:phosphor_flutter/phosphor_flutter.dart';
 
+import '../../utils/show_foody_modal_bottom_sheet.dart';
 import '../../utils/show_snackbar.dart';
-import '../../widgets/foody_dish_card.dart';
 
-class Menu extends StatelessWidget {
-  const Menu({super.key});
+class Reviews extends StatelessWidget {
+  const Reviews({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return BlocConsumer<MenuBloc, MenuState>(
+    return BlocConsumer<ReviewsBloc, ReviewsState>(
       listener: (context, state) {
         if (state.apiError != "") {
           showSnackBar(context: context, msg: state.apiError);
@@ -32,18 +31,14 @@ class Menu extends StatelessWidget {
             .add(ShowLoadingOverlayChanged(show: state.isLoading));
       },
       builder: (context, state) {
-        final canEdit = context.read<MenuBloc>().canEdit;
-
         return PopScope(
           canPop: !state.isLoading,
           child: Scaffold(
             body: FoodySecondaryLayout(
                 showBottomNavBar: false,
-                title: "Menù",
-                subtitle: canEdit
-                    ? "Gestisci i piatti all'interno del tuo menù"
-                    : "Visualizza i piatti del ristorante",
-                body: state.dishes.isEmpty
+                title: "Recensioni",
+                subtitle: "Visualizza le recensioni del ristorante",
+                body: state.reviews.isEmpty
                     ? [
                         const FoodyEmptyData(
                           title: "Nessun piatto nel menù",
@@ -52,31 +47,25 @@ class Menu extends StatelessWidget {
                           lottieAnimated: false,
                         )
                       ]
-                    : state.dishes.map((dish) {
-                        return Padding(
-                          padding: const EdgeInsets.only(bottom: 10),
-                          child: Dismissible(
-                            key: ValueKey(dish.id),
-                            onDismissed: (_) {
-                              state.dishes.removeWhere((e) => e.id == dish.id);
-                              context
-                                  .read<MenuBloc>()
-                                  .add(RemoveDish(dishId: dish.id));
-                            },
-                            child: FoodyDishCard(dish: dish, canEdit: canEdit),
-                          ),
+                    : state.reviews.asMap().entries.map((e) {
+                        final i = e.key;
+                        final review = e.value;
+
+                        return FoodyReview(
+                          review: review,
+                          isLastReview: i != state.reviews.length - 1,
                         );
                       }).toList()),
             floatingActionButton: FloatingActionButton(
               onPressed: () => showFoodyModalBottomSheet(
                 context: context,
-                child: BlocProvider<DishFormBloc>(
-                  create: (_) => DishFormBloc(
+                child: BlocProvider<ReviewFormBloc>(
+                  create: (_) => ReviewFormBloc(
                     foodyApiRepository: context.read<FoodyApiRepository>(),
-                    menuBloc: context.read<MenuBloc>(),
+                    reviewsBloc: context.read<ReviewsBloc>(),
                     // restaurantId: context.read<MenuBloc>().restaurantId,
                   ),
-                  child: const DishForm(),
+                  child: const ReviewForm(),
                 ),
               ),
               child: const Icon(PhosphorIconsRegular.plus),

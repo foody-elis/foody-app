@@ -3,10 +3,10 @@ import 'package:foody_app/dto/response/review_response_dto.dart';
 import 'package:intl/intl.dart';
 import 'package:skeletonizer/skeletonizer.dart';
 
-import '../../widgets/foody_circular_image.dart';
+import 'foody_circular_image.dart';
 
-class RestaurantReview extends StatelessWidget {
-  const RestaurantReview({
+class FoodyReview extends StatelessWidget {
+  const FoodyReview({
     super.key,
     required this.review,
     required this.isLastReview,

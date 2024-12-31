@@ -56,7 +56,7 @@ class RestaurantMenu extends StatelessWidget {
         ),
         const SizedBox(height: 10),
         Skeletonizer(
-          enabled: true,
+          enabled: enableSkeletonizer,
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             spacing: 10,

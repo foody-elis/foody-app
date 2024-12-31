@@ -51,6 +51,7 @@ class RestaurantDetailsState extends Equatable {
               price: 50,
               photoUrl: null,
               restaurantId: 0,
+              averageRating: 0,
             ),
           ),
           sittingTimes: List.filled(

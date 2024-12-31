@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_rating/flutter_rating.dart';
 import 'package:foody_app/bloc/menu/menu_bloc.dart';
 import 'package:foody_app/dto/response/dish_response_dto.dart';
 import 'package:foody_app/screens/menu/dish_form.dart';
 import 'package:foody_app/screens/restaurant_details/dish_details.dart';
 import 'package:foody_app/utils/show_foody_modal_bottom_sheet.dart';
+import 'package:foody_app/widgets/foody_rating.dart';
 import 'package:phosphor_flutter/phosphor_flutter.dart';
 import 'package:skeletonizer/skeletonizer.dart';
 
@@ -41,7 +41,7 @@ class FoodyDishCard extends StatelessWidget {
                   create: (_) => DishFormBloc(
                     foodyApiRepository: context.read<FoodyApiRepository>(),
                     menuBloc: context.read<MenuBloc>(),
-                    restaurantId: dish.restaurantId,
+                    // restaurantId: dish.restaurantId,
                     dish: dish,
                   ),
                   child: const DishForm(),
@@ -71,8 +71,8 @@ class FoodyDishCard extends StatelessWidget {
           children: [
             Text(dish.name, overflow: TextOverflow.ellipsis),
             Skeleton.unite(
-              child: StarRating(
-                rating: 4,
+              child: FoodyRating(
+                rating: dish.averageRating,
                 size: 12,
                 mainAxisAlignment: MainAxisAlignment.start,
                 color: Theme.of(context).primaryColor,

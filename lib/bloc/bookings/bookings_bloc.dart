@@ -51,9 +51,6 @@ class BookingsBloc extends Bloc<BookingsEvent, BookingsState> {
   bool _isYesterday(DateTime date) =>
       _equalDays(date, date2: DateTime.now().subtract(const Duration(days: 1)));
 
-  bool _isTomorrow(DateTime date) =>
-      _equalDays(date, date2: DateTime.now().add(const Duration(days: 1)));
-
   void _applyFilter(Emitter<BookingsState> emit) {
     emit(state.copyWith(
       bookingsFiltered: state.bookings

@@ -2,17 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:foody_app/bloc/foody/foody_bloc.dart';
 import 'package:foody_app/bloc/foody/foody_event.dart';
-import 'package:foody_app/bloc/review_form/review_form_bloc.dart';
 import 'package:foody_app/bloc/reviews/reviews_bloc.dart';
 import 'package:foody_app/bloc/reviews/reviews_state.dart';
-import 'package:foody_app/repository/interface/foody_api_repository.dart';
-import 'package:foody_app/screens/reviews/review_form.dart';
 import 'package:foody_app/widgets/foody_empty_data.dart';
 import 'package:foody_app/widgets/foody_review.dart';
 import 'package:foody_app/widgets/foody_secondary_layout.dart';
-import 'package:phosphor_flutter/phosphor_flutter.dart';
 
-import '../../utils/show_foody_modal_bottom_sheet.dart';
 import '../../utils/show_snackbar.dart';
 
 class Reviews extends StatelessWidget {
@@ -56,7 +51,7 @@ class Reviews extends StatelessWidget {
                           isLastReview: i != state.reviews.length - 1,
                         );
                       }).toList()),
-            floatingActionButton: FloatingActionButton(
+            /*floatingActionButton: FloatingActionButton(
               onPressed: () => showFoodyModalBottomSheet(
                 context: context,
                 child: BlocProvider<ReviewFormBloc>(
@@ -69,7 +64,7 @@ class Reviews extends StatelessWidget {
                 ),
               ),
               child: const Icon(PhosphorIconsRegular.plus),
-            ),
+            ),*/
           ),
         );
       },

@@ -19,6 +19,12 @@ class FoodyFilterChip extends StatelessWidget {
     return Padding(
       padding: margin,
       child: FilterChip(
+        backgroundColor: Theme.of(context).primaryColor.withOpacity(0.1),
+        selectedColor: Theme.of(context).primaryColor,
+        checkmarkColor: Colors.white,
+        labelStyle: TextStyle(
+          color: selected ? Colors.white : Theme.of(context).primaryColor,
+        ),
         label: Text(label),
         onSelected: onSelected,
         visualDensity: const VisualDensity(vertical: -2),

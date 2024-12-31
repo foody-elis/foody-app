@@ -25,7 +25,7 @@ class Restaurants extends StatelessWidget {
             ),
             Skeletonizer(
               enabled: state.isFetching,
-              child: state.restaurants.isEmpty
+              child: state.restaurantsFiltered.isEmpty
                   ? const FoodyEmptyData(
                       title: "Nessun ristorante trovato",
                       lottieAsset: "empty_data.json",
@@ -35,9 +35,9 @@ class Restaurants extends StatelessWidget {
                       padding: const EdgeInsets.only(top: 10),
                       shrinkWrap: true,
                       physics: const NeverScrollableScrollPhysics(),
-                      itemCount: state.restaurants.length,
+                      itemCount: state.restaurantsFiltered.length,
                       itemBuilder: (context, index) {
-                        final restaurant = state.restaurants[index];
+                        final restaurant = state.restaurantsFiltered[index];
 
                         return FoodyCardRestaurant(restaurant: restaurant);
                       },

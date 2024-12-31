@@ -9,12 +9,18 @@ import '../../dto/response/category_response_dto.dart';
 class HomeState extends Equatable {
   final List<CategoryResponseDto> categories;
   final List<DetailedRestaurantResponseDto> restaurants;
+  final List<DetailedRestaurantResponseDto> restaurantsFiltered;
+  final Set<int> categoriesFilter;
+  final String searchBarFilter;
   final bool isFetching;
   final String apiError;
 
   const HomeState({
     required this.categories,
     required this.restaurants,
+    required this.restaurantsFiltered,
+    required this.categoriesFilter,
+    required this.searchBarFilter,
     required this.isFetching,
     required this.apiError,
   });
@@ -22,7 +28,8 @@ class HomeState extends Equatable {
   HomeState.initial()
       : categories = List.filled(
             10, const CategoryResponseDto(name: "Vegetariano", id: 0)),
-        restaurants = List.filled(
+        restaurants = [],
+        restaurantsFiltered = List.filled(
           10,
           DetailedRestaurantResponseDto(
             id: 0,
@@ -79,23 +86,39 @@ class HomeState extends Equatable {
             ),
           ),
         ),
+        categoriesFilter = {},
+        searchBarFilter = "",
         isFetching = true,
         apiError = "";
 
   HomeState copyWith({
     List<CategoryResponseDto>? categories,
     List<DetailedRestaurantResponseDto>? restaurants,
+    List<DetailedRestaurantResponseDto>? restaurantsFiltered,
+    Set<int>? categoriesFilter,
+    String? searchBarFilter,
     bool? isFetching,
     String? apiError,
   }) {
     return HomeState(
       categories: categories ?? this.categories,
       restaurants: restaurants ?? this.restaurants,
+      restaurantsFiltered: restaurantsFiltered ?? this.restaurantsFiltered,
+      categoriesFilter: categoriesFilter ?? this.categoriesFilter,
       isFetching: isFetching ?? this.isFetching,
+      searchBarFilter: searchBarFilter ?? this.searchBarFilter,
       apiError: apiError ?? this.apiError,
     );
   }
 
   @override
-  List<Object> get props => [categories, restaurants, isFetching, apiError];
+  List<Object> get props => [
+        categories,
+        restaurants,
+        restaurantsFiltered,
+        categoriesFilter,
+        searchBarFilter,
+        isFetching,
+        apiError,
+      ];
 }

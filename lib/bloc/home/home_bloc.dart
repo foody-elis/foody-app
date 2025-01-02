@@ -41,8 +41,8 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
           restaurants: restaurants,
           restaurantsFiltered: restaurants,
         )),
-        onFailed: (_) => emit(state.copyWith(restaurants: [])),
-        onError: () => emit(state.copyWith(restaurants: [])),
+        onFailed: (_) => emit(state.copyWith(restaurantsFiltered: [])),
+        onError: () => emit(state.copyWith(restaurantsFiltered: [])),
         errorToEmit: (msg) => emit(state.copyWith(apiError: msg)),
       );
 

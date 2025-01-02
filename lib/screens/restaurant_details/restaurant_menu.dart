@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:foody_app/bloc/restaurant_details/restaurant_details_bloc.dart';
 import 'package:foody_app/bloc/restaurant_details/restaurant_details_event.dart';
 import 'package:foody_app/dto/response/dish_response_dto.dart';
+import 'package:foody_app/widgets/foody_empty_data.dart';
 import 'package:foody_app/widgets/foody_outlined_button.dart';
 import 'package:phosphor_flutter/phosphor_flutter.dart';
 import 'package:skeletonizer/skeletonizer.dart';
@@ -61,21 +62,31 @@ class RestaurantMenu extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.stretch,
             spacing: 10,
             children: [
-              ...dishes.map((dish) => FoodyDishCard(dish: dish)),
+              if (dishes.isEmpty)
+                const FoodyEmptyData(
+                  title: "Nessun piatto nel menù",
+                  lottieAsset: "empty_menu.json",
+                  lottieHeight: 120,
+                  containerHeight: 200,
+                  lottieAnimated: false,
+                )
+              else
+                ...dishes.map((dish) => FoodyDishCard(dish: dish)),
               const SizedBox.shrink(),
-              Skeleton.ignore(
-                child: FoodyOutlinedButton(
-                  height: 50,
-                  label: "Leggi il menù",
-                  onPressed: () => NavigationService().navigateTo(
-                    menuRoute,
-                    arguments: {
-                      "restaurantId": restaurantId,
-                      "canEdit": canEdit
-                    },
+              if (dishes.length == 5)
+                Skeleton.ignore(
+                  child: FoodyOutlinedButton(
+                    height: 50,
+                    label: "Leggi il menù",
+                    onPressed: () => NavigationService().navigateTo(
+                      menuRoute,
+                      arguments: {
+                        "restaurantId": restaurantId,
+                        "canEdit": canEdit
+                      },
+                    ),
                   ),
                 ),
-              ),
             ],
           ),
         ),

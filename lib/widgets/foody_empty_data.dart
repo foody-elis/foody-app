@@ -9,6 +9,8 @@ class FoodyEmptyData extends StatelessWidget {
     this.lottieWidth,
     this.lottieHeight,
     this.lottieAnimated = true,
+    this.containerHeight,
+    this.spacing = 10,
   });
 
   final String title;
@@ -16,14 +18,16 @@ class FoodyEmptyData extends StatelessWidget {
   final double? lottieWidth;
   final double? lottieHeight;
   final bool lottieAnimated;
+  final double? containerHeight;
+  final double spacing;
 
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      height: MediaQuery.of(context).size.height * 0.5,
+      height: containerHeight ?? MediaQuery.of(context).size.height * 0.5,
       width: MediaQuery.of(context).size.width,
       child: Column(
-        spacing: 10,
+        spacing: spacing,
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Lottie.asset(

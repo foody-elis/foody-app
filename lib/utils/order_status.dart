@@ -1,0 +1,5 @@
+enum OrderStatus {
+  PREPARING,
+  AWAITING_PAYMENT,
+  COMPLETED,
+}

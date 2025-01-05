@@ -4,7 +4,7 @@ import 'package:flutter_spinbox/flutter_spinbox.dart';
 class FoodyNumberField extends StatelessWidget {
   const FoodyNumberField({
     super.key,
-    required this.title,
+    this.title,
     this.padding,
     this.margin,
     this.onChanged,
@@ -12,7 +12,7 @@ class FoodyNumberField extends StatelessWidget {
     this.startValue = 1,
   });
 
-  final String title;
+  final String? title;
   final EdgeInsetsGeometry? padding, margin;
   final void Function(double)? onChanged;
   final bool required;
@@ -24,26 +24,27 @@ class FoodyNumberField extends StatelessWidget {
       padding: padding,
       margin: margin,
       child: Column(
+        spacing: 8,
         mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text.rich(
-            TextSpan(
-              children: [
-                TextSpan(
-                  text: title,
-                  style: const TextStyle(color: Colors.grey),
-                ),
-                if (required)
-                  const TextSpan(
-                    text: ' *',
-                    style: TextStyle(color: Colors.red),
+          if (title != null)
+            Text.rich(
+              TextSpan(
+                children: [
+                  TextSpan(
+                    text: title,
+                    style: const TextStyle(color: Colors.grey),
                   ),
-              ],
+                  if (required)
+                    const TextSpan(
+                      text: ' *',
+                      style: TextStyle(color: Colors.red),
+                    ),
+                ],
+              ),
             ),
-          ),
           Container(
-            margin: const EdgeInsets.only(top: 8),
             height: 50,
             decoration: BoxDecoration(
               color: Theme.of(context).primaryColor.withOpacity(0.1),

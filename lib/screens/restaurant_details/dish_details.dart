@@ -1,23 +1,33 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:foody_app/bloc/order_form/order_form_bloc.dart';
+import 'package:foody_app/bloc/order_form/order_form_event.dart';
+import 'package:foody_app/dto/request/order_dish_request_dto.dart';
 import 'package:foody_app/dto/response/dish_response_dto.dart';
+import 'package:foody_app/routing/navigation_service.dart';
+import 'package:foody_app/widgets/foody_button.dart';
 import 'package:foody_app/widgets/foody_circular_image.dart';
+import 'package:foody_app/widgets/foody_number_field.dart';
 import 'package:foody_app/widgets/foody_rating.dart';
 import 'package:phosphor_flutter/phosphor_flutter.dart';
 
-class DishDetails extends StatelessWidget {
+class DishDetails extends HookWidget {
   const DishDetails({
     super.key,
     required this.dish,
-    this.canAddToOrder = false,
+    this.canAddToCart = false,
   });
 
   final DishResponseDto dish;
-  final bool canAddToOrder;
+  final bool canAddToCart;
 
   @override
   Widget build(BuildContext context) {
+    final quantity = useState(1);
+
     return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
+      crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
         Align(
           alignment: Alignment.center,
@@ -47,7 +57,7 @@ class DishDetails extends StatelessWidget {
             ),
             Expanded(
               child: Text(
-                "${dish.price} €",
+                "${dish.price.toStringAsFixed(2)} €",
                 textAlign: TextAlign.end,
                 style: const TextStyle(
                   fontWeight: FontWeight.bold,
@@ -78,6 +88,66 @@ class DishDetails extends StatelessWidget {
           ),
         ),
         Text(dish.description * 20),
+        if (canAddToCart) ...[
+          const Divider(height: 40),
+          SizedBox(
+            height: 80,
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              spacing: 20,
+              children: [
+                Expanded(
+                    flex: 3,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        const Text(
+                          "Quantità",
+                          style: TextStyle(fontWeight: FontWeight.bold),
+                        ),
+                        FoodyNumberField(
+                          onChanged: (v) => quantity.value = v.toInt(),
+                        ),
+                      ],
+                    )),
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      const Text(
+                        "Totale",
+                        style: TextStyle(fontWeight: FontWeight.bold),
+                      ),
+                      Text(
+                        "${(dish.price * quantity.value).toStringAsFixed(2)} €",
+                        style: const TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 20,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+            ),
+          ),
+          const SizedBox(height: 20),
+          FoodyButton(
+            label: "Aggiungi al carrello",
+            height: 50,
+            onPressed: () {
+              context.read<OrderFormBloc>().add(AddOrderDish(
+                    orderDish: OrderDishRequestDto(
+                      dishId: dish.id,
+                      quantity: quantity.value,
+                    ),
+                  ));
+              NavigationService().goBack();
+            },
+          ),
+        ],
       ],
     );
   }

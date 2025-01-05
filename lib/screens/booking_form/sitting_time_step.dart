@@ -17,37 +17,33 @@ class BookingFormSittingTimeStep extends StatelessWidget {
     return BlocBuilder<BookingFormBloc, BookingFormState>(
       builder: (context, state) {
         return BookingFormGenericStep(
-            step: 1,
-            title: "Scegli un orario disponibile",
-            titleWhenPassed: "Orario scelto",
-            /*childWhenPassed: () => Text(
-                  "Alle ${DateFormat("HH:mm").format(state.sittingTime!.start)}",
-                  style: const TextStyle(fontStyle: FontStyle.italic),
-                ),*/
-            childWhenPassed: (constraints) => FoodyTagOutlined(
-                  elevation: 0,
-                  width: (constraints.maxWidth / 4) - 5,
-                  label: DateFormat("HH:mm").format(state.sittingTime!.start),
-                  /*onTap: () => context.read<BookingFormBloc>().add(
-                  SittingTimeChanged(sittingTime: sittingTime)),*/
-                ),
-            child: (constraints) {
-              final sittingTimes =
-                  state.sittingTimesForWeekDays[state.date?.weekday];
+          step: 1,
+          title: "Scegli un orario disponibile",
+          titleWhenPassed: "Orario scelto",
+          childWhenPassed: (constraints) => FoodyTagOutlined(
+            elevation: 0,
+            width: (constraints.maxWidth / 4) - 5,
+            label: DateFormat("HH:mm").format(state.sittingTime!.start),
+          ),
+          child: (constraints) {
+            final sittingTimes =
+                state.sittingTimesForWeekDays[state.date?.weekday];
 
-              return Wrap(
-                spacing: 5,
-                runSpacing: 5,
-                children: sittingTimes!
-                    .map((sittingTime) => FoodyTag(
-                          width: (constraints.maxWidth / 4) - 5,
-                          label: DateFormat("HH:mm").format(sittingTime.start),
-                          onTap: () => context.read<BookingFormBloc>().add(
-                              SittingTimeChanged(sittingTime: sittingTime)),
-                        ))
-                    .toList(),
-              );
-            });
+            return Wrap(
+              spacing: 5,
+              runSpacing: 5,
+              children: sittingTimes!
+                  .map((sittingTime) => FoodyTag(
+                        width: (constraints.maxWidth / 4) - 5,
+                        label: DateFormat("HH:mm").format(sittingTime.start),
+                        onTap: () => context
+                            .read<BookingFormBloc>()
+                            .add(SittingTimeChanged(sittingTime: sittingTime)),
+                      ))
+                  .toList(),
+            );
+          },
+        );
       },
     );
   }

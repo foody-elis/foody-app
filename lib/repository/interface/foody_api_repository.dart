@@ -3,6 +3,7 @@ import 'package:foody_app/repository/interface/auth_api_repository.dart';
 import 'package:foody_app/repository/interface/bookings_api_repository.dart';
 import 'package:foody_app/repository/interface/categories_api_repository.dart';
 import 'package:foody_app/repository/interface/dishes_api_repository.dart';
+import 'package:foody_app/repository/interface/order_api_repository.dart';
 import 'package:foody_app/repository/interface/restaurants_api_repository.dart';
 import 'package:foody_app/repository/interface/reviews_api_repository.dart';
 import 'package:foody_app/repository/interface/sitting_times_api_repository.dart';
@@ -18,6 +19,7 @@ class FoodyApiRepository {
   late BookingsApiRepository bookings;
   late DishesApiRepository dishes;
   late ReviewsApiRepository reviews;
+  late OrderApiRepository orders;
 
   FoodyApiRepository({required Dio dio}) {
     this.dio = dio;
@@ -38,5 +40,6 @@ class FoodyApiRepository {
     dishes = DishesApiRepository(dio, baseUrl: "${dio.options.baseUrl}/dishes");
     reviews =
         ReviewsApiRepository(dio, baseUrl: "${dio.options.baseUrl}/reviews");
+    orders = OrderApiRepository(dio, baseUrl: "${dio.options.baseUrl}/orders");
   }
 }

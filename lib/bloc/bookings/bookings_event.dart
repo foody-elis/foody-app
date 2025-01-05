@@ -25,3 +25,12 @@ class FilterChanged extends BookingsEvent {
   @override
   List<Object?> get props => [filter];
 }
+
+class CancelBooking extends BookingsEvent {
+  const CancelBooking({required this.id});
+
+  final int id;
+
+  @override
+  List<Object?> get props => [id];
+}

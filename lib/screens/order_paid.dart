@@ -1,20 +1,15 @@
 import 'package:flutter/material.dart';
-import 'package:foody_app/dto/response/booking_response_dto.dart';
-import 'package:foody_app/routing/constants.dart';
-import 'package:intl/intl.dart';
-import 'package:lottie/lottie.dart';
-import 'package:phosphor_flutter/phosphor_flutter.dart';
+import 'package:foody_app/dto/response/order_response_dto.dart';
 
-import '../routing/navigation_service.dart';
+class OrderPaid extends StatelessWidget {
+  const OrderPaid({super.key, required this.order});
 
-class BookingCompleted extends StatelessWidget {
-  const BookingCompleted({super.key, required this.booking});
-
-  final BookingResponseDto booking;
+  final OrderResponseDto order;
 
   @override
   Widget build(BuildContext context) {
-    final bookingSummary = {
+    return const SizedBox.shrink();
+    /*final bookingSummary = {
       "Ristorante": booking.restaurant.name,
       "Data": DateFormat("d MMMM yyyy", "it_IT").format(booking.date),
       "Orario": DateFormat("HH:mm").format(booking.sittingTime.start),
@@ -40,9 +35,13 @@ class BookingCompleted extends StatelessWidget {
       body: Column(
         mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: [
-          Lottie.asset(
-            "assets/lottie/booking_completed.json",
-            repeat: false,
+          Column(
+            children: [
+              Lottie.asset(
+                "assets/lottie/booking_completed.json",
+                repeat: false,
+              ),
+            ],
           ),
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 20),
@@ -83,6 +82,6 @@ class BookingCompleted extends StatelessWidget {
           )
         ],
       ),
-    );
+    );*/
   }
 }

@@ -5,6 +5,7 @@ class FoodyEmptyData extends StatelessWidget {
   const FoodyEmptyData({
     super.key,
     required this.title,
+    this.description,
     required this.lottieAsset,
     this.lottieWidth,
     this.lottieHeight,
@@ -14,6 +15,7 @@ class FoodyEmptyData extends StatelessWidget {
   });
 
   final String title;
+  final String? description;
   final String lottieAsset;
   final double? lottieWidth;
   final double? lottieHeight;
@@ -43,6 +45,14 @@ class FoodyEmptyData extends StatelessWidget {
               fontSize: 18,
             ),
           ),
+          if (description != null)
+            Text(
+              description!,
+              style: const TextStyle(
+                fontWeight: FontWeight.bold,
+                color: Colors.grey,
+              ),
+            ),
         ],
       ),
     );

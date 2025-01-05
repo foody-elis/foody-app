@@ -1,8 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:foody_app/bloc/auth/auth_bloc.dart';
+import 'package:foody_app/bloc/bookings/bookings_bloc.dart';
+import 'package:foody_app/bloc/bookings/bookings_event.dart';
 import 'package:foody_app/dto/response/booking_response_dto.dart';
+import 'package:foody_app/routing/constants.dart';
+import 'package:foody_app/routing/navigation_service.dart';
 import 'package:foody_app/utils/booking_status.dart';
+import 'package:foody_app/utils/date_comparisons.dart';
+import 'package:foody_app/utils/show_booking_actions.dart';
 import 'package:intl/intl.dart';
 import 'package:skeletonizer/skeletonizer.dart';
 
@@ -10,6 +16,14 @@ class FoodyBookingCard extends StatelessWidget {
   const FoodyBookingCard({super.key, required this.booking});
 
   final BookingResponseDto booking;
+
+  bool _canOrder() {
+    final now = DateTime.now();
+
+    return isToday(booking.date) &&
+        booking.sittingTime.start.isAfter(now) &&
+        booking.sittingTime.end.isBefore(now);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -29,7 +43,22 @@ class FoodyBookingCard extends StatelessWidget {
         ),
         child: InkWell(
           borderRadius: BorderRadius.circular(10),
-          onTap: () {},
+          onTap: active
+              ? () => showBookingActions(
+                    context: context,
+                    onCancel: active
+                        ? () => context
+                            .read<BookingsBloc>()
+                            .add(CancelBooking(id: booking.id))
+                        : null,
+                    onOrder: _canOrder() && !isRestaurateur || true
+                        ? () => NavigationService().navigateTo(
+                              orderFormRoute,
+                              arguments: {"restaurant": booking.restaurant},
+                            )
+                        : null,
+                  )
+              : null,
           child: Padding(
             padding: const EdgeInsets.all(10),
             child: Row(

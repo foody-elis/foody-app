@@ -88,14 +88,16 @@ class BookingForm extends StatelessWidget {
                 ],
               ),
             ),
-            floatingActionButton: AnimatedOpacity(
-              opacity: state.activeStep == 3 ? 1.0 : 0.0,
-              duration: const Duration(milliseconds: 200),
-              child: FloatingActionButton(
-                onPressed: state.activeStep == 3
-                    ? () => context.read<BookingFormBloc>().add(Submit())
-                    : null,
-                child: const Icon(PhosphorIconsRegular.check),
+            floatingActionButton: IgnorePointer(
+              ignoring: state.activeStep != 3,
+              child: AnimatedOpacity(
+                opacity: state.activeStep == 3 ? 1.0 : 0.0,
+                duration: const Duration(milliseconds: 200),
+                child: FloatingActionButton(
+                  onPressed: () =>
+                      context.read<BookingFormBloc>().add(Submit()),
+                  child: const Icon(PhosphorIconsRegular.check),
+                ),
               ),
             ),
           ),

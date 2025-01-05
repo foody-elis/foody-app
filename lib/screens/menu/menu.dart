@@ -38,35 +38,36 @@ class Menu extends StatelessWidget {
           canPop: !state.isLoading,
           child: Scaffold(
             body: FoodySecondaryLayout(
-                showBottomNavBar: false,
-                title: "Menù",
-                subtitle: canEdit
-                    ? "Gestisci i piatti all'interno del tuo menù"
-                    : "Visualizza i piatti del ristorante",
-                body: state.dishes.isEmpty
-                    ? [
-                        const FoodyEmptyData(
-                          title: "Nessun piatto nel menù",
-                          lottieAsset: "empty_menu.json",
-                          lottieHeight: 120,
-                          lottieAnimated: false,
-                        )
-                      ]
-                    : state.dishes.map((dish) {
-                        return Padding(
-                          padding: const EdgeInsets.only(bottom: 10),
-                          child: Dismissible(
-                            key: ValueKey(dish.id),
-                            onDismissed: (_) {
-                              state.dishes.removeWhere((e) => e.id == dish.id);
-                              context
-                                  .read<MenuBloc>()
-                                  .add(RemoveDish(dishId: dish.id));
-                            },
-                            child: FoodyDishCard(dish: dish, canEdit: canEdit),
-                          ),
-                        );
-                      }).toList()),
+              showBottomNavBar: false,
+              title: "Menù",
+              subtitle: canEdit
+                  ? "Gestisci i piatti all'interno del tuo menù"
+                  : "Visualizza i piatti del ristorante",
+              body: state.dishes.isEmpty
+                  ? [
+                      const FoodyEmptyData(
+                        title: "Nessun piatto nel menù",
+                        lottieAsset: "empty_menu.json",
+                        lottieHeight: 120,
+                        lottieAnimated: false,
+                      )
+                    ]
+                  : state.dishes.map((dish) {
+                      return Padding(
+                        padding: const EdgeInsets.only(bottom: 10),
+                        child: Dismissible(
+                          key: ValueKey(dish.id),
+                          onDismissed: (_) {
+                            state.dishes.removeWhere((e) => e.id == dish.id);
+                            context
+                                .read<MenuBloc>()
+                                .add(RemoveDish(dishId: dish.id));
+                          },
+                          child: FoodyDishCard(dish: dish, canEdit: canEdit),
+                        ),
+                      );
+                    }).toList(),
+            ),
             floatingActionButton: FloatingActionButton(
               onPressed: () => showFoodyModalBottomSheet(
                 context: context,

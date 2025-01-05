@@ -11,3 +11,5 @@ const String editProfileRoute = 'edit_profile';
 const String bookingFormRoute = 'booking_form';
 const String bookingCompletedRoute = 'booking_completed';
 const String reviewsRoute = 'reviews';
+const String orderFormRoute = 'order_form';
+const String orderPaidRoute = 'order_paid';

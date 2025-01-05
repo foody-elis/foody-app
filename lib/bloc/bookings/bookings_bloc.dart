@@ -8,6 +8,7 @@ import 'package:foody_app/utils/bookings_filter.dart';
 
 import '../../repository/interface/foody_api_repository.dart';
 import '../../utils/call_api.dart';
+import '../../utils/date_comparisons.dart';
 
 class BookingsBloc extends Bloc<BookingsEvent, BookingsState> {
   final FoodyApiRepository foodyApiRepository;
@@ -15,6 +16,7 @@ class BookingsBloc extends Bloc<BookingsEvent, BookingsState> {
   BookingsBloc({required this.foodyApiRepository})
       : super(BookingsState.initial()) {
     on<FetchBookings>(_onFetchBookings, transformer: droppable());
+    on<CancelBooking>(_onCancelBooking, transformer: droppable());
     on<FilterChanged>(_onFilterChanged);
   }
 
@@ -38,26 +40,13 @@ class BookingsBloc extends Bloc<BookingsEvent, BookingsState> {
     emit(state.copyWith(isFetching: false));
   }
 
-  bool _equalDays(DateTime date1, {DateTime? date2}) {
-    date2 ??= DateTime.now();
-
-    return date1.year == date2.year &&
-        date1.month == date2.month &&
-        date1.day == date2.day;
-  }
-
-  bool _isToday(DateTime date) => _equalDays(date, date2: DateTime.now());
-
-  bool _isYesterday(DateTime date) =>
-      _equalDays(date, date2: DateTime.now().subtract(const Duration(days: 1)));
-
   void _applyFilter(Emitter<BookingsState> emit) {
     emit(state.copyWith(
       bookingsFiltered: state.bookings
           .where(
             (b) => switch (state.filter) {
-              BookingsFilter.today => _isToday(b.date),
-              BookingsFilter.yesterday => _isYesterday(b.date),
+              BookingsFilter.today => isToday(b.date),
+              BookingsFilter.yesterday => isYesterday(b.date),
               BookingsFilter.all => true,
               BookingsFilter.active => b.status == BookingStatus.ACTIVE,
               BookingsFilter.canceled => b.status == BookingStatus.CANCELLED,
@@ -70,5 +59,20 @@ class BookingsBloc extends Bloc<BookingsEvent, BookingsState> {
   void _onFilterChanged(FilterChanged event, Emitter<BookingsState> emit) {
     emit(state.copyWith(filter: event.filter));
     _applyFilter(emit);
+  }
+
+  void _onCancelBooking(
+      CancelBooking event, Emitter<BookingsState> emit) async {
+    emit(state.copyWith(isFetching: true));
+
+    await callApi<BookingResponseDto>(
+      api: () => foodyApiRepository.bookings.cancel(event.id),
+      onComplete: (response) => add(const FetchBookings()),
+      onFailed: (_) => emit(state.copyWith(bookings: [], bookingsFiltered: [])),
+      onError: () => emit(state.copyWith(bookings: [], bookingsFiltered: [])),
+      errorToEmit: (msg) => emit(state.copyWith(apiError: msg)),
+    );
+
+    emit(state.copyWith(isFetching: false));
   }
 }

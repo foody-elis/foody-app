@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
 
 class FoodyBottomSheetLayout extends StatelessWidget {
-  const FoodyBottomSheetLayout(
-      {super.key,
-      required this.context,
-      required this.child,
-      this.maxHeightPercentage,
-      this.draggable = false});
+  const FoodyBottomSheetLayout({
+    super.key,
+    required this.context,
+    required this.child,
+    this.maxHeightPercentage,
+    this.draggable = false,
+  });
 
   final BuildContext context;
   final Widget child;

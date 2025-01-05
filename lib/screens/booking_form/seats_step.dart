@@ -19,18 +19,10 @@ class BookingFormSeatsStep extends StatelessWidget {
           step: 2,
           title: "Scegli il numero di posti al tavolo",
           titleWhenPassed: "Numero di posti",
-          /*childWhenPassed: () => Text(
-            state.seats == 1
-                ? "${state.seats} persona"
-                : "${state.seats} persone",
-            style: const TextStyle(fontStyle: FontStyle.italic),
-          ),*/
           childWhenPassed: (constraints) => FoodyTagOutlined(
             elevation: 0,
             width: (constraints.maxWidth / 4) - 5,
             label: state.seats.toString(),
-            /*onTap: () => context.read<BookingFormBloc>().add(
-                  SittingTimeChanged(sittingTime: sittingTime)),*/
           ),
           childHeight: 40,
           child: (constraints) {

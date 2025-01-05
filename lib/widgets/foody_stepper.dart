@@ -7,11 +7,13 @@ class FoodyStepper extends StatelessWidget {
     required this.steps,
     required this.activeStep,
     this.onStepChanged,
+    this.lineLength = 40,
   });
 
-  final List<IconData> steps;
+  final List<dynamic> steps;
   final int activeStep;
   final void Function(int)? onStepChanged;
+  final double lineLength;
 
   @override
   Widget build(BuildContext context) {
@@ -22,6 +24,7 @@ class FoodyStepper extends StatelessWidget {
         lineType: LineType.normal,
         finishedLineColor: Theme.of(context).primaryColor,
         lineThickness: 2,
+        lineLength: lineLength,
       ),
       stepShape: StepShape.rRectangle,
       stepBorderRadius: 15,
@@ -37,18 +40,20 @@ class FoodyStepper extends StatelessWidget {
       fitWidth: true,
       steps: steps.asMap().entries.map((entry) {
         final index = entry.key;
-        final icon = entry.value;
+        final child = entry.value;
 
         return EasyStep(
-          customStep: Opacity(
-            opacity: activeStep >= index ? 1 : 0.3,
-            child: Icon(
-              icon,
-              color: activeStep > index
-                  ? Colors.white
-                  : Theme.of(context).primaryColor,
-            ),
-          ),
+          customStep: child is IconData
+              ? Opacity(
+                  opacity: activeStep >= index ? 1 : 0.3,
+                  child: Icon(
+                    child,
+                    color: activeStep > index
+                        ? Colors.white
+                        : Theme.of(context).primaryColor,
+                  ),
+                )
+              : child,
         );
       }).toList(),
       onStepReached: onStepChanged,

@@ -72,7 +72,7 @@ class BookingsState extends Equatable {
             status: BookingStatus.ACTIVE,
           ),
         ),
-        isFetching = false;
+        isFetching = true;
 
   BookingsState copyWith({
     BookingsFilter? filter,

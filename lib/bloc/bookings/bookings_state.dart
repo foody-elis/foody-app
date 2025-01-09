@@ -23,7 +23,7 @@ class BookingsState extends Equatable {
   });
 
   BookingsState.initial()
-      : filter = BookingsFilter.today,
+      : filter = BookingsFilter.all,
         bookings = [],
         apiError = "",
         bookingsFiltered = List.filled(

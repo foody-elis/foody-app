@@ -32,29 +32,25 @@ class RestaurantDetails extends HookWidget {
         () => context.read<RestaurantDetailsBloc>().restaurantId == null);
     final showShadowFixedButton = useState(true);
 
-    if (isOwner) {
-      void changeBottomNavBarState() =>
+    useEffect(() {
+      void listener() {
+        if (isOwner) {
+          // changeBottomNavBarState
           context.read<BottomNavBarBloc>().add(CanShowChanged(
               canShow: scrollController.position.userScrollDirection ==
                   ScrollDirection.forward));
+        } else {
+          // changeShadowFixedButtonState
+          showShadowFixedButton.value =
+              scrollController.position.maxScrollExtent !=
+                  scrollController.position.pixels;
+        }
+      }
 
-      useEffect(() {
-        scrollController.addListener(changeBottomNavBarState);
+      scrollController.addListener(listener);
 
-        return () => scrollController.removeListener(changeBottomNavBarState);
-      }, []);
-    } else {
-      void changeShadowFixedButtonState() => showShadowFixedButton.value =
-          scrollController.position.maxScrollExtent !=
-              scrollController.position.pixels;
-
-      useEffect(() {
-        scrollController.addListener(changeShadowFixedButtonState);
-
-        return () =>
-            scrollController.removeListener(changeShadowFixedButtonState);
-      }, []);
-    }
+      return () => scrollController.removeListener(listener);
+    }, []);
 
     return BlocConsumer<RestaurantDetailsBloc, RestaurantDetailsState>(
       listener: (context, state) {
@@ -166,9 +162,11 @@ class RestaurantDetails extends HookWidget {
                           ]
                         : null,
                   ),
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 10,
-                    vertical: 10,
+                  padding: const EdgeInsets.only(
+                    left: 10,
+                    right: 10,
+                    top: 20,
+                    bottom: 10,
                   ),
                   child: SafeArea(
                     top: false,

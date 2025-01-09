@@ -1,5 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:foody_app/dto/response/order_response_dto.dart';
+import 'package:foody_app/widgets/foody_empty_data.dart';
+import 'package:foody_app/widgets/foody_outlined_button.dart';
+import 'package:phosphor_flutter/phosphor_flutter.dart';
+
+import '../routing/constants.dart';
+import '../routing/navigation_service.dart';
 
 class OrderPaid extends StatelessWidget {
   const OrderPaid({super.key, required this.order});
@@ -8,18 +14,10 @@ class OrderPaid extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const SizedBox.shrink();
-    /*final bookingSummary = {
-      "Ristorante": booking.restaurant.name,
-      "Data": DateFormat("d MMMM yyyy", "it_IT").format(booking.date),
-      "Orario": DateFormat("HH:mm").format(booking.sittingTime.start),
-      "Persone": booking.seats.toString(),
-    };
-
     return Scaffold(
       appBar: AppBar(
         title: const Text(
-          "Prenotazione confermata",
+          "Ordine confermato",
           style: TextStyle(fontWeight: FontWeight.bold),
         ),
         centerTitle: true,
@@ -32,56 +30,35 @@ class OrderPaid extends StatelessWidget {
           )
         ],
       ),
-      body: Column(
-        mainAxisAlignment: MainAxisAlignment.spaceAround,
+      body: Stack(
+        fit: StackFit.expand,
+        alignment: Alignment.center,
         children: [
           Column(
             children: [
-              Lottie.asset(
-                "assets/lottie/booking_completed.json",
-                repeat: false,
+              FoodyEmptyData(
+                title: "Abbiamo preso in carico il tuo ordine",
+                description: "Ti avvisaremo non appena l'ordine sarà pronto",
+                lottieAsset: "order_paid.json",
+                lottieHeight: 250,
+                containerHeight: MediaQuery.of(context).size.height - 250,
               ),
             ],
           ),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 20),
-            child: Column(
-              spacing: 30,
-              children: [
-                const Text(
-                  "Grazie per la tua prenotazione",
-                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 24),
-                ),
-                ListView.separated(
-                  shrinkWrap: true,
-                  physics: const NeverScrollableScrollPhysics(),
-                  itemCount: bookingSummary.length,
-                  itemBuilder: (context, index) {
-                    final key = bookingSummary.keys.elementAt(index);
-                    final value = bookingSummary[key]!;
-
-                    return ListTile(
-                      title: Text(
-                        key,
-                        style: const TextStyle(
-                          fontWeight: FontWeight.bold,
-                          fontSize: 14,
-                        ),
-                      ),
-                      trailing: Text(
-                        value,
-                        style: const TextStyle(fontSize: 14),
-                        textAlign: TextAlign.right,
-                      ),
-                    );
-                  },
-                  separatorBuilder: (context, index) => const Divider(),
-                ),
-              ],
+          Positioned(
+            bottom: 0,
+            child: SafeArea(
+              // top: false,
+              child: FoodyOutlinedButton(
+                label: "Torna alla home",
+                width: MediaQuery.of(context).size.width - 20,
+                onPressed: () =>
+                    NavigationService().navigateTo(authenticatedRoute),
+              ),
             ),
-          )
+          ),
         ],
       ),
-    );*/
+    );
   }
 }

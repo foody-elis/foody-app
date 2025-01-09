@@ -87,7 +87,7 @@ class DishDetails extends HookWidget {
             fontWeight: FontWeight.bold,
           ),
         ),
-        Text(dish.description * 20),
+        Text(dish.description),
         if (canAddToCart) ...[
           const Divider(height: 40),
           SizedBox(

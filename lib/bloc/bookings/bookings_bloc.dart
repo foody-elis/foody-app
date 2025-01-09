@@ -52,7 +52,14 @@ class BookingsBloc extends Bloc<BookingsEvent, BookingsState> {
               BookingsFilter.canceled => b.status == BookingStatus.CANCELLED,
             },
           )
-          .toList(),
+          .toList()
+        ..sort((a, b) {
+          if (a.status != b.status) {
+            return a.status == BookingStatus.ACTIVE ? -1 : 1;
+          }
+
+          return a.date.compareTo(b.date);
+        }),
     ));
   }
 

@@ -63,6 +63,7 @@ class OrderFormBloc extends Bloc<OrderFormEvent, OrderFormState> {
       ),
       onComplete: (order) {
         _orderCreated = order;
+        print(_orderCreated);
         emit(state.copyWith(activeStep: 4));
       },
       errorToEmit: (msg) => emit(state.copyWith(apiError: msg)),
@@ -96,9 +97,26 @@ class OrderFormBloc extends Bloc<OrderFormEvent, OrderFormState> {
   }
 
   void _onRemoveOrderDish(RemoveOrderDish event, Emitter<OrderFormState> emit) {
-    emit(state.copyWith(
-        orderDishes: List.of(state.orderDishes)
-          ..removeWhere((orderDish) => orderDish.dishId == event.dishId)));
+    final orderDishes = List.of(state.orderDishes);
+
+    if (event.removeAllQty) {
+      orderDishes.removeWhere((orderDish) => orderDish.dishId == event.dishId);
+    } else {
+      final orderDishIndex = orderDishes
+          .indexWhere((orderDish) => orderDish.dishId == event.dishId);
+
+      final newQty = orderDishes[orderDishIndex].quantity - 1;
+
+      if (newQty <= 0) {
+        orderDishes.removeAt(orderDishIndex);
+      } else {
+        orderDishes[orderDishIndex] = orderDishes[orderDishIndex].copyWith(
+          quantity: orderDishes[orderDishIndex].quantity - 1,
+        );
+      }
+    }
+
+    emit(state.copyWith(orderDishes: orderDishes));
   }
 
   void _onStepChanged(StepChanged event, Emitter<OrderFormState> emit) {

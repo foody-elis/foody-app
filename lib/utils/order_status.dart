@@ -1,5 +1,6 @@
 enum OrderStatus {
+  CREATED,
+  PAID,
   PREPARING,
-  AWAITING_PAYMENT,
   COMPLETED,
 }

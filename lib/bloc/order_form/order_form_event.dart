@@ -41,9 +41,10 @@ class AddOrderDish extends OrderFormEvent {
 }
 
 class RemoveOrderDish extends OrderFormEvent {
-  const RemoveOrderDish({required this.dishId});
+  const RemoveOrderDish({required this.dishId, this.removeAllQty = false});
 
   final int dishId;
+  final bool removeAllQty;
 
   @override
   List<Object> get props => [dishId];

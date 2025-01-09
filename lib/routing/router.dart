@@ -158,7 +158,7 @@ class Router {
         );
       case orderPaidRoute:
         return CupertinoPageRoute(
-          builder: (_) => OrderPaid(order: arguments!["booking"]),
+          builder: (_) => OrderPaid(order: arguments!["order"]),
         );
       default:
         return CupertinoPageRoute(

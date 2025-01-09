@@ -35,9 +35,11 @@ class OrderFormCartStep extends StatelessWidget {
                   ...state.orderDishes.map(
                     (orderDish) => Dismissible(
                       key: ValueKey(orderDish.dishId),
-                      onDismissed: (_) => context
-                          .read<OrderFormBloc>()
-                          .add(RemoveOrderDish(dishId: orderDish.dishId)),
+                      onDismissed: (_) =>
+                          context.read<OrderFormBloc>().add(RemoveOrderDish(
+                                dishId: orderDish.dishId,
+                                removeAllQty: true,
+                              )),
                       child: FoodyOrderDishCard(
                         orderDish: orderDish,
                         dish: state.dishes

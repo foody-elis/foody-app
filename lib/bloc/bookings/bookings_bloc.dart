@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:foody_app/bloc/bookings/bookings_event.dart';
 import 'package:foody_app/bloc/bookings/bookings_state.dart';
 import 'package:foody_app/dto/response/booking_response_dto.dart';
+import 'package:foody_app/routing/navigation_service.dart';
 import 'package:foody_app/utils/booking_status.dart';
 import 'package:foody_app/utils/bookings_filter.dart';
 
@@ -72,9 +73,13 @@ class BookingsBloc extends Bloc<BookingsEvent, BookingsState> {
       CancelBooking event, Emitter<BookingsState> emit) async {
     emit(state.copyWith(isFetching: true));
 
+    NavigationService().goBack();
+
     await callApi<BookingResponseDto>(
       api: () => foodyApiRepository.bookings.cancel(event.id),
-      onComplete: (response) => add(const FetchBookings()),
+      onComplete: (response) {
+        add(const FetchBookings());
+      },
       onFailed: (_) => emit(state.copyWith(bookings: [], bookingsFiltered: [])),
       onError: () => emit(state.copyWith(bookings: [], bookingsFiltered: [])),
       errorToEmit: (msg) => emit(state.copyWith(apiError: msg)),

@@ -20,6 +20,6 @@ abstract class BookingsApiRepository {
   @POST('')
   Future<BookingResponseDto> save(@Body() BookingRequestDto _);
 
-  @DELETE('/cancel/{id}')
+  @PATCH('/cancel/{id}')
   Future<BookingResponseDto> cancel(@Path() int id);
 }

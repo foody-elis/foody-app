@@ -18,6 +18,7 @@ class RestaurantResponseDto {
     required this.seats,
     required this.approved,
     required this.restaurateurId,
+    required this.restaurateurEmail,
     required this.categories,
     required this.photoUrl,
   });
@@ -37,6 +38,7 @@ class RestaurantResponseDto {
   final int seats;
   final bool approved;
   final int restaurateurId;
+  final String restaurateurEmail;
   final List<CategoryResponseDto> categories;
   final String? photoUrl;
 

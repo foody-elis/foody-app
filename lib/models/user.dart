@@ -8,6 +8,7 @@ class User {
 
   String jwt;
   int? restaurantId;
+  String? currentFirebaseRoomId;
 
   @Transient()
   late Role role;

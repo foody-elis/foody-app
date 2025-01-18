@@ -25,10 +25,11 @@ class FoodyReview extends StatelessWidget {
           children: [
             Row(
               children: [
-                const FoodyCircularImage(
+                FoodyCircularImage(
                   showShadow: false,
                   size: 40,
                   padding: 10,
+                  imageUrl: review.customerAvatarUrl,
                 ),
                 const SizedBox(width: 10),
                 Column(

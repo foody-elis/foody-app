@@ -34,6 +34,7 @@ class HomeState extends Equatable {
           DetailedRestaurantResponseDto(
             id: 0,
             restaurateurId: 0,
+            restaurateurEmail: "",
             name: "Ristorante",
             phoneNumber: "0000000000",
             categories: const [CategoryResponseDto(id: 0, name: "Vegetariano")],

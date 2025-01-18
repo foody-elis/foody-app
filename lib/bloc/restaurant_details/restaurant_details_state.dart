@@ -23,6 +23,7 @@ class RestaurantDetailsState extends Equatable {
       : restaurant = DetailedRestaurantResponseDto(
           id: -1,
           restaurateurId: 0,
+          restaurateurEmail: "",
           name: "Ristorante",
           phoneNumber: "0000000000",
           categories: [

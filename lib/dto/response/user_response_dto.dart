@@ -16,6 +16,7 @@ class UserResponseDto {
     required this.avatarUrl,
     required this.role,
     required this.active,
+    required this.firebaseCustomToken,
   });
 
   factory UserResponseDto.fromJson(Map<String, dynamic> json) =>
@@ -30,6 +31,7 @@ class UserResponseDto {
   final String? avatarUrl;
   final Role role;
   final bool active;
+  final String? firebaseCustomToken;
 
   Map<String, dynamic> toJson() => _$UserResponseDtoToJson(this);
 }

@@ -68,20 +68,23 @@ class Menu extends StatelessWidget {
                       );
                     }).toList(),
             ),
-            floatingActionButton: FloatingActionButton(
-              onPressed: () => showFoodyModalBottomSheet(
-                context: context,
-                child: BlocProvider<DishFormBloc>(
-                  create: (_) => DishFormBloc(
-                    foodyApiRepository: context.read<FoodyApiRepository>(),
-                    menuBloc: context.read<MenuBloc>(),
-                    // restaurantId: context.read<MenuBloc>().restaurantId,
-                  ),
-                  child: const DishForm(),
-                ),
-              ),
-              child: const Icon(PhosphorIconsRegular.plus),
-            ),
+            floatingActionButton: canEdit
+                ? FloatingActionButton(
+                    onPressed: () => showFoodyModalBottomSheet(
+                      context: context,
+                      child: BlocProvider<DishFormBloc>(
+                        create: (_) => DishFormBloc(
+                          foodyApiRepository:
+                              context.read<FoodyApiRepository>(),
+                          menuBloc: context.read<MenuBloc>(),
+                          // restaurantId: context.read<MenuBloc>().restaurantId,
+                        ),
+                        child: const DishForm(),
+                      ),
+                    ),
+                    child: const Icon(PhosphorIconsRegular.plus),
+                  )
+                : null,
           ),
         );
       },

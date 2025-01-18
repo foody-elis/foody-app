@@ -42,9 +42,11 @@ class BookingsState extends Equatable {
               avatarUrl: "",
               role: Role.CUSTOMER,
               active: true,
+              firebaseCustomToken: null,
             ),
             restaurant: const DetailedRestaurantResponseDto(
               id: 0,
+              restaurateurEmail: "",
               name: "Pizzum",
               description: "",
               phoneNumber: "",

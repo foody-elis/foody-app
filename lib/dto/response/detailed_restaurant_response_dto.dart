@@ -26,12 +26,13 @@ class DetailedRestaurantResponseDto extends RestaurantResponseDto {
     required super.seats,
     required super.approved,
     required super.restaurateurId,
+    required super.restaurateurEmail,
     required super.categories,
     required super.photoUrl,
   });
 
   factory DetailedRestaurantResponseDto.fromJson(Map<String, dynamic> json) =>
-    _$DetailedRestaurantResponseDtoFromJson(json);
+      _$DetailedRestaurantResponseDtoFromJson(json);
 
   final double averageRating;
   final List<SittingTimeResponseDto> sittingTimes;

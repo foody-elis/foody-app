@@ -1,3 +1,4 @@
+import 'package:foody_app/dto/request/user_update_request_dto.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 import '../../utils/date_json_serializer.dart';
@@ -5,15 +6,15 @@ import '../../utils/date_json_serializer.dart';
 part '../mapper/request/user_registration_request_dto.g.dart';
 
 @JsonSerializable()
-class UserRegistrationRequestDto {
+class UserRegistrationRequestDto extends UserUpdateRequestDto {
   const UserRegistrationRequestDto({
     required this.email,
     required this.password,
-    required this.name,
-    required this.surname,
-    required this.birthDate,
-    required this.phoneNumber,
-    required this.avatarBase64,
+    required super.name,
+    required super.surname,
+    required super.birthDate,
+    required super.phoneNumber,
+    required super.avatarBase64,
   });
 
   factory UserRegistrationRequestDto.fromJson(Map<String, dynamic> json) =>
@@ -21,13 +22,6 @@ class UserRegistrationRequestDto {
 
   final String email;
   final String password;
-  final String name;
-  final String surname;
-  final String phoneNumber;
-  final String? avatarBase64;
-
-  @JsonKey(fromJson: dateFromJson, toJson: dateToJson)
-  final DateTime birthDate;
 
   Map<String, dynamic> toJson() => _$UserRegistrationRequestDtoToJson(this);
 }

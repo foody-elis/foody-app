@@ -1,5 +1,5 @@
 import 'package:equatable/equatable.dart';
-import 'package:foody_app/bloc/add_sitting_times_list/sitting_times_form_state.dart';
+import 'package:foody_app/bloc/sitting_times_form_list/sitting_times_form_state.dart';
 
 class SittingTimesFormListState extends Equatable {
   final Map<String, SittingTimesFormState> weekDays;

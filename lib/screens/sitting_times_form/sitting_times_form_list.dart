@@ -6,11 +6,11 @@ import 'package:foody_app/utils/show_snackbar.dart';
 import 'package:foody_app/widgets/foody_secondary_layout.dart';
 import 'package:phosphor_flutter/phosphor_flutter.dart';
 
-import '../../bloc/add_sitting_times_list/sitting_times_form_list_bloc.dart';
-import '../../bloc/add_sitting_times_list/sitting_times_form_list_event.dart';
-import '../../bloc/add_sitting_times_list/sitting_times_form_list_state.dart';
 import '../../bloc/foody/foody_bloc.dart';
 import '../../bloc/foody/foody_event.dart';
+import '../../bloc/sitting_times_form_list/sitting_times_form_list_bloc.dart';
+import '../../bloc/sitting_times_form_list/sitting_times_form_list_event.dart';
+import '../../bloc/sitting_times_form_list/sitting_times_form_list_state.dart';
 
 class SittingTimesFormList extends StatelessWidget {
   const SittingTimesFormList({super.key});
@@ -36,7 +36,7 @@ class SittingTimesFormList extends StatelessWidget {
               expandedBodyHeight: 0.8,
               showBottomNavBar: false,
               startWithExpandedBody:
-              !context.read<SittingTimesFormListBloc>().isEditing,
+                  !context.read<SittingTimesFormListBloc>().isEditing,
               expandedBody: const SittingTimesFormExpanded(),
               title: "Orari del tuo ristorante",
               subtitleWidget: const Column(

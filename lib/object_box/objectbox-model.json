@@ -24,7 +24,7 @@
     },
     {
       "id": "2:6924458497544582559",
-      "lastPropertyId": "12:3025307914532911143",
+      "lastPropertyId": "13:2704967559407442102",
       "name": "User",
       "properties": [
         {
@@ -47,6 +47,11 @@
           "id": "12:3025307914532911143",
           "name": "restaurantId",
           "type": 6
+        },
+        {
+          "id": "13:2704967559407442102",
+          "name": "currentFirebaseRoomId",
+          "type": 9
         }
       ],
       "relations": []

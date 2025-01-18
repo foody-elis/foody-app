@@ -3,6 +3,7 @@ import 'package:flutter/rendering.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:foody_app/bloc/restaurant_details/restaurant_details_bloc.dart';
+import 'package:foody_app/bloc/restaurant_details/restaurant_details_event.dart';
 import 'package:foody_app/bloc/restaurant_details/restaurant_details_state.dart';
 import 'package:foody_app/screens/restaurant_details/restaurant_description.dart';
 import 'package:foody_app/screens/restaurant_details/restaurant_image.dart';
@@ -170,18 +171,31 @@ class RestaurantDetails extends HookWidget {
                   ),
                   child: SafeArea(
                     top: false,
-                    child: FoodyButton(
-                      label: "PRENOTA",
-                      height: 50,
-                      onPressed: () => NavigationService().navigateTo(
-                        bookingFormRoute,
-                        arguments: {
-                          "restaurant": context
-                              .read<RestaurantDetailsBloc>()
-                              .state
-                              .restaurant,
-                        },
-                      ),
+                    child: Column(
+                      spacing: 10,
+                      children: [
+                        FoodyButton(
+                          label: "PRENOTA",
+                          height: 50,
+                          width: MediaQuery.of(context).size.width,
+                          onPressed: () => NavigationService().navigateTo(
+                            bookingFormRoute,
+                            arguments: {
+                              "restaurant": context
+                                  .read<RestaurantDetailsBloc>()
+                                  .state
+                                  .restaurant,
+                            },
+                          ),
+                        ),
+                        FoodyButton(
+                            label: "CONTATTACI",
+                            height: 50,
+                            width: MediaQuery.of(context).size.width,
+                            onPressed: () => context
+                                .read<RestaurantDetailsBloc>()
+                                .add(OpenChat())),
+                      ],
                     ),
                   ),
                 ),

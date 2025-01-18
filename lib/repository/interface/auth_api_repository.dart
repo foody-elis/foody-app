@@ -13,17 +13,16 @@ abstract class AuthApiRepository {
   factory AuthApiRepository(Dio dio, {String? baseUrl}) = _AuthApiRepository;
 
   @POST('/customers')
-  Future<AuthResponseDto> registerCustomer(@Body() UserRegistrationRequestDto _);
+  Future<AuthResponseDto> registerCustomer(
+      @Body() UserRegistrationRequestDto _);
 
   @POST('/restaurateurs')
-  Future<AuthResponseDto> registerRestaurateur(@Body() UserRegistrationRequestDto _);
+  Future<AuthResponseDto> registerRestaurateur(
+      @Body() UserRegistrationRequestDto _);
 
   @POST('/login')
   Future<AuthResponseDto> login(@Body() UserLoginRequestDto _);
 
   @GET('/user')
   Future<UserResponseDto> getAuthenticatedUser();
-
-  @PUT('/user')
-  Future<UserResponseDto> edit();
 }

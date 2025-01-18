@@ -47,3 +47,9 @@ app.*.map.json
 lib/repository/generated
 lib/dto/mapper
 lib/object_box/objectbox.g.dart
+
+# Firebase
+google-services.json
+GoogleService-Info.plist
+firebase_options.dart
+firebase.json

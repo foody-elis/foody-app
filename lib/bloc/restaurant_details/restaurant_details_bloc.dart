@@ -3,11 +3,13 @@ import 'dart:io';
 
 import 'package:bloc_concurrency/bloc_concurrency.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_firebase_chat_core/flutter_firebase_chat_core.dart';
 import 'package:foody_app/bloc/restaurant_details/restaurant_details_event.dart';
 import 'package:foody_app/bloc/restaurant_details/restaurant_details_state.dart';
 import 'package:foody_app/dto/response/detailed_restaurant_response_dto.dart';
 import 'package:foody_app/repository/interface/user_repository.dart';
 import 'package:foody_app/routing/constants.dart';
+import 'package:foody_app/utils/firestore_to_flyer_user.dart';
 import 'package:image_picker/image_picker.dart';
 
 import '../../dto/request/restaurant_request_dto.dart';
@@ -32,6 +34,7 @@ class RestaurantDetailsBloc
     on<ImagePickerGallery>(_onImagePickerGallery);
     on<ImagePickerCamera>(_onImagePickerCamera);
     on<ImagePickerRemove>(_onImagePickerRemove);
+    on<OpenChat>(_onOpenChat, transformer: droppable());
 
     add(FetchRestaurant());
   }
@@ -125,5 +128,20 @@ class RestaurantDetailsBloc
   void _onImagePickerRemove(
       ImagePickerRemove event, Emitter<RestaurantDetailsState> emit) async {
     await _updateImage(emit, null);
+  }
+
+  void _onOpenChat(OpenChat event, Emitter<RestaurantDetailsState> emit) async {
+    final restaurateurFirestore = await FirebaseChatCore.instance
+        .getFirebaseFirestore()
+        .collection(FirebaseChatCore.instance.config.usersCollectionName)
+        .doc(state.restaurant.restaurateurEmail)
+        .get();
+
+    if (restaurateurFirestore.exists) {
+      final room = await FirebaseChatCore.instance
+          .createRoom(firestoreToFlyerUser(restaurateurFirestore));
+
+      _navigationService.navigateTo(chatRoute, arguments: {"room": room});
+    }
   }
 }

@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:foody_app/bloc/auth/auth_bloc.dart';
 import 'package:foody_app/bloc/booking_form/booking_form_bloc.dart';
 import 'package:foody_app/bloc/bottom_nav_bar/bottom_nav_bar_bloc.dart';
+import 'package:foody_app/bloc/chat/chat_bloc.dart';
 import 'package:foody_app/bloc/menu/menu_bloc.dart';
 import 'package:foody_app/bloc/order_form/order_form_bloc.dart';
 import 'package:foody_app/bloc/restaurant_details/restaurant_details_bloc.dart';
@@ -16,6 +17,7 @@ import 'package:foody_app/repository/interface/user_repository.dart';
 import 'package:foody_app/screens/authenticated.dart';
 import 'package:foody_app/screens/booking_completed.dart';
 import 'package:foody_app/screens/booking_form/booking_form.dart';
+import 'package:foody_app/screens/chats/chat.dart';
 import 'package:foody_app/screens/edit_profile.dart';
 import 'package:foody_app/screens/menu/menu.dart';
 import 'package:foody_app/screens/order_form/order_form.dart';
@@ -25,7 +27,7 @@ import 'package:foody_app/screens/restaurant_form.dart';
 import 'package:foody_app/screens/reviews/reviews.dart';
 import 'package:foody_app/screens/settings.dart';
 
-import '../bloc/add_sitting_times_list/sitting_times_form_list_bloc.dart';
+import '../bloc/sitting_times_form_list/sitting_times_form_list_bloc.dart';
 import '../screens/sitting_times_form/sitting_times_form_list.dart';
 import '../screens/welcome/welcome.dart';
 import 'constants.dart';
@@ -117,6 +119,7 @@ class Router {
               foodyApiRepository: context.read<FoodyApiRepository>(),
               userRepository: context.read<UserRepository>(),
               user: arguments!["user"],
+              authBloc: arguments["authBloc"],
             ),
             child: const EditProfile(),
           ),
@@ -159,6 +162,21 @@ class Router {
       case orderPaidRoute:
         return CupertinoPageRoute(
           builder: (_) => OrderPaid(order: arguments!["order"]),
+        );
+      case chatRoute:
+        return CupertinoPageRoute(
+          builder: (_) => MultiBlocProvider(
+            providers: [
+              BlocProvider.value(value: arguments!["authBloc"] as AuthBloc),
+              BlocProvider<ChatBloc>(
+                create: (context) => ChatBloc(
+                  userRepository: context.read<UserRepository>(),
+                  room: arguments["room"],
+                ),
+              ),
+            ],
+            child: const Chat(),
+          ),
         );
       default:
         return CupertinoPageRoute(

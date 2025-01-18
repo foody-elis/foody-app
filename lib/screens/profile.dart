@@ -52,7 +52,10 @@ class Profile extends StatelessWidget {
             icon: PhosphorIconsRegular.user,
             onTap: () => NavigationService().navigateTo(
               editProfileRoute,
-              arguments: {"user": state.userResponseDto},
+              arguments: {
+                "user": state.userResponseDto,
+                "authBloc": context.read<AuthBloc>(),
+              },
             ),
           ),
           const SizedBox(height: 5),

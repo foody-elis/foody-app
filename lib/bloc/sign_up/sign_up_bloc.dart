@@ -4,7 +4,10 @@ import 'dart:io';
 import 'package:bloc_concurrency/bloc_concurrency.dart';
 import 'package:email_validator/email_validator.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:foody_app/bloc/auth/auth_bloc.dart';
+import 'package:foody_app/bloc/auth/auth_event.dart';
 import 'package:foody_app/dto/request/user_registration_request_dto.dart';
+import 'package:foody_app/dto/request/user_update_request_dto.dart';
 import 'package:foody_app/dto/response/auth_response_dto.dart';
 import 'package:foody_app/dto/response/user_response_dto.dart';
 import 'package:foody_app/repository/interface/foody_api_repository.dart';
@@ -17,6 +20,7 @@ import 'package:jwt_decoder/jwt_decoder.dart';
 import '../../models/user.dart';
 import '../../routing/navigation_service.dart';
 import '../../utils/call_api.dart';
+import '../../utils/download_and_save_file.dart';
 import '../../utils/get_foody_dio.dart';
 import '../../utils/token_inteceptor.dart';
 import 'sign_up_event.dart';
@@ -27,11 +31,13 @@ class SignUpBloc extends Bloc<SignUpEvent, SignUpState> {
   final FoodyApiRepository foodyApiRepository;
   final UserRepository userRepository;
   final UserResponseDto? user;
+  final AuthBloc? authBloc;
 
   SignUpBloc({
     required this.foodyApiRepository,
     required this.userRepository,
     this.user,
+    this.authBloc,
   }) : super(SignUpState.initial(user)) {
     on<SignUpConsumer>(_onSignUpConsumer, transformer: droppable());
     on<SignUpRestaurateur>(_onSignUpRestaurateur, transformer: droppable());
@@ -225,21 +231,31 @@ class SignUpBloc extends Bloc<SignUpEvent, SignUpState> {
     if (_isEditFormValid(emit)) {
       emit(state.copyWith(isLoading: true));
 
-      print("name ${state.name}");
-      print("surname ${state.surname}");
-      print("cell ${state.phoneNumber}");
-      print("birt ${state.birthDate}");
-      await Future.delayed(const Duration(seconds: 2));
+      final avatarPath = state.avatarPath == ""
+          ? state.avatarUrl == ""
+              ? ""
+              : await downloadAndSaveFile(state.avatarUrl, "avatar_edit")
+          : state.avatarPath;
 
-      emit(state.copyWith(apiError: "Dati aggiornati con successo"));
-      emit(state.copyWith(apiError: ""));
-      /*await callApi<UserResponseDto>(
-        api: () => foodyApiRepository.auth.edit(),
+      await callApi<UserResponseDto>(
+        api: () => foodyApiRepository.users.edit(
+          UserUpdateRequestDto(
+            name: state.name,
+            surname: state.surname,
+            birthDate: DateFormat("dd/MM/yyyy").parse(state.birthDate),
+            phoneNumber: state.phoneNumber,
+            avatarBase64: avatarPath == ""
+                ? null
+                : base64Encode(File(avatarPath).readAsBytesSync()),
+          ),
+        ),
         onComplete: (response) {
           emit(state.copyWith(apiError: "Dati aggiornati con successo"));
+          emit(state.copyWith(apiError: ""));
+          authBloc!.add(FetchUser());
         },
         errorToEmit: (msg) => emit(state.copyWith(apiError: msg)),
-      );*/
+      );
 
       emit(state.copyWith(isLoading: false));
     }

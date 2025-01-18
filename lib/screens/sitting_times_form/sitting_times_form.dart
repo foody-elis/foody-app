@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
-import 'package:foody_app/bloc/add_sitting_times_list/sitting_times_form_list_bloc.dart';
-import 'package:foody_app/bloc/add_sitting_times_list/sitting_times_form_list_state.dart';
+import 'package:foody_app/bloc/sitting_times_form_list/sitting_times_form_list_bloc.dart';
+import 'package:foody_app/bloc/sitting_times_form_list/sitting_times_form_list_state.dart';
 import 'package:foody_app/utils/show_foody_time_range_picker.dart';
 import 'package:foody_app/widgets/foody_segmented_control.dart';
 import 'package:intl/intl.dart';
 import 'package:phosphor_flutter/phosphor_flutter.dart';
 
-import '../../bloc/add_sitting_times_list/sitting_times_form_list_event.dart';
+import '../../bloc/sitting_times_form_list/sitting_times_form_list_event.dart';
 import '../../widgets/foody_text_field.dart';
 
 class SittingTimesForm extends HookWidget {

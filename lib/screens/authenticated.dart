@@ -6,7 +6,7 @@ import 'package:foody_app/bloc/auth/auth_state.dart';
 import 'package:foody_app/bloc/bookings/bookings_bloc.dart';
 import 'package:foody_app/bloc/restaurant_details/restaurant_details_bloc.dart';
 import 'package:foody_app/repository/interface/user_repository.dart';
-import 'package:foody_app/screens/bookings.dart';
+import 'package:foody_app/screens/bookings/bookings.dart';
 import 'package:foody_app/screens/profile.dart';
 import 'package:foody_app/screens/restaurant_details/restaurant_details.dart';
 import 'package:foody_app/utils/show_snackbar.dart';
@@ -14,7 +14,7 @@ import 'package:foody_app/utils/show_snackbar.dart';
 import '../bloc/home/home_bloc.dart';
 import '../repository/interface/foody_api_repository.dart';
 import '../widgets/foody_page_view.dart';
-import 'chats.dart';
+import 'chats/chats.dart';
 import 'home/home.dart';
 
 class Authenticated extends HookWidget {

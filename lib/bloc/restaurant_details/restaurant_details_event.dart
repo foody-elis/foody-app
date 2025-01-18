@@ -14,3 +14,5 @@ class ImagePickerGallery extends RestaurantDetailsEvent {}
 class ImagePickerCamera extends RestaurantDetailsEvent {}
 
 class ImagePickerRemove extends RestaurantDetailsEvent {}
+
+class OpenChat extends RestaurantDetailsEvent {}

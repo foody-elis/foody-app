@@ -1,9 +1,9 @@
 import 'package:bloc_concurrency/bloc_concurrency.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:foody_app/bloc/add_sitting_times_list/sitting_times_form_list_event.dart';
-import 'package:foody_app/bloc/add_sitting_times_list/sitting_times_form_list_state.dart';
-import 'package:foody_app/bloc/add_sitting_times_list/sitting_times_form_state.dart';
-import 'package:foody_app/dto/request/weekday_info_request_dto.dart';
+import 'package:foody_app/bloc/sitting_times_form_list/sitting_times_form_list_event.dart';
+import 'package:foody_app/bloc/sitting_times_form_list/sitting_times_form_list_state.dart';
+import 'package:foody_app/bloc/sitting_times_form_list/sitting_times_form_state.dart';
+import 'package:foody_app/dto/request/weekday_info_update_request_dto.dart';
 import 'package:foody_app/dto/response/weekday_info_response_dto.dart';
 import 'package:foody_app/repository/interface/user_repository.dart';
 import 'package:foody_app/utils/call_api.dart';
@@ -42,34 +42,46 @@ class SittingTimesFormListBloc
 
   void _onFormSubmit(
       FormSubmit event, Emitter<SittingTimesFormListState> emit) async {
-    List<Future<void>> addSittingTimeApiCalls = [];
+    List<Future<void>> sittingTimeApiCalls = [];
     int weekDay = 1;
 
     for (String weekDayName in state.weekDays.keys) {
       final weekDayState = state.weekDays[weekDayName]!;
 
-      if (weekDayState.accordionsState == null) {
-        emit(state.copyWith(
-            error: "Per andare avanti devi prima visualizzare: $weekDayName"));
-        emit(state.copyWith(error: ""));
-        return;
+      if (!isEditing) {
+        if (weekDayState.accordionsState == null) {
+          emit(state.copyWith(
+              error:
+                  "Per andare avanti devi prima visualizzare: $weekDayName"));
+          emit(state.copyWith(error: ""));
+          return;
+        }
       }
+
+      final body = WeekdayInfoUpdateRequestDto(
+        startLaunch: weekDayState.lunchStartTime,
+        endLaunch: weekDayState.lunchEndTime,
+        startDinner: weekDayState.dinnerStartTime,
+        endDinner: weekDayState.dinnerEndTime,
+        sittingTimeStep: SittingTimeStep.values[weekDayState.stepIndex],
+      );
 
       if (weekDayState.lunchStartTime != null ||
           weekDayState.dinnerStartTime != null) {
-        addSittingTimeApiCalls.add(callApi<WeekdayInfoResponseDto>(
-          api: () => foodyApiRepository.weekdayInfo.save(WeekdayInfoRequestDto(
-            weekDay: weekDay,
-            startLaunch: weekDayState.lunchStartTime,
-            endLaunch: weekDayState.lunchEndTime,
-            startDinner: weekDayState.dinnerStartTime,
-            endDinner: weekDayState.dinnerEndTime,
-            sittingTimeStep: SittingTimeStep.values[weekDayState.stepIndex],
-            restaurantId: _restaurantId,
-          )),
-          errorToEmit: (e) => emit(state.copyWith(error: e)),
-          throwException: true,
-        ));
+        sittingTimeApiCalls.add(
+          callApi<WeekdayInfoResponseDto>(
+            api: () => isEditing
+                ? foodyApiRepository.weekdayInfo.update(weekDayState.id!, body)
+                : foodyApiRepository.weekdayInfo.save(
+                    body.toWeekdayInfoRequestDto(
+                      weekDay: weekDay,
+                      restaurantId: _restaurantId,
+                    ),
+                  ),
+            errorToEmit: (e) => emit(state.copyWith(error: e)),
+            throwException: true,
+          ),
+        );
       }
 
       weekDay++;
@@ -78,7 +90,12 @@ class SittingTimesFormListBloc
     emit(state.copyWith(isLoading: true));
 
     try {
-      await Future.wait(addSittingTimeApiCalls);
+      await Future.wait(sittingTimeApiCalls);
+
+      if (isEditing) {
+        emit(state.copyWith(error: "Orari aggiornati con successo"));
+      }
+
       _navigationService.resetToScreen(authenticatedRoute);
     } catch (_) {}
 
@@ -162,12 +179,14 @@ class SittingTimesFormListBloc
           if (weekDayState == null) continue;
 
           weekDays[key] = weekDayState.copyWith(
-              lunchStartTime: weekDay.startLaunch,
-              lunchEndTime: weekDay.endLaunch,
-              dinnerStartTime: weekDay.startDinner,
-              dinnerEndTime: weekDay.endDinner,
-              stepIndex: weekDay.sittingTimeStep.index,
-              accordionsState: false);
+            id: weekDay.id,
+            lunchStartTime: weekDay.startLaunch,
+            lunchEndTime: weekDay.endLaunch,
+            dinnerStartTime: weekDay.startDinner,
+            dinnerEndTime: weekDay.endDinner,
+            stepIndex: weekDay.sittingTimeStep.index,
+            accordionsState: false,
+          );
         }
 
         emit(state.copyWith(weekDays: weekDays, isLoading: false));

@@ -1,27 +1,20 @@
-import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:foody_app/main.dart' show objectBox;
-import 'package:foody_app/utils/download_and_save_file.dart';
 
-import '../firebase_options.dart';
 import '../models/user.dart';
 
 Future<void> _backgroundHandler(RemoteMessage message) async {
-  print("NOTIFICA RICEVUTO IN BACKGROUND");
-  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
-  await _setupFlutterNotifications();
-  _showLocalNotification(message);
+  print("NOTIFICA RICEVUTA IN BACKGROUND");
 }
 
 FlutterLocalNotificationsPlugin _flutterLocalNotificationsPlugin =
     FlutterLocalNotificationsPlugin();
 
 AndroidNotificationChannel _channel = const AndroidNotificationChannel(
-  'high_importance_channel', // id
-  'High Importance Notifications', // title
-  description:
-      'This channel is used for important notifications.', // description
+  'high_importance_channel',
+  'High Importance Notifications',
+  description: 'This channel is used for important notifications.',
   importance: Importance.high,
 );
 
@@ -73,28 +66,7 @@ Future<void> _showLocalNotification(RemoteMessage message) async {
 
   final notification = message.notification;
 
-  print(message.data);
-
-  print('Notification: ${notification?.title}, ${notification?.body}');
-
   if (notification?.android != null) {
-    StyleInformation? styleInformation;
-    String icon = "launch_background";
-
-    if (message.notification?.android?.imageUrl != null) {
-      icon = await downloadAndSaveFile(
-        message.notification!.android!.imageUrl!,
-        "avatar_local_notification",
-      );
-
-      styleInformation = BigPictureStyleInformation(
-        FilePathAndroidBitmap(icon),
-        // largeIcon: FilePathAndroidBitmap(avatar),
-        // contentTitle: 'Titolo della notifica',
-        // summaryText: 'Testo della notifica',
-      );
-    }
-
     _flutterLocalNotificationsPlugin.show(
       notification.hashCode,
       notification?.title,
@@ -104,8 +76,7 @@ Future<void> _showLocalNotification(RemoteMessage message) async {
           _channel.id,
           _channel.name,
           channelDescription: _channel.description,
-          icon: 'launch_background',
-          largeIcon: FilePathAndroidBitmap(icon),
+          icon: '@mipmap/ic_launcher',
           // styleInformation: styleInformation,
         ),
       ),
@@ -114,13 +85,11 @@ Future<void> _showLocalNotification(RemoteMessage message) async {
 }
 
 Future<void> initFirebaseFCM() async {
-  // Configura le notifiche locali per il foreground
   FirebaseMessaging.onMessage.listen((RemoteMessage message) {
-    print("NOTIFICA RICEVUTO IN FOREGROUND");
+    print("NOTIFICA RICEVUTA IN FOREGROUND");
     _showLocalNotification(message);
   });
 
-  // Configura le notifiche in background
   FirebaseMessaging.onBackgroundMessage(_backgroundHandler);
 
   await _setupFlutterNotifications();

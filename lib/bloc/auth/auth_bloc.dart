@@ -25,6 +25,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     on<ClearUserFirebaseRoomId>(_onClearUserFirebaseRoomId);
     on<UpdateUserFirebaseRoomId>(_onUpdateUserFirebaseRoomId);
 
+    add(ClearUserFirebaseRoomId());
     add(FetchUser());
   }
 
@@ -63,7 +64,6 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
 
   void _onClearUserFirebaseRoomId(
       ClearUserFirebaseRoomId event, Emitter<AuthState> emit) {
-    print("asdsa");
     final user = userRepository.get()!;
     user.currentFirebaseRoomId = null;
     userRepository.update(user);

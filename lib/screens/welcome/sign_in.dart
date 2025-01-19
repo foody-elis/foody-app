@@ -45,7 +45,6 @@ class SignIn extends StatelessWidget {
                 ),
               ),
               const SizedBox(height: 24),
-              // Form
               FoodyTextField(
                 required: true,
                 title: 'Email',

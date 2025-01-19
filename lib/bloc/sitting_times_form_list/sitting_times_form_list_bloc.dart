@@ -168,8 +168,15 @@ class SittingTimesFormListBloc
       api: () => foodyApiRepository.weekdayInfo.getByRestaurant(_restaurantId),
       onComplete: (response) {
         final Map<String, SittingTimesFormState> weekDays = Map.from(
-          state.weekDays
-              .map((k, v) => MapEntry(k, v.copyWith(accordionsState: false))),
+          state.weekDays.map(
+            (k, v) => MapEntry(
+              k,
+              v.copyWith(
+                accordionsState: false,
+                id: state.weekDays.keys.toList().indexOf(k),
+              ),
+            ),
+          ),
         );
 
         for (WeekdayInfoResponseDto weekDay in response) {

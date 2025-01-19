@@ -46,7 +46,7 @@ class OrderPaid extends StatelessWidget {
             ],
           ),
           Positioned(
-            bottom: 0,
+            bottom: 20,
             child: SafeArea(
               // top: false,
               child: FoodyOutlinedButton(

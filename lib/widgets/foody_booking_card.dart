@@ -12,6 +12,8 @@ import 'package:foody_app/utils/date_comparisons.dart';
 import 'package:intl/intl.dart';
 import 'package:skeletonizer/skeletonizer.dart';
 
+import 'foody_circular_image.dart';
+
 class FoodyBookingCard extends StatelessWidget {
   const FoodyBookingCard({super.key, required this.booking});
 
@@ -88,12 +90,11 @@ class FoodyBookingCard extends StatelessWidget {
                       Row(
                         children: [
                           if (isRestaurateur) ...[
-                            ClipOval(
-                              child: Image.asset(
-                                'assets/images/user.png',
-                                width: 20,
-                                height: 20,
-                              ),
+                            FoodyCircularImage(
+                              showShadow: false,
+                              size: 30,
+                              padding: 8,
+                              imageUrl: booking.customer.avatarUrl,
                             ),
                             const SizedBox(width: 10),
                           ],

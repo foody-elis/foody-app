@@ -22,10 +22,6 @@ class Chat extends HookWidget {
   @override
   Widget build(BuildContext context) {
     useFoodyOnAppLifecycleStateChange(
-      /*onStateChanged: (previous, current) {
-        print("previous: $previous");
-        print("current: $current");
-      },*/
       onDeactivate: () {
         context.read<AuthBloc>().add(ClearUserFirebaseRoomId());
       },

@@ -1,5 +1,7 @@
+import 'package:animate_do/animate_do.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:foody_app/bloc/review_form/review_form_bloc.dart';
 import 'package:foody_app/bloc/review_form/review_form_event.dart';
 import 'package:foody_app/bloc/review_form/review_form_state.dart';
@@ -11,15 +13,25 @@ import '../../widgets/foody_button.dart';
 import '../../widgets/foody_text_field.dart';
 import '../../widgets/utils/show_foody_snackbar.dart';
 
-class ReviewForm extends StatelessWidget {
+class ReviewForm extends HookWidget {
   const ReviewForm({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final animationController = useRef<AnimationController?>(null);
+    final errorShown = useState(false);
+
     return BlocConsumer<ReviewFormBloc, ReviewFormState>(
       listener: (context, state) {
         if (state.apiError != "") {
           showFoodySnackBar(context: context, msg: state.apiError);
+        }
+
+        if (state.ratingError == null) {
+          errorShown.value = false;
+        } else if (!errorShown.value && state.ratingError != "") {
+          animationController.value?.forward(from: 0);
+          errorShown.value = true;
         }
 
         context
@@ -40,13 +52,22 @@ class ReviewForm extends StatelessWidget {
                 ),
               ),
               const SizedBox(height: 20),
-              FoodyRating(
-                rating: state.rating.toDouble(),
-                size: 35,
-                color: Theme.of(context).primaryColor,
-                onRatingChanged: (rating) => context
-                    .read<ReviewFormBloc>()
-                    .add(RatingChanged(rating: rating.toInt())),
+              ShakeX(
+                duration: const Duration(milliseconds: 500),
+                manualTrigger: true,
+                controller: (controller) =>
+                    animationController.value = controller,
+                child: FoodyRating(
+                  borderColor: state.ratingError == null
+                      ? null
+                      : Theme.of(context).colorScheme.error,
+                  rating: state.rating.toDouble(),
+                  size: 35,
+                  color: Theme.of(context).primaryColor,
+                  onRatingChanged: (rating) => context
+                      .read<ReviewFormBloc>()
+                      .add(RatingChanged(rating: rating.toInt())),
+                ),
               ),
               const SizedBox(height: 20),
               FoodyTextField(

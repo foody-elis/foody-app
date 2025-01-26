@@ -7,6 +7,7 @@ class ReviewFormState extends Equatable {
   final String apiError;
   final String? titleError;
   final String? descriptionError;
+  final String? ratingError;
   final bool isLoading;
 
   const ReviewFormState({
@@ -16,6 +17,7 @@ class ReviewFormState extends Equatable {
     required this.apiError,
     required this.titleError,
     required this.descriptionError,
+    required this.ratingError,
     required this.isLoading,
   });
 
@@ -26,6 +28,7 @@ class ReviewFormState extends Equatable {
         apiError = "",
         titleError = null,
         descriptionError = null,
+        ratingError = null,
         isLoading = false;
 
   ReviewFormState copyWith({
@@ -35,6 +38,7 @@ class ReviewFormState extends Equatable {
     String? apiError,
     String? titleError,
     String? descriptionError,
+    String? ratingError,
     bool? isLoading,
   }) {
     return ReviewFormState(
@@ -46,6 +50,8 @@ class ReviewFormState extends Equatable {
       descriptionError: descriptionError == "null"
           ? null
           : descriptionError ?? this.descriptionError,
+      ratingError:
+          ratingError == "null" ? null : ratingError ?? this.ratingError,
       isLoading: isLoading ?? this.isLoading,
     );
   }
@@ -58,6 +64,7 @@ class ReviewFormState extends Equatable {
         apiError,
         titleError,
         descriptionError,
+        ratingError,
         isLoading,
       ];
 }

@@ -46,6 +46,12 @@ class ReviewFormBloc extends Bloc<ReviewFormEvent, ReviewFormState> {
       isValid = false;
     }
 
+    if (state.rating <= 0) {
+      emit(state.copyWith(ratingError: "null"));
+      emit(state.copyWith(ratingError: "Il rating è obbligatorio"));
+      isValid = false;
+    }
+
     return isValid;
   }
 
@@ -84,6 +90,6 @@ class ReviewFormBloc extends Bloc<ReviewFormEvent, ReviewFormState> {
   }
 
   void _onRatingChanged(RatingChanged event, Emitter<ReviewFormState> emit) {
-    emit(state.copyWith(rating: event.rating));
+    emit(state.copyWith(rating: event.rating, ratingError: "null"));
   }
 }

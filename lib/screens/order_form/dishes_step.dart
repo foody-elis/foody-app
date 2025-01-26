@@ -29,7 +29,7 @@ class OrderFormDishesStep extends StatelessWidget {
                     title: "Nessun piatto nel menù del ristorante",
                     description: "Ordina direttamente dal personale del locale",
                     lottieAsset: "empty_menu.json",
-                    lottieAnimated: false,
+                    lottieAnimate: false,
                     lottieHeight: 150,
                   )
                 else

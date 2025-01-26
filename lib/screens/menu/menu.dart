@@ -49,7 +49,7 @@ class Menu extends StatelessWidget {
                         title: "Nessun piatto nel menù",
                         lottieAsset: "empty_menu.json",
                         lottieHeight: 120,
-                        lottieAnimated: false,
+                        lottieAnimate: false,
                       )
                     ]
                   : state.dishes.map((dish) {

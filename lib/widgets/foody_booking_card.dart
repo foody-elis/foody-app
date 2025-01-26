@@ -108,7 +108,7 @@ class FoodyBookingCard extends StatelessWidget {
                             ),
                           ),
                           Text(
-                            "${DateFormat("d MMM y").format(booking.date)} - ${DateFormat("HH:mm").format(booking.sittingTime.start)}",
+                            "${DateFormat("d MMM y", "it_IT").format(booking.date)} • ${DateFormat("HH:mm").format(booking.sittingTime.start)}",
                             style: const TextStyle(color: Colors.grey),
                           )
                         ],

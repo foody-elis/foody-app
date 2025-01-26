@@ -14,3 +14,4 @@ const String reviewsRoute = 'reviews';
 const String orderFormRoute = 'order_form';
 const String orderPaidRoute = 'order_paid';
 const String chatRoute = 'chat';
+const String ordersRoute = 'orders';

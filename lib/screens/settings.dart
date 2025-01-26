@@ -29,6 +29,7 @@ class Settings extends HookWidget {
         body: [
           ListView(
             shrinkWrap: true,
+            padding: EdgeInsets.zero,
             children: ListTile.divideTiles(
               context: context,
               tiles: [

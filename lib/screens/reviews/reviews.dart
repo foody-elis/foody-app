@@ -39,7 +39,7 @@ class Reviews extends StatelessWidget {
                           title: "Nessun piatto nel menù",
                           lottieAsset: "empty_menu.json",
                           lottieHeight: 120,
-                          lottieAnimated: false,
+                          lottieAnimate: false,
                         )
                       ]
                     : state.reviews.asMap().entries.map((e) {
@@ -51,20 +51,6 @@ class Reviews extends StatelessWidget {
                           isLastReview: i != state.reviews.length - 1,
                         );
                       }).toList()),
-            /*floatingActionButton: FloatingActionButton(
-              onPressed: () => showFoodyModalBottomSheet(
-                context: context,
-                child: BlocProvider<ReviewFormBloc>(
-                  create: (_) => ReviewFormBloc(
-                    foodyApiRepository: context.read<FoodyApiRepository>(),
-                    reviewsBloc: context.read<ReviewsBloc>(),
-                    // restaurantId: context.read<MenuBloc>().restaurantId,
-                  ),
-                  child: const ReviewForm(),
-                ),
-              ),
-              child: const Icon(PhosphorIconsRegular.plus),
-            ),*/
           ),
         );
       },

@@ -9,7 +9,8 @@ class FoodyEmptyData extends StatelessWidget {
     required this.lottieAsset,
     this.lottieWidth,
     this.lottieHeight,
-    this.lottieAnimated = true,
+    this.lottieAnimate = true,
+    this.lottieRepeat = true,
     this.containerHeight,
     this.spacing = 10,
   });
@@ -19,7 +20,8 @@ class FoodyEmptyData extends StatelessWidget {
   final String lottieAsset;
   final double? lottieWidth;
   final double? lottieHeight;
-  final bool lottieAnimated;
+  final bool lottieAnimate;
+  final bool lottieRepeat;
   final double? containerHeight;
   final double spacing;
 
@@ -34,9 +36,10 @@ class FoodyEmptyData extends StatelessWidget {
         children: [
           Lottie.asset(
             "assets/lottie/$lottieAsset",
-            animate: lottieAnimated,
+            animate: lottieAnimate,
             width: lottieWidth,
             height: lottieHeight,
+            repeat: lottieRepeat,
           ),
           Text(
             title,

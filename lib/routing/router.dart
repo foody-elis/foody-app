@@ -8,6 +8,7 @@ import 'package:foody_app/bloc/bottom_nav_bar/bottom_nav_bar_bloc.dart';
 import 'package:foody_app/bloc/chat/chat_bloc.dart';
 import 'package:foody_app/bloc/menu/menu_bloc.dart';
 import 'package:foody_app/bloc/order_form/order_form_bloc.dart';
+import 'package:foody_app/bloc/orders/orders_bloc.dart';
 import 'package:foody_app/bloc/restaurant_details/restaurant_details_bloc.dart';
 import 'package:foody_app/bloc/restaurant_form/restaurant_form_bloc.dart';
 import 'package:foody_app/bloc/reviews/reviews_bloc.dart';
@@ -22,6 +23,7 @@ import 'package:foody_app/screens/edit_profile.dart';
 import 'package:foody_app/screens/menu/menu.dart';
 import 'package:foody_app/screens/order_form/order_form.dart';
 import 'package:foody_app/screens/order_paid.dart';
+import 'package:foody_app/screens/orders/orders.dart';
 import 'package:foody_app/screens/restaurant_details/restaurant_details.dart';
 import 'package:foody_app/screens/restaurant_form.dart';
 import 'package:foody_app/screens/reviews/reviews.dart';
@@ -181,6 +183,16 @@ class Router {
               ),
             ],
             child: const Chat(),
+          ),
+        );
+      case ordersRoute:
+        return CupertinoPageRoute(
+          builder: (_) => BlocProvider<OrdersBloc>(
+            create: (context) => OrdersBloc(
+              foodyApiClient: context.read<FoodyApiClient>(),
+              userRepository: context.read<UserRepository>(),
+            ),
+            child: const Orders(),
           ),
         );
       default:

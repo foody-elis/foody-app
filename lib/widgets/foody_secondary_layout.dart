@@ -22,6 +22,7 @@ class FoodySecondaryLayout extends HookWidget {
     this.expandedBodyHeight = 0.8,
     this.startWithExpandedBody = false,
     this.onRefresh,
+    this.bodySpacing = 0,
   }) : assert(subtitle == null || subtitleWidget == null,
             "subtitle and subtitleWidget cannot be set at the same time");
 
@@ -37,6 +38,7 @@ class FoodySecondaryLayout extends HookWidget {
   final double expandedBodyHeight;
   final bool startWithExpandedBody;
   final Future<void> Function()? onRefresh;
+  final double bodySpacing;
 
   @override
   Widget build(BuildContext context) {
@@ -97,7 +99,10 @@ class FoodySecondaryLayout extends HookWidget {
       body: [
         Padding(
           padding: EdgeInsets.symmetric(horizontal: horizontalPadding),
-          child: Column(children: body),
+          child: Column(
+            spacing: bodySpacing,
+            children: body,
+          ),
         ),
       ],
     );

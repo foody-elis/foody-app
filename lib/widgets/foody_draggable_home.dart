@@ -121,7 +121,7 @@ class FoodyDraggableHome extends HookWidget {
     )));
 
     useEffect(() {
-      if(startWithExpandedBody) {
+      if (startWithExpandedBody) {
         isFullyExpanded.value = true;
         animationController.forward(from: 1);
       }

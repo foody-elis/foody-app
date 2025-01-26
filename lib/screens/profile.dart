@@ -46,6 +46,7 @@ class Profile extends StatelessWidget {
             ),
           ],
         ),
+        bodySpacing: 5,
         body: [
           FoodyProfileListTile(
             label: "Dati personali",
@@ -58,13 +59,16 @@ class Profile extends StatelessWidget {
               },
             ),
           ),
-          const SizedBox(height: 5),
+          FoodyProfileListTile(
+            label: "Ordini",
+            icon: PhosphorIconsRegular.receipt,
+            onTap: () => NavigationService().navigateTo(ordersRoute),
+          ),
           FoodyProfileListTile(
             label: "Impostazioni",
             icon: PhosphorIconsRegular.gear,
             onTap: () => NavigationService().navigateTo(settingsRoute),
           ),
-          const SizedBox(height: 5),
           FoodyProfileListTile(
             label: "Esci",
             icon: PhosphorIconsRegular.signOut,

@@ -68,7 +68,7 @@ class RestaurantMenu extends StatelessWidget {
                   lottieAsset: "empty_menu.json",
                   lottieHeight: 120,
                   containerHeight: 200,
-                  lottieAnimated: false,
+                  lottieAnimate: false,
                 )
               else
                 ...dishes.map((dish) => FoodyDishCard(dish: dish)),

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:foody_app/utils/show_foody_modal_bottom_sheet.dart';
+import 'package:foody_app/widgets/utils/show_foody_modal_bottom_sheet.dart';
 import 'package:phosphor_flutter/phosphor_flutter.dart';
 
 void showBookingActions({

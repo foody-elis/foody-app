@@ -1,17 +1,17 @@
 import 'package:bloc_concurrency/bloc_concurrency.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:foody_app/dto/response/category_response_dto.dart';
-import 'package:foody_app/dto/response/detailed_restaurant_response_dto.dart';
-import 'package:foody_app/repository/interface/foody_api_repository.dart';
+import 'package:foody_api_client/dto/response/category_response_dto.dart';
+import 'package:foody_api_client/dto/response/detailed_restaurant_response_dto.dart';
+import 'package:foody_api_client/foody_api_client.dart';
+import 'package:foody_api_client/utils/call_api.dart';
 
-import '../../utils/call_api.dart';
 import 'home_event.dart';
 import 'home_state.dart';
 
 class HomeBloc extends Bloc<HomeEvent, HomeState> {
-  final FoodyApiRepository foodyApiRepository;
+  final FoodyApiClient foodyApiClient;
 
-  HomeBloc({required this.foodyApiRepository}) : super(HomeState.initial()) {
+  HomeBloc({required this.foodyApiClient}) : super(HomeState.initial()) {
     on<FetchCategoriesAndRestaurants>(
       _onFetchCategoriesAndRestaurants,
       transformer: droppable(),
@@ -26,7 +26,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
 
   Future<void> _fetchCategories(Emitter<HomeState> emit) async =>
       callApi<List<CategoryResponseDto>>(
-        api: foodyApiRepository.categories.getAll,
+        api: foodyApiClient.categories.getAll,
         onComplete: (categories) =>
             emit(state.copyWith(categories: categories)),
         onFailed: (_) => emit(state.copyWith(categories: [])),
@@ -36,7 +36,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
 
   Future<void> _fetchRestaurants(Emitter<HomeState> emit) async =>
       callApi<List<DetailedRestaurantResponseDto>>(
-        api: foodyApiRepository.restaurants.getAll,
+        api: foodyApiClient.restaurants.getAll,
         onComplete: (restaurants) => emit(state.copyWith(
           restaurants: restaurants,
           restaurantsFiltered: restaurants,

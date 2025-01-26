@@ -1,20 +1,20 @@
 import 'package:bloc_concurrency/bloc_concurrency.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:foody_api_client/dto/response/booking_response_dto.dart';
+import 'package:foody_api_client/foody_api_client.dart';
+import 'package:foody_api_client/utils/booking_status.dart';
+import 'package:foody_api_client/utils/call_api.dart';
 import 'package:foody_app/bloc/bookings/bookings_event.dart';
 import 'package:foody_app/bloc/bookings/bookings_state.dart';
-import 'package:foody_app/dto/response/booking_response_dto.dart';
 import 'package:foody_app/routing/navigation_service.dart';
-import 'package:foody_app/utils/booking_status.dart';
 import 'package:foody_app/utils/bookings_filter.dart';
 
-import '../../repository/interface/foody_api_repository.dart';
-import '../../utils/call_api.dart';
 import '../../utils/date_comparisons.dart';
 
 class BookingsBloc extends Bloc<BookingsEvent, BookingsState> {
-  final FoodyApiRepository foodyApiRepository;
+  final FoodyApiClient foodyApiClient;
 
-  BookingsBloc({required this.foodyApiRepository})
+  BookingsBloc({required this.foodyApiClient})
       : super(BookingsState.initial()) {
     on<FetchBookings>(_onFetchBookings, transformer: droppable());
     on<CancelBooking>(_onCancelBooking, transformer: droppable());
@@ -27,8 +27,8 @@ class BookingsBloc extends Bloc<BookingsEvent, BookingsState> {
 
     await callApi<List<BookingResponseDto>>(
       api: () => event.restaurantId == null
-          ? foodyApiRepository.bookings.getByCustomer()
-          : foodyApiRepository.bookings.getByRestaurant(event.restaurantId!),
+          ? foodyApiClient.bookings.getByCustomer()
+          : foodyApiClient.bookings.getByRestaurant(event.restaurantId!),
       onComplete: (response) {
         emit(state.copyWith(bookings: response));
         _applyFilter(emit);
@@ -76,7 +76,7 @@ class BookingsBloc extends Bloc<BookingsEvent, BookingsState> {
     NavigationService().goBack();
 
     await callApi<BookingResponseDto>(
-      api: () => foodyApiRepository.bookings.cancel(event.id),
+      api: () => foodyApiClient.bookings.cancel(event.id),
       onComplete: (response) {
         add(const FetchBookings());
       },

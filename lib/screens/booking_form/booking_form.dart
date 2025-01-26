@@ -8,7 +8,7 @@ import 'package:foody_app/screens/booking_form/confirmation_step.dart';
 import 'package:foody_app/screens/booking_form/seats_step.dart';
 import 'package:foody_app/screens/booking_form/sitting_time_step.dart';
 import 'package:foody_app/screens/booking_form/stepper.dart';
-import 'package:foody_app/utils/show_snackbar.dart';
+import 'package:foody_app/widgets/utils/show_foody_snackbar.dart';
 import 'package:phosphor_flutter/phosphor_flutter.dart';
 
 import '../../bloc/foody/foody_bloc.dart';
@@ -23,7 +23,7 @@ class BookingForm extends StatelessWidget {
     return BlocConsumer<BookingFormBloc, BookingFormState>(
       listener: (context, state) {
         if (state.apiError != "") {
-          showSnackBar(context: context, msg: state.apiError);
+          showFoodySnackBar(context: context, msg: state.apiError);
         }
 
         context

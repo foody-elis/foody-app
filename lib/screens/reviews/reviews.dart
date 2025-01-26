@@ -8,7 +8,7 @@ import 'package:foody_app/widgets/foody_empty_data.dart';
 import 'package:foody_app/widgets/foody_review.dart';
 import 'package:foody_app/widgets/foody_secondary_layout.dart';
 
-import '../../utils/show_snackbar.dart';
+import '../../widgets/utils/show_foody_snackbar.dart';
 
 class Reviews extends StatelessWidget {
   const Reviews({super.key});
@@ -18,7 +18,7 @@ class Reviews extends StatelessWidget {
     return BlocConsumer<ReviewsBloc, ReviewsState>(
       listener: (context, state) {
         if (state.apiError != "") {
-          showSnackBar(context: context, msg: state.apiError);
+          showFoodySnackBar(context: context, msg: state.apiError);
         }
 
         context

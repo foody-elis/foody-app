@@ -7,9 +7,9 @@ import 'package:foody_app/widgets/foody_rating.dart';
 
 import '../../bloc/foody/foody_bloc.dart';
 import '../../bloc/foody/foody_event.dart';
-import '../../utils/show_snackbar.dart';
 import '../../widgets/foody_button.dart';
 import '../../widgets/foody_text_field.dart';
+import '../../widgets/utils/show_foody_snackbar.dart';
 
 class ReviewForm extends StatelessWidget {
   const ReviewForm({super.key});
@@ -19,7 +19,7 @@ class ReviewForm extends StatelessWidget {
     return BlocConsumer<ReviewFormBloc, ReviewFormState>(
       listener: (context, state) {
         if (state.apiError != "") {
-          showSnackBar(context: context, msg: state.apiError);
+          showFoodySnackBar(context: context, msg: state.apiError);
         }
 
         context

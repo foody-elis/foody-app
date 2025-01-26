@@ -6,8 +6,8 @@ import 'package:foody_app/bloc/sign_up/sign_up_bloc.dart';
 import 'package:foody_app/bloc/sign_up/sign_up_event.dart';
 import 'package:foody_app/bloc/sign_up/sign_up_state.dart';
 import 'package:foody_app/screens/welcome/sign_up_form.dart';
-import 'package:foody_app/utils/show_snackbar.dart';
 import 'package:foody_app/widgets/foody_secondary_layout.dart';
+import 'package:foody_app/widgets/utils/show_foody_snackbar.dart';
 import 'package:phosphor_flutter/phosphor_flutter.dart';
 
 class EditProfile extends StatelessWidget {
@@ -17,13 +17,13 @@ class EditProfile extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocConsumer<SignUpBloc, SignUpState>(
       listener: (context, state) {
-        if(state.apiError != "") {
-          showSnackBar(context: context, msg: state.apiError);
+        if (state.apiError != "") {
+          showFoodySnackBar(context: context, msg: state.apiError);
         }
 
         context
-          .read<FoodyBloc>()
-          .add(ShowLoadingOverlayChanged(show: state.isLoading));
+            .read<FoodyBloc>()
+            .add(ShowLoadingOverlayChanged(show: state.isLoading));
       },
       builder: (context, state) {
         return PopScope(

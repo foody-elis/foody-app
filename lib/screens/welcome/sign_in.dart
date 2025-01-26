@@ -1,20 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:foody_api_client/foody_api_client.dart';
 import 'package:foody_app/bloc/foody/foody_bloc.dart';
 import 'package:foody_app/bloc/foody/foody_event.dart';
 import 'package:foody_app/bloc/sign_in/sign_in_bloc.dart';
 import 'package:foody_app/bloc/sign_in/sign_in_event.dart';
 import 'package:foody_app/bloc/sign_in/sign_in_state.dart';
-import 'package:foody_app/repository/interface/foody_api_repository.dart';
 import 'package:foody_app/repository/interface/user_repository.dart';
 import 'package:foody_app/screens/welcome/sign_up.dart';
-import 'package:foody_app/utils/show_snackbar.dart';
+import 'package:foody_app/widgets/utils/show_foody_snackbar.dart';
 import 'package:phosphor_flutter/phosphor_flutter.dart';
 
 import '../../bloc/sign_up/sign_up_bloc.dart';
-import '../../utils/show_foody_modal_bottom_sheet.dart';
 import '../../widgets/foody_button.dart';
 import '../../widgets/foody_text_field.dart';
+import '../../widgets/utils/show_foody_modal_bottom_sheet.dart';
 
 class SignIn extends StatelessWidget {
   const SignIn({super.key});
@@ -24,7 +24,7 @@ class SignIn extends StatelessWidget {
     return BlocConsumer<SignInBloc, SignInState>(
       listener: (context, state) {
         if (state.apiError != "") {
-          showSnackBar(context: context, msg: state.apiError);
+          showFoodySnackBar(context: context, msg: state.apiError);
         }
 
         context
@@ -81,7 +81,7 @@ class SignIn extends StatelessWidget {
                     context: context,
                     maxHeightPercentage: 90,
                     createBloc: (context) => SignUpBloc(
-                      foodyApiRepository: context.read<FoodyApiRepository>(),
+                      foodyApiClient: context.read<FoodyApiClient>(),
                       userRepository: context.read<UserRepository>(),
                     ),
                     child: const SignUp(),

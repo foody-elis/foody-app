@@ -1,6 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:foody_app/dto/response/detailed_restaurant_response_dto.dart';
+import 'package:foody_api_client/dto/response/detailed_restaurant_response_dto.dart';
 import 'package:foody_app/widgets/foody_button.dart';
 import 'package:foody_app/widgets/foody_rating_label.dart';
 import 'package:intl/intl.dart';

@@ -4,37 +4,37 @@ import 'dart:io';
 import 'package:bloc_concurrency/bloc_concurrency.dart';
 import 'package:email_validator/email_validator.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:foody_api_client/dto/request/user_registration_request_dto.dart';
+import 'package:foody_api_client/dto/request/user_update_request_dto.dart';
+import 'package:foody_api_client/dto/response/auth_response_dto.dart';
+import 'package:foody_api_client/dto/response/user_response_dto.dart';
+import 'package:foody_api_client/foody_api_client.dart';
+import 'package:foody_api_client/utils/call_api.dart';
+import 'package:foody_api_client/utils/get_foody_dio.dart';
 import 'package:foody_app/bloc/auth/auth_bloc.dart';
 import 'package:foody_app/bloc/auth/auth_event.dart';
-import 'package:foody_app/dto/request/user_registration_request_dto.dart';
-import 'package:foody_app/dto/request/user_update_request_dto.dart';
-import 'package:foody_app/dto/response/auth_response_dto.dart';
-import 'package:foody_app/dto/response/user_response_dto.dart';
-import 'package:foody_app/repository/interface/foody_api_repository.dart';
 import 'package:foody_app/repository/interface/user_repository.dart';
 import 'package:foody_app/routing/constants.dart';
+import 'package:foody_app/utils/get_token_interceptor.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
 import 'package:jwt_decoder/jwt_decoder.dart';
 
 import '../../models/user.dart';
 import '../../routing/navigation_service.dart';
-import '../../utils/call_api.dart';
 import '../../utils/download_and_save_file.dart';
-import '../../utils/get_foody_dio.dart';
-import '../../utils/token_inteceptor.dart';
 import 'sign_up_event.dart';
 import 'sign_up_state.dart';
 
 class SignUpBloc extends Bloc<SignUpEvent, SignUpState> {
   final NavigationService _navigationService = NavigationService();
-  final FoodyApiRepository foodyApiRepository;
+  final FoodyApiClient foodyApiClient;
   final UserRepository userRepository;
   final UserResponseDto? user;
   final AuthBloc? authBloc;
 
   SignUpBloc({
-    required this.foodyApiRepository,
+    required this.foodyApiClient,
     required this.userRepository,
     this.user,
     this.authBloc,
@@ -132,7 +132,7 @@ class SignUpBloc extends Bloc<SignUpEvent, SignUpState> {
     required Function(UserRegistrationRequestDto) api,
     required void Function() onComplete,
   }) async {
-    foodyApiRepository.dio = getFoodyDio(); // reset dio in case of 498
+    foodyApiClient.dio = getFoodyDio(); // reset dio in case of 498
 
     emit(state.copyWith(isLoading: true));
 
@@ -153,8 +153,8 @@ class SignUpBloc extends Bloc<SignUpEvent, SignUpState> {
           jwt: response.accessToken,
           role: JwtDecoder.decode(response.accessToken)["role"],
         ));
-        foodyApiRepository.dio = getFoodyDio(
-            tokenInterceptor: TokenInterceptor(
+        foodyApiClient.dio = getFoodyDio(
+            tokenInterceptor: getTokenInterceptor(
           token: response.accessToken,
           userRepository: userRepository,
         ));
@@ -173,7 +173,7 @@ class SignUpBloc extends Bloc<SignUpEvent, SignUpState> {
     if (_isFormValid(emit)) {
       await _signUp(
         emit: emit,
-        api: foodyApiRepository.auth.registerCustomer,
+        api: foodyApiClient.auth.registerCustomer,
         onComplete: () => _navigationService.resetToScreen(authenticatedRoute),
       );
     }
@@ -184,7 +184,7 @@ class SignUpBloc extends Bloc<SignUpEvent, SignUpState> {
     if (_isFormValid(emit)) {
       await _signUp(
         emit: emit,
-        api: foodyApiRepository.auth.registerRestaurateur,
+        api: foodyApiClient.auth.registerRestaurateur,
         onComplete: () => _navigationService.navigateTo(restaurantFormRoute),
       );
     }
@@ -238,7 +238,7 @@ class SignUpBloc extends Bloc<SignUpEvent, SignUpState> {
           : state.avatarPath;
 
       await callApi<UserResponseDto>(
-        api: () => foodyApiRepository.users.edit(
+        api: () => foodyApiClient.users.edit(
           UserUpdateRequestDto(
             name: state.name,
             surname: state.surname,

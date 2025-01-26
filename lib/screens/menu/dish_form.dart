@@ -7,11 +7,11 @@ import 'package:phosphor_flutter/phosphor_flutter.dart';
 
 import '../../bloc/foody/foody_bloc.dart';
 import '../../bloc/foody/foody_event.dart';
-import '../../utils/show_foody_image_picker.dart';
-import '../../utils/show_snackbar.dart';
 import '../../widgets/foody_button.dart';
 import '../../widgets/foody_circular_image.dart';
 import '../../widgets/foody_text_field.dart';
+import '../../widgets/utils/show_foody_image_picker.dart';
+import '../../widgets/utils/show_foody_snackbar.dart';
 
 class DishForm extends StatelessWidget {
   const DishForm({super.key});
@@ -21,7 +21,7 @@ class DishForm extends StatelessWidget {
     return BlocConsumer<DishFormBloc, DishFormState>(
       listener: (context, state) {
         if (state.apiError != "") {
-          showSnackBar(context: context, msg: state.apiError);
+          showFoodySnackBar(context: context, msg: state.apiError);
         }
 
         context

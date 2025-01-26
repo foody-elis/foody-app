@@ -8,10 +8,10 @@ import 'package:intl/intl.dart';
 import 'package:intl_phone_number_input_perci/intl_phone_number_input_perci.dart';
 import 'package:phosphor_flutter/phosphor_flutter.dart';
 
-import '../../utils/show_foody_image_picker.dart';
 import '../../widgets/foody_circular_image.dart';
 import '../../widgets/foody_phone_number_field.dart';
 import '../../widgets/foody_text_field.dart';
+import '../../widgets/utils/show_foody_image_picker.dart';
 
 class SignUpForm extends StatelessWidget {
   const SignUpForm({super.key});

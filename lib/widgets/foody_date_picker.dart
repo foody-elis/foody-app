@@ -1,10 +1,10 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
-import 'package:foody_app/utils/show_foody_modal_bottom_sheet.dart';
 import 'package:foody_app/widgets/foody_button.dart';
 import 'package:foody_app/widgets/foody_outlined_button.dart';
 import 'package:foody_app/widgets/foody_text_field.dart';
+import 'package:foody_app/widgets/utils/show_foody_modal_bottom_sheet.dart';
 import 'package:intl/intl.dart';
 import 'package:phosphor_flutter/phosphor_flutter.dart';
 

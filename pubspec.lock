@@ -682,6 +682,15 @@ packages:
     description: flutter
     source: sdk
     version: "0.0.0"
+  foody_api_client:
+    dependency: "direct main"
+    description:
+      path: "."
+      ref: main
+      resolved-ref: e767bd92239ebcfbcb383f5f4006daeeee01b70e
+      url: "https://github.com/foody-elis/foody_api_client"
+    source: git
+    version: "0.0.1"
   frontend_server_client:
     dependency: transitive
     description:

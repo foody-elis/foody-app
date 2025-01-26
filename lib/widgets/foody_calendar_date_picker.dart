@@ -1,6 +1,6 @@
 import 'package:calendar_date_picker2/calendar_date_picker2.dart';
 import 'package:flutter/material.dart';
-import 'package:foody_app/dto/response/sitting_time_response_dto.dart';
+import 'package:foody_api_client/dto/response/sitting_time_response_dto.dart';
 import 'package:phosphor_flutter/phosphor_flutter.dart';
 
 class FoodyCalendarDatePicker extends StatelessWidget {

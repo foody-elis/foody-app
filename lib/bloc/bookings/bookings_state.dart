@@ -1,11 +1,11 @@
 import 'package:equatable/equatable.dart';
-import 'package:foody_app/dto/response/booking_response_dto.dart';
-import 'package:foody_app/dto/response/detailed_restaurant_response_dto.dart';
-import 'package:foody_app/dto/response/sitting_time_response_dto.dart';
-import 'package:foody_app/dto/response/user_response_dto.dart';
-import 'package:foody_app/utils/booking_status.dart';
+import 'package:foody_api_client/dto/response/booking_response_dto.dart';
+import 'package:foody_api_client/dto/response/detailed_restaurant_response_dto.dart';
+import 'package:foody_api_client/dto/response/sitting_time_response_dto.dart';
+import 'package:foody_api_client/dto/response/user_response_dto.dart';
+import 'package:foody_api_client/utils/booking_status.dart';
+import 'package:foody_api_client/utils/roles.dart';
 import 'package:foody_app/utils/bookings_filter.dart';
-import 'package:foody_app/utils/roles.dart';
 
 class BookingsState extends Equatable {
   final BookingsFilter filter;

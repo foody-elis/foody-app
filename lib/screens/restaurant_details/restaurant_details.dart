@@ -11,9 +11,9 @@ import 'package:foody_app/screens/restaurant_details/restaurant_info.dart';
 import 'package:foody_app/screens/restaurant_details/restaurant_menu.dart';
 import 'package:foody_app/screens/restaurant_details/restaurant_reviews.dart';
 import 'package:foody_app/screens/restaurant_details/sitting_times_info.dart';
-import 'package:foody_app/utils/show_snackbar.dart';
 import 'package:foody_app/widgets/foody_button.dart';
 import 'package:foody_app/widgets/foody_rating_label.dart';
+import 'package:foody_app/widgets/utils/show_foody_snackbar.dart';
 import 'package:skeletonizer/skeletonizer.dart';
 
 import '../../bloc/bottom_nav_bar/bottom_nav_bar_bloc.dart';
@@ -56,7 +56,7 @@ class RestaurantDetails extends HookWidget {
     return BlocConsumer<RestaurantDetailsBloc, RestaurantDetailsState>(
       listener: (context, state) {
         if (state.apiError != "") {
-          showSnackBar(context: context, msg: state.apiError);
+          showFoodySnackBar(context: context, msg: state.apiError);
         }
 
         context

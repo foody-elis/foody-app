@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:foody_app/dto/response/booking_response_dto.dart';
+import 'package:foody_api_client/dto/response/booking_response_dto.dart';
 import 'package:foody_app/routing/constants.dart';
 import 'package:intl/intl.dart';
 import 'package:lottie/lottie.dart';

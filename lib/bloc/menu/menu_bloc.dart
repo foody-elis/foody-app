@@ -1,19 +1,18 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:foody_api_client/dto/response/dish_response_dto.dart';
+import 'package:foody_api_client/foody_api_client.dart';
+import 'package:foody_api_client/utils/call_api.dart';
 import 'package:foody_app/bloc/menu/menu_event.dart';
 import 'package:foody_app/bloc/menu/menu_state.dart';
-import 'package:foody_app/dto/response/dish_response_dto.dart';
 import 'package:foody_app/routing/navigation_service.dart';
-import 'package:foody_app/utils/call_api.dart';
-
-import '../../repository/interface/foody_api_repository.dart';
 
 class MenuBloc extends Bloc<MenuEvent, MenuState> {
-  final FoodyApiRepository foodyApiRepository;
+  final FoodyApiClient foodyApiClient;
   final int restaurantId;
   final bool canEdit;
 
   MenuBloc({
-    required this.foodyApiRepository,
+    required this.foodyApiClient,
     required this.restaurantId,
     required this.canEdit,
   }) : super(MenuState.initial()) {
@@ -27,7 +26,7 @@ class MenuBloc extends Bloc<MenuEvent, MenuState> {
     emit(state.copyWith(isLoading: true));
 
     await callApi<List<DishResponseDto>>(
-      api: () => foodyApiRepository.dishes.getAllByRestaurant(restaurantId),
+      api: () => foodyApiClient.dishes.getAllByRestaurant(restaurantId),
       onComplete: (response) => emit(state.copyWith(
         dishes: response,
         isLoading: false,
@@ -40,7 +39,7 @@ class MenuBloc extends Bloc<MenuEvent, MenuState> {
     emit(state.copyWith(isLoading: true));
 
     await callApi<void>(
-      api: () => foodyApiRepository.dishes.delete(event.dishId),
+      api: () => foodyApiClient.dishes.delete(event.dishId),
       onComplete: (_) {
         emit(state.copyWith(
           isLoading: false,

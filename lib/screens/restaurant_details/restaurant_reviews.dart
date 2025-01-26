@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:foody_app/dto/response/review_response_dto.dart';
+import 'package:foody_api_client/dto/response/review_response_dto.dart';
 import 'package:foody_app/routing/constants.dart';
 import 'package:foody_app/routing/navigation_service.dart';
 import 'package:foody_app/widgets/foody_empty_data.dart';

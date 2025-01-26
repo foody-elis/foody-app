@@ -5,8 +5,8 @@ import 'package:foody_app/bloc/home/home_event.dart';
 import 'package:foody_app/bloc/home/home_state.dart';
 import 'package:foody_app/screens/home/categories.dart';
 import 'package:foody_app/screens/home/restaurants.dart';
-import 'package:foody_app/utils/show_snackbar.dart';
 import 'package:foody_app/widgets/foody_main_layout.dart';
+import 'package:foody_app/widgets/utils/show_foody_snackbar.dart';
 
 import '../../bloc/auth/auth_event.dart';
 import '../../bloc/home/home_bloc.dart';
@@ -19,7 +19,7 @@ class Home extends StatelessWidget {
     return BlocListener<HomeBloc, HomeState>(
       listener: (context, state) {
         if (state.apiError != "") {
-          showSnackBar(context: context, msg: state.apiError);
+          showFoodySnackBar(context: context, msg: state.apiError);
         }
       },
       child: FoodyMainLayout(

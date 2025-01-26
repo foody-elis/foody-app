@@ -1,25 +1,24 @@
 import 'package:bloc_concurrency/bloc_concurrency.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:foody_api_client/dto/request/booking_request_dto.dart';
+import 'package:foody_api_client/dto/response/booking_response_dto.dart';
+import 'package:foody_api_client/dto/response/restaurant_response_dto.dart';
+import 'package:foody_api_client/dto/response/sitting_time_response_dto.dart';
+import 'package:foody_api_client/foody_api_client.dart';
+import 'package:foody_api_client/utils/call_api.dart';
 import 'package:foody_app/bloc/booking_form/booking_form_event.dart';
 import 'package:foody_app/bloc/booking_form/booking_form_state.dart';
-import 'package:foody_app/dto/request/booking_request_dto.dart';
-import 'package:foody_app/dto/response/booking_response_dto.dart';
-import 'package:foody_app/dto/response/restaurant_response_dto.dart';
-import 'package:foody_app/dto/response/sitting_time_response_dto.dart';
 import 'package:foody_app/routing/constants.dart';
 import 'package:foody_app/routing/navigation_service.dart';
 
-import '../../repository/interface/foody_api_repository.dart';
-import '../../utils/call_api.dart';
-
 class BookingFormBloc extends Bloc<BookingFormEvent, BookingFormState> {
-  final FoodyApiRepository foodyApiRepository;
+  final FoodyApiClient foodyApiClient;
   final RestaurantResponseDto restaurant;
   final SittingTimeResponseDto? sittingTime;
   final NavigationService _navigationService = NavigationService();
 
   BookingFormBloc({
-    required this.foodyApiRepository,
+    required this.foodyApiClient,
     required this.restaurant,
     required this.sittingTime,
   }) : super(BookingFormState.initial(sittingTime)) {
@@ -42,7 +41,7 @@ class BookingFormBloc extends Bloc<BookingFormEvent, BookingFormState> {
     for (int weekDay in state.sittingTimesForWeekDays.keys) {
       fetchSittingTimesByWeekDayFutures
           .add(callApi<List<SittingTimeResponseDto>>(
-        api: () => foodyApiRepository.sittingTimes
+        api: () => foodyApiClient.sittingTimes
             .getAllByRestaurantAndWeekDay(restaurant.id, weekDay),
         onComplete: (sittingTimes) {
           final now = DateTime.now();
@@ -77,7 +76,7 @@ class BookingFormBloc extends Bloc<BookingFormEvent, BookingFormState> {
     emit(state.copyWith(isLoading: true));
 
     await callApi<BookingResponseDto>(
-      api: () => foodyApiRepository.bookings.save(
+      api: () => foodyApiClient.bookings.save(
         BookingRequestDto(
           date: state.date!,
           seats: state.seats!,

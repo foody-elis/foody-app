@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:foody_api_client/dto/response/booking_response_dto.dart';
+import 'package:foody_api_client/utils/booking_status.dart';
 import 'package:foody_app/bloc/auth/auth_bloc.dart';
 import 'package:foody_app/bloc/bookings/bookings_bloc.dart';
 import 'package:foody_app/bloc/bookings/bookings_event.dart';
-import 'package:foody_app/dto/response/booking_response_dto.dart';
 import 'package:foody_app/routing/constants.dart';
 import 'package:foody_app/routing/navigation_service.dart';
 import 'package:foody_app/screens/bookings/show_booking_actions.dart';
-import 'package:foody_app/utils/booking_status.dart';
 import 'package:foody_app/utils/date_comparisons.dart';
 import 'package:intl/intl.dart';
 import 'package:skeletonizer/skeletonizer.dart';

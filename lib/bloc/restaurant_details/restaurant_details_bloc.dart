@@ -4,29 +4,29 @@ import 'dart:io';
 import 'package:bloc_concurrency/bloc_concurrency.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_firebase_chat_core/flutter_firebase_chat_core.dart';
+import 'package:foody_api_client/dto/request/restaurant_request_dto.dart';
+import 'package:foody_api_client/dto/response/detailed_restaurant_response_dto.dart';
+import 'package:foody_api_client/dto/response/restaurant_response_dto.dart';
+import 'package:foody_api_client/foody_api_client.dart';
+import 'package:foody_api_client/utils/call_api.dart';
 import 'package:foody_app/bloc/restaurant_details/restaurant_details_event.dart';
 import 'package:foody_app/bloc/restaurant_details/restaurant_details_state.dart';
-import 'package:foody_app/dto/response/detailed_restaurant_response_dto.dart';
 import 'package:foody_app/repository/interface/user_repository.dart';
 import 'package:foody_app/routing/constants.dart';
 import 'package:foody_app/utils/firestore_to_flyer_user.dart';
 import 'package:image_picker/image_picker.dart';
 
-import '../../dto/request/restaurant_request_dto.dart';
-import '../../dto/response/restaurant_response_dto.dart';
-import '../../repository/interface/foody_api_repository.dart';
 import '../../routing/navigation_service.dart';
-import '../../utils/call_api.dart';
 
 class RestaurantDetailsBloc
     extends Bloc<RestaurantDetailsEvent, RestaurantDetailsState> {
   final NavigationService _navigationService = NavigationService();
-  final FoodyApiRepository foodyApiRepository;
+  final FoodyApiClient foodyApiClient;
   final UserRepository userRepository;
   final int? restaurantId;
 
   RestaurantDetailsBloc({
-    required this.foodyApiRepository,
+    required this.foodyApiClient,
     required this.userRepository,
     this.restaurantId,
   }) : super(RestaurantDetailsState.initial()) {
@@ -45,8 +45,8 @@ class RestaurantDetailsBloc
 
     await callApi<DetailedRestaurantResponseDto>(
       api: () => restaurantId == null
-          ? foodyApiRepository.restaurants.getMyRestaurant()
-          : foodyApiRepository.restaurants.getById(restaurantId!),
+          ? foodyApiClient.restaurants.getMyRestaurant()
+          : foodyApiClient.restaurants.getById(restaurantId!),
       onComplete: (response) {
         if (restaurantId == null) {
           final user = userRepository.get()!;
@@ -72,7 +72,7 @@ class RestaurantDetailsBloc
     emit(state.copyWith(isUpdatingImage: true));
 
     await callApi<RestaurantResponseDto>(
-      api: () => foodyApiRepository.restaurants.edit(
+      api: () => foodyApiClient.restaurants.edit(
         state.restaurant.id,
         RestaurantRequestDto(
           name: state.restaurant.name,

@@ -1,17 +1,16 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:foody_api_client/dto/response/review_response_dto.dart';
+import 'package:foody_api_client/foody_api_client.dart';
+import 'package:foody_api_client/utils/call_api.dart';
 import 'package:foody_app/bloc/reviews/reviews_event.dart';
 import 'package:foody_app/bloc/reviews/reviews_state.dart';
-import 'package:foody_app/dto/response/review_response_dto.dart';
-import 'package:foody_app/utils/call_api.dart';
-
-import '../../repository/interface/foody_api_repository.dart';
 
 class ReviewsBloc extends Bloc<ReviewsEvent, ReviewsState> {
-  final FoodyApiRepository foodyApiRepository;
+  final FoodyApiClient foodyApiClient;
   final int restaurantId;
 
   ReviewsBloc({
-    required this.foodyApiRepository,
+    required this.foodyApiClient,
     required this.restaurantId,
   }) : super(ReviewsState.initial()) {
     on<FetchReviews>(_onFetchReviews);
@@ -24,7 +23,7 @@ class ReviewsBloc extends Bloc<ReviewsEvent, ReviewsState> {
     emit(state.copyWith(isLoading: true));
 
     await callApi<List<ReviewResponseDto>>(
-      api: () => foodyApiRepository.reviews.getByRestaurant(restaurantId),
+      api: () => foodyApiClient.reviews.getByRestaurant(restaurantId),
       onComplete: (reviews) => emit(state.copyWith(reviews: reviews)),
       errorToEmit: (msg) => emit(state.copyWith(apiError: msg)),
     );

@@ -1,17 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:foody_api_client/dto/response/dish_response_dto.dart';
+import 'package:foody_api_client/foody_api_client.dart';
 import 'package:foody_app/bloc/menu/menu_bloc.dart';
 import 'package:foody_app/bloc/order_form/order_form_bloc.dart';
-import 'package:foody_app/dto/response/dish_response_dto.dart';
 import 'package:foody_app/screens/menu/dish_form.dart';
 import 'package:foody_app/screens/restaurant_details/dish_details.dart';
-import 'package:foody_app/utils/show_foody_modal_bottom_sheet.dart';
 import 'package:foody_app/widgets/foody_rating.dart';
+import 'package:foody_app/widgets/utils/show_foody_modal_bottom_sheet.dart';
 import 'package:phosphor_flutter/phosphor_flutter.dart';
 import 'package:skeletonizer/skeletonizer.dart';
 
 import '../bloc/dish_form/dish_form_bloc.dart';
-import '../repository/interface/foody_api_repository.dart';
 import 'foody_circular_image.dart';
 
 class FoodyDishCard extends StatelessWidget {
@@ -40,7 +40,7 @@ class FoodyDishCard extends StatelessWidget {
             ? showFoodyModalBottomSheetWithBloc<void, DishFormBloc>(
                 context: context,
                 createBloc: (_) => DishFormBloc(
-                  foodyApiRepository: context.read<FoodyApiRepository>(),
+                  foodyApiClient: context.read<FoodyApiClient>(),
                   menuBloc: context.read<MenuBloc>(),
                   dish: dish,
                 ),

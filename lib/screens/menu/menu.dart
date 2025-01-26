@@ -1,20 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:foody_api_client/foody_api_client.dart';
 import 'package:foody_app/bloc/dish_form/dish_form_bloc.dart';
 import 'package:foody_app/bloc/foody/foody_bloc.dart';
 import 'package:foody_app/bloc/foody/foody_event.dart';
 import 'package:foody_app/bloc/menu/menu_bloc.dart';
 import 'package:foody_app/bloc/menu/menu_event.dart';
 import 'package:foody_app/bloc/menu/menu_state.dart';
-import 'package:foody_app/repository/interface/foody_api_repository.dart';
 import 'package:foody_app/screens/menu/dish_form.dart';
-import 'package:foody_app/utils/show_foody_modal_bottom_sheet.dart';
 import 'package:foody_app/widgets/foody_empty_data.dart';
 import 'package:foody_app/widgets/foody_secondary_layout.dart';
+import 'package:foody_app/widgets/utils/show_foody_modal_bottom_sheet.dart';
 import 'package:phosphor_flutter/phosphor_flutter.dart';
 
-import '../../utils/show_snackbar.dart';
 import '../../widgets/foody_dish_card.dart';
+import '../../widgets/utils/show_foody_snackbar.dart';
 
 class Menu extends StatelessWidget {
   const Menu({super.key});
@@ -24,7 +24,7 @@ class Menu extends StatelessWidget {
     return BlocConsumer<MenuBloc, MenuState>(
       listener: (context, state) {
         if (state.apiError != "") {
-          showSnackBar(context: context, msg: state.apiError);
+          showFoodySnackBar(context: context, msg: state.apiError);
         }
 
         context
@@ -74,8 +74,7 @@ class Menu extends StatelessWidget {
                       context: context,
                       child: BlocProvider<DishFormBloc>(
                         create: (_) => DishFormBloc(
-                          foodyApiRepository:
-                              context.read<FoodyApiRepository>(),
+                          foodyApiClient: context.read<FoodyApiClient>(),
                           menuBloc: context.read<MenuBloc>(),
                           // restaurantId: context.read<MenuBloc>().restaurantId,
                         ),

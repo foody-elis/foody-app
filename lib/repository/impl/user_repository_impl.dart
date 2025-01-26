@@ -1,4 +1,4 @@
-import 'package:foody_app/utils/roles.dart';
+import 'package:foody_api_client/utils/roles.dart';
 
 import '../../main.dart' show objectBox;
 import '../../models/user.dart';

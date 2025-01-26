@@ -3,27 +3,27 @@ import 'dart:io';
 
 import 'package:bloc_concurrency/bloc_concurrency.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:foody_api_client/dto/request/dish_request_dto.dart';
+import 'package:foody_api_client/dto/response/dish_response_dto.dart';
+import 'package:foody_api_client/foody_api_client.dart';
+import 'package:foody_api_client/utils/call_api.dart';
 import 'package:foody_app/bloc/dish_form/dish_form_state.dart';
 import 'package:foody_app/bloc/menu/menu_event.dart';
-import 'package:foody_app/dto/request/dish_request_dto.dart';
-import 'package:foody_app/dto/response/dish_response_dto.dart';
 import 'package:foody_app/routing/navigation_service.dart';
 import 'package:image_picker/image_picker.dart';
 
-import '../../repository/interface/foody_api_repository.dart';
-import '../../utils/call_api.dart';
 import '../menu/menu_bloc.dart';
 import 'dish_form_event.dart';
 
 class DishFormBloc extends Bloc<DishFormEvent, DishFormState> {
-  final FoodyApiRepository foodyApiRepository;
+  final FoodyApiClient foodyApiClient;
   final DishResponseDto? dish;
   // final int restaurantId;
   final MenuBloc menuBloc;
   final NavigationService _navigationService = NavigationService();
 
   DishFormBloc({
-    required this.foodyApiRepository,
+    required this.foodyApiClient,
     // required this.restaurantId,
     this.dish,
     required this.menuBloc,
@@ -93,8 +93,8 @@ class DishFormBloc extends Bloc<DishFormEvent, DishFormState> {
 
       await callApi<DishResponseDto>(
         api: () => isEditing
-            ? foodyApiRepository.dishes.edit(dish!.id, bodyData)
-            : foodyApiRepository.dishes.add(bodyData),
+            ? foodyApiClient.dishes.edit(dish!.id, bodyData)
+            : foodyApiClient.dishes.add(bodyData),
         onComplete: (response) {
           emit(state.copyWith(
               apiError: isEditing

@@ -1,5 +1,5 @@
 import 'package:equatable/equatable.dart';
-import 'package:foody_app/dto/response/user_response_dto.dart';
+import 'package:foody_api_client/dto/response/user_response_dto.dart';
 import 'package:intl/intl.dart';
 
 class SignUpState extends Equatable {

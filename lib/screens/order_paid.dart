@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:foody_app/dto/response/order_response_dto.dart';
+import 'package:foody_api_client/dto/response/order_response_dto.dart';
 import 'package:foody_app/widgets/foody_empty_data.dart';
 import 'package:foody_app/widgets/foody_outlined_button.dart';
 import 'package:phosphor_flutter/phosphor_flutter.dart';
@@ -53,7 +53,7 @@ class OrderPaid extends StatelessWidget {
                 label: "Torna alla home",
                 width: MediaQuery.of(context).size.width - 20,
                 onPressed: () =>
-                    NavigationService().navigateTo(authenticatedRoute),
+                    NavigationService().resetToScreen(authenticatedRoute),
               ),
             ),
           ),

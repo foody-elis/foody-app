@@ -1,28 +1,28 @@
 import 'package:bloc_concurrency/bloc_concurrency.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:foody_api_client/dto/request/weekday_info_update_request_dto.dart';
+import 'package:foody_api_client/dto/response/weekday_info_response_dto.dart';
+import 'package:foody_api_client/foody_api_client.dart';
+import 'package:foody_api_client/utils/call_api.dart';
+import 'package:foody_api_client/utils/sitting_times_steps.dart';
 import 'package:foody_app/bloc/sitting_times_form_list/sitting_times_form_list_event.dart';
 import 'package:foody_app/bloc/sitting_times_form_list/sitting_times_form_list_state.dart';
 import 'package:foody_app/bloc/sitting_times_form_list/sitting_times_form_state.dart';
-import 'package:foody_app/dto/request/weekday_info_update_request_dto.dart';
-import 'package:foody_app/dto/response/weekday_info_response_dto.dart';
 import 'package:foody_app/repository/interface/user_repository.dart';
-import 'package:foody_app/utils/call_api.dart';
-import 'package:foody_app/utils/sitting_times_steps.dart';
 
-import '../../repository/interface/foody_api_repository.dart';
 import '../../routing/constants.dart';
 import '../../routing/navigation_service.dart';
 
 class SittingTimesFormListBloc
     extends Bloc<SittingTimesFormListEvent, SittingTimesFormListState> {
   final NavigationService _navigationService = NavigationService();
-  final FoodyApiRepository foodyApiRepository;
+  final FoodyApiClient foodyApiClient;
   final UserRepository userRepository;
   final bool isEditing;
   late final int _restaurantId;
 
   SittingTimesFormListBloc({
-    required this.foodyApiRepository,
+    required this.foodyApiClient,
     required this.userRepository,
     this.isEditing = false,
   }) : super(SittingTimesFormListState.initial()) {
@@ -71,8 +71,8 @@ class SittingTimesFormListBloc
         sittingTimeApiCalls.add(
           callApi<WeekdayInfoResponseDto>(
             api: () => isEditing
-                ? foodyApiRepository.weekdayInfo.update(weekDayState.id!, body)
-                : foodyApiRepository.weekdayInfo.save(
+                ? foodyApiClient.weekdayInfo.update(weekDayState.id!, body)
+                : foodyApiClient.weekdayInfo.save(
                     body.toWeekdayInfoRequestDto(
                       weekDay: weekDay,
                       restaurantId: _restaurantId,
@@ -165,7 +165,7 @@ class SittingTimesFormListBloc
     emit(state.copyWith(isLoading: true));
 
     await callApi<List<WeekdayInfoResponseDto>>(
-      api: () => foodyApiRepository.weekdayInfo.getByRestaurant(_restaurantId),
+      api: () => foodyApiClient.weekdayInfo.getByRestaurant(_restaurantId),
       onComplete: (response) {
         final Map<String, SittingTimesFormState> weekDays = Map.from(
           state.weekDays.map(

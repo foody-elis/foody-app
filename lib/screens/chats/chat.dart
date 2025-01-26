@@ -9,9 +9,9 @@ import 'package:foody_app/bloc/chat/chat_event.dart';
 import "package:foody_app/bloc/chat/chat_state.dart";
 import 'package:foody_app/hooks/foody_widgets_binding_observer.dart';
 import 'package:foody_app/routing/navigation_service.dart';
-import 'package:foody_app/utils/show_foody_image_picker.dart';
 import 'package:foody_app/widgets/foody_chat.dart';
 import 'package:foody_app/widgets/foody_circular_image.dart';
+import 'package:foody_app/widgets/utils/show_foody_image_picker.dart';
 import 'package:phosphor_flutter/phosphor_flutter.dart';
 
 import '../../bloc/auth/auth_event.dart';

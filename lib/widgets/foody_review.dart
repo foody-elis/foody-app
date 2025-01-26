@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:foody_app/dto/response/review_response_dto.dart';
+import 'package:foody_api_client/dto/response/review_response_dto.dart';
 import 'package:intl/intl.dart';
 import 'package:skeletonizer/skeletonizer.dart';
 

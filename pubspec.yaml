@@ -82,6 +82,10 @@ dependencies:
   firebase_messaging: ^15.2.0
   flutter_local_notifications: ^18.0.1
   path_provider: ^2.1.5
+  foody_api_client:
+    git:
+      url: https://github.com/foody-elis/foody_api_client
+      ref: main
 
 dev_dependencies:
   flutter_test:

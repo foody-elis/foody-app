@@ -5,24 +5,24 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:foody_api_client/dto/response/category_response_dto.dart';
 import 'package:foody_app/bloc/foody/foody_bloc.dart';
 import 'package:foody_app/bloc/foody/foody_event.dart';
 import 'package:foody_app/bloc/restaurant_form/restaurant_form_bloc.dart';
 import 'package:foody_app/bloc/restaurant_form/restaurant_form_state.dart';
-import 'package:foody_app/dto/response/category_response_dto.dart';
 import 'package:foody_app/hooks/multi_select_controller_hook.dart';
-import 'package:foody_app/utils/show_snackbar.dart';
 import 'package:foody_app/widgets/foody_multi_dropdown.dart';
 import 'package:foody_app/widgets/foody_number_field.dart';
 import 'package:foody_app/widgets/foody_phone_number_field.dart';
 import 'package:foody_app/widgets/foody_secondary_layout.dart';
 import 'package:foody_app/widgets/foody_text_field.dart';
+import 'package:foody_app/widgets/utils/show_foody_snackbar.dart';
 import 'package:intl_phone_number_input_perci/intl_phone_number_input_perci.dart';
 import 'package:multi_dropdown/multi_dropdown.dart';
 import 'package:phosphor_flutter/phosphor_flutter.dart';
 
 import '../bloc/restaurant_form/restaurant_form_event.dart';
-import '../utils/show_foody_image_picker.dart';
+import '../widgets/utils/show_foody_image_picker.dart';
 
 class RestaurantForm extends HookWidget {
   const RestaurantForm({super.key});
@@ -36,7 +36,7 @@ class RestaurantForm extends HookWidget {
     return BlocConsumer<RestaurantFormBloc, RestaurantFormState>(
       listener: (context, state) {
         if (state.apiError != "") {
-          showSnackBar(context: context, msg: state.apiError);
+          showFoodySnackBar(context: context, msg: state.apiError);
         }
 
         if (!multiSelectLoaded.isCompleted && !state.isLoading) {

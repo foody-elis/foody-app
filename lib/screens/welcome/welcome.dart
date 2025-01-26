@@ -2,14 +2,14 @@ import 'package:animate_do/animate_do.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:foody_api_client/foody_api_client.dart';
 import 'package:foody_app/bloc/sign_in/sign_in_bloc.dart';
 import 'package:foody_app/bloc/sign_up/sign_up_bloc.dart';
-import 'package:foody_app/repository/interface/foody_api_repository.dart';
 import 'package:foody_app/screens/welcome/sign_in.dart';
 import 'package:foody_app/screens/welcome/sign_up.dart';
-import 'package:foody_app/utils/show_foody_modal_bottom_sheet.dart';
 import 'package:foody_app/widgets/foody_button.dart';
 import 'package:foody_app/widgets/foody_outlined_button.dart';
+import 'package:foody_app/widgets/utils/show_foody_modal_bottom_sheet.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:lottie/lottie.dart';
 
@@ -91,8 +91,7 @@ class Welcome extends HookWidget {
                         context: context,
                         maxHeightPercentage: 90,
                         createBloc: (_) => SignUpBloc(
-                          foodyApiRepository:
-                              context.read<FoodyApiRepository>(),
+                          foodyApiClient: context.read<FoodyApiClient>(),
                           userRepository: context.read<UserRepository>(),
                         ),
                         child: const SignUp(),
@@ -111,8 +110,7 @@ class Welcome extends HookWidget {
                           context: context,
                           maxHeightPercentage: 80,
                           createBloc: (_) => SignInBloc(
-                            foodyApiRepository:
-                                context.read<FoodyApiRepository>(),
+                            foodyApiClient: context.read<FoodyApiClient>(),
                             userRepository: context.read<UserRepository>(),
                           ),
                           child: const SignIn(),

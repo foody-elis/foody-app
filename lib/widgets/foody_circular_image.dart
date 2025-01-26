@@ -6,7 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:phosphor_flutter/phosphor_flutter.dart';
 import 'package:skeletonizer/skeletonizer.dart';
 
-import '../utils/foody_default_shadow.dart';
+import '../widgets/utils/foody_default_shadow.dart';
 
 class FoodyCircularImage extends StatelessWidget {
   const FoodyCircularImage({

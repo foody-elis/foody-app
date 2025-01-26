@@ -1,10 +1,9 @@
 import 'package:equatable/equatable.dart';
-import 'package:foody_app/dto/response/detailed_restaurant_response_dto.dart';
-import 'package:foody_app/dto/response/dish_response_dto.dart';
-import 'package:foody_app/dto/response/review_response_dto.dart';
-import 'package:foody_app/dto/response/sitting_time_response_dto.dart';
-
-import '../../dto/response/category_response_dto.dart';
+import 'package:foody_api_client/dto/response/category_response_dto.dart';
+import 'package:foody_api_client/dto/response/detailed_restaurant_response_dto.dart';
+import 'package:foody_api_client/dto/response/dish_response_dto.dart';
+import 'package:foody_api_client/dto/response/review_response_dto.dart';
+import 'package:foody_api_client/dto/response/sitting_time_response_dto.dart';
 
 class HomeState extends Equatable {
   final List<CategoryResponseDto> categories;

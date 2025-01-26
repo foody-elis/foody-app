@@ -3,28 +3,28 @@ import 'dart:io';
 
 import 'package:bloc_concurrency/bloc_concurrency.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:foody_api_client/dto/request/restaurant_request_dto.dart';
+import 'package:foody_api_client/dto/response/category_response_dto.dart';
+import 'package:foody_api_client/dto/response/restaurant_response_dto.dart';
+import 'package:foody_api_client/foody_api_client.dart';
+import 'package:foody_api_client/utils/call_api.dart';
 import 'package:foody_app/bloc/restaurant_form/restaurant_form_event.dart';
 import 'package:foody_app/bloc/restaurant_form/restaurant_form_state.dart';
-import 'package:foody_app/dto/request/restaurant_request_dto.dart';
-import 'package:foody_app/dto/response/category_response_dto.dart';
-import 'package:foody_app/dto/response/restaurant_response_dto.dart';
 import 'package:foody_app/repository/interface/user_repository.dart';
-import 'package:foody_app/utils/call_api.dart';
 import 'package:image_picker/image_picker.dart';
 
-import '../../repository/interface/foody_api_repository.dart';
 import '../../routing/constants.dart';
 import '../../routing/navigation_service.dart';
 
 class RestaurantFormBloc
     extends Bloc<RestaurantFormEvent, RestaurantFormState> {
   final NavigationService _navigationService = NavigationService();
-  final FoodyApiRepository foodyApiRepository;
+  final FoodyApiClient foodyApiClient;
   final UserRepository userRepository;
   final RestaurantResponseDto? restaurant;
 
   RestaurantFormBloc({
-    required this.foodyApiRepository,
+    required this.foodyApiClient,
     required this.userRepository,
     this.restaurant,
   }) : super(RestaurantFormState.initial(restaurant)) {
@@ -151,8 +151,8 @@ class RestaurantFormBloc
 
       await callApi<RestaurantResponseDto>(
         api: () => isEditing
-            ? foodyApiRepository.restaurants.edit(restaurant!.id, bodyData)
-            : foodyApiRepository.restaurants.save(bodyData),
+            ? foodyApiClient.restaurants.edit(restaurant!.id, bodyData)
+            : foodyApiClient.restaurants.save(bodyData),
         onComplete: (restaurant) {
           emit(state.copyWith(
               apiError: isEditing
@@ -225,7 +225,7 @@ class RestaurantFormBloc
     emit(state.copyWith(isLoading: true));
 
     await callApi<List<CategoryResponseDto>>(
-      api: foodyApiRepository.categories.getAll,
+      api: foodyApiClient.categories.getAll,
       onComplete: (response) => emit(state.copyWith(allCategories: response)),
       errorToEmit: (msg) => emit(state.copyWith(apiError: msg)),
     );

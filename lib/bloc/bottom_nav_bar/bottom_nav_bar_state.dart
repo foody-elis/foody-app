@@ -1,5 +1,4 @@
 import 'package:equatable/equatable.dart';
-import '../../routing/constants.dart';
 
 class BottomNavBarState extends Equatable {
   final int index;

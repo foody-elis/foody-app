@@ -1,23 +1,22 @@
 import 'package:bloc_concurrency/bloc_concurrency.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:foody_api_client/dto/request/review_request_dto.dart';
+import 'package:foody_api_client/dto/response/review_response_dto.dart';
+import 'package:foody_api_client/foody_api_client.dart';
+import 'package:foody_api_client/utils/call_api.dart';
 import 'package:foody_app/bloc/review_form/review_form_event.dart';
 import 'package:foody_app/bloc/review_form/review_form_state.dart';
 import 'package:foody_app/bloc/reviews/reviews_bloc.dart';
 import 'package:foody_app/bloc/reviews/reviews_event.dart';
-import 'package:foody_app/dto/request/review_request_dto.dart';
-import 'package:foody_app/dto/response/review_response_dto.dart';
 import 'package:foody_app/routing/navigation_service.dart';
 
-import '../../repository/interface/foody_api_repository.dart';
-import '../../utils/call_api.dart';
-
 class ReviewFormBloc extends Bloc<ReviewFormEvent, ReviewFormState> {
-  final FoodyApiRepository foodyApiRepository;
+  final FoodyApiClient foodyApiClient;
   final ReviewsBloc reviewsBloc;
   final int? dishId;
 
   ReviewFormBloc({
-    required this.foodyApiRepository,
+    required this.foodyApiClient,
     required this.reviewsBloc,
     this.dishId,
   }) : super(const ReviewFormState.initial()) {
@@ -57,7 +56,7 @@ class ReviewFormBloc extends Bloc<ReviewFormEvent, ReviewFormState> {
       emit(state.copyWith(isLoading: true));
 
       await callApi<ReviewResponseDto>(
-        api: () => foodyApiRepository.reviews.save(ReviewRequestDto(
+        api: () => foodyApiClient.reviews.save(ReviewRequestDto(
           title: state.title,
           description: state.description,
           rating: state.rating,

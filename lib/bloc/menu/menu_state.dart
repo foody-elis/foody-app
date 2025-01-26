@@ -1,5 +1,5 @@
 import 'package:equatable/equatable.dart';
-import 'package:foody_app/dto/response/dish_response_dto.dart';
+import 'package:foody_api_client/dto/response/dish_response_dto.dart';
 
 class MenuState extends Equatable {
   final List<DishResponseDto> dishes;

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:foody_app/dto/response/restaurant_response_dto.dart';
+import 'package:foody_api_client/dto/response/restaurant_response_dto.dart';
 import 'package:foody_app/routing/constants.dart';
 import 'package:foody_app/routing/navigation_service.dart';
 import 'package:phosphor_flutter/phosphor_flutter.dart';

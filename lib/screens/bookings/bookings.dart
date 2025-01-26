@@ -7,10 +7,10 @@ import 'package:foody_app/bloc/bookings/bookings_event.dart';
 import 'package:foody_app/bloc/bookings/bookings_state.dart';
 import 'package:foody_app/repository/interface/user_repository.dart';
 import 'package:foody_app/utils/bookings_filter.dart';
-import 'package:foody_app/utils/show_snackbar.dart';
 import 'package:foody_app/widgets/foody_booking_card.dart';
 import 'package:foody_app/widgets/foody_empty_data.dart';
 import 'package:foody_app/widgets/foody_filter_chip.dart';
+import 'package:foody_app/widgets/utils/show_foody_snackbar.dart';
 import 'package:skeletonizer/skeletonizer.dart';
 
 import '../../widgets/foody_secondary_layout.dart';
@@ -43,7 +43,7 @@ class Bookings extends HookWidget {
     return BlocConsumer<BookingsBloc, BookingsState>(
       listener: (context, state) {
         if (state.apiError != "") {
-          showSnackBar(context: context, msg: state.apiError);
+          showFoodySnackBar(context: context, msg: state.apiError);
         }
       },
       builder: (context, state) {

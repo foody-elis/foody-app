@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:foody_app/screens/sitting_times_form/sitting_times_form.dart';
 import 'package:foody_app/screens/sitting_times_form/sitting_times_form_expanded.dart';
-import 'package:foody_app/utils/show_snackbar.dart';
 import 'package:foody_app/widgets/foody_secondary_layout.dart';
+import 'package:foody_app/widgets/utils/show_foody_snackbar.dart';
 import 'package:phosphor_flutter/phosphor_flutter.dart';
 
 import '../../bloc/foody/foody_bloc.dart';
@@ -20,7 +20,7 @@ class SittingTimesFormList extends StatelessWidget {
     return BlocConsumer<SittingTimesFormListBloc, SittingTimesFormListState>(
       listener: (context, state) {
         if (state.error != "") {
-          showSnackBar(context: context, msg: state.error);
+          showFoodySnackBar(context: context, msg: state.error);
         }
 
         context

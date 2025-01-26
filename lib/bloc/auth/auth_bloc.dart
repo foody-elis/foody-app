@@ -4,21 +4,21 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_chat_types/flutter_chat_types.dart' as types;
 import 'package:flutter_firebase_chat_core/flutter_firebase_chat_core.dart';
+import 'package:foody_api_client/dto/response/user_response_dto.dart';
+import 'package:foody_api_client/foody_api_client.dart';
+import 'package:foody_api_client/utils/call_api.dart';
 import 'package:foody_app/bloc/auth/auth_event.dart';
 import 'package:foody_app/bloc/auth/auth_state.dart';
-import 'package:foody_app/dto/response/user_response_dto.dart';
-import 'package:foody_app/repository/interface/foody_api_repository.dart';
 import 'package:foody_app/repository/interface/user_repository.dart';
 import 'package:foody_app/routing/constants.dart';
 
 import '../../routing/navigation_service.dart';
-import '../../utils/call_api.dart';
 
 class AuthBloc extends Bloc<AuthEvent, AuthState> {
-  final FoodyApiRepository foodyApiRepository;
+  final FoodyApiClient foodyApiClient;
   final UserRepository userRepository;
 
-  AuthBloc({required this.foodyApiRepository, required this.userRepository})
+  AuthBloc({required this.foodyApiClient, required this.userRepository})
       : super(AuthState.initial(userRepository.isRestaurateur())) {
     on<FetchUser>(_onFetchUser, transformer: droppable());
     on<Logout>(_onLogout, transformer: droppable());
@@ -31,7 +31,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
 
   void _onFetchUser(FetchUser event, Emitter<AuthState> emit) async {
     await callApi<UserResponseDto>(
-      api: foodyApiRepository.auth.getAuthenticatedUser,
+      api: foodyApiClient.auth.getAuthenticatedUser,
       onComplete: (response) => emit(state.copyWith(userResponseDto: response)),
       errorToEmit: (msg) => emit(state.copyWith(apiError: msg)),
     );

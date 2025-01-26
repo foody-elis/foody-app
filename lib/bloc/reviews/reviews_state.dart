@@ -1,5 +1,5 @@
 import 'package:equatable/equatable.dart';
-import 'package:foody_app/dto/response/review_response_dto.dart';
+import 'package:foody_api_client/dto/response/review_response_dto.dart';
 
 class ReviewsState extends Equatable {
   final List<ReviewResponseDto> reviews;

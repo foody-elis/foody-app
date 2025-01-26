@@ -22,24 +22,26 @@ class Chats extends HookWidget {
           stream: FirebaseChatCore.instance.rooms(orderByUpdatedAt: true),
           initialData: const [],
           builder: (context, snapshot) {
-            if (snapshot.hasData && snapshot.data!.isNotEmpty) {
+            final rooms = snapshot.data
+                ?.where(
+                    (r) => r.lastMessages != null && r.lastMessages!.isNotEmpty)
+                .toList();
+
+            if (rooms != null && rooms.isNotEmpty) {
               return ListView.builder(
                 shrinkWrap: true,
                 padding: EdgeInsets.zero,
-                itemCount: snapshot.data!.length,
-                itemBuilder: (context, index) {
-                  final room = snapshot.data![index];
-
-                  return FoodyChatItem(room: room);
-                },
-              );
-            } else {
-              return const FoodyEmptyData(
-                title: "Nessuna conversazione",
-                lottieAsset: "empty_chats.json",
-                lottieHeight: 250,
+                itemCount: rooms.length,
+                itemBuilder: (context, index) =>
+                    FoodyChatItem(room: rooms[index]),
               );
             }
+
+            return const FoodyEmptyData(
+              title: "Nessuna conversazione",
+              lottieAsset: "empty_chats.json",
+              lottieHeight: 250,
+            );
           },
         ),
       ],

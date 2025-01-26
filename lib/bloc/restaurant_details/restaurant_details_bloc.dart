@@ -69,7 +69,7 @@ class RestaurantDetailsBloc
 
   Future<void> _updateImage(
       Emitter<RestaurantDetailsState> emit, String? image) async {
-    emit(state.copyWith(isUpdatingImage: true));
+    emit(state.copyWith(isLoading: true));
 
     await callApi<RestaurantResponseDto>(
       api: () => foodyApiClient.restaurants.edit(
@@ -102,7 +102,7 @@ class RestaurantDetailsBloc
       errorToEmit: (msg) => emit(state.copyWith(apiError: msg)),
     );
 
-    emit(state.copyWith(isUpdatingImage: false));
+    emit(state.copyWith(isLoading: false));
   }
 
   Future<void> _onImagePicker(
@@ -131,6 +131,8 @@ class RestaurantDetailsBloc
   }
 
   void _onOpenChat(OpenChat event, Emitter<RestaurantDetailsState> emit) async {
+    emit(state.copyWith(isLoading: true));
+
     final restaurateurFirestore = await FirebaseChatCore.instance
         .getFirebaseFirestore()
         .collection(FirebaseChatCore.instance.config.usersCollectionName)
@@ -141,7 +143,12 @@ class RestaurantDetailsBloc
       final room = await FirebaseChatCore.instance
           .createRoom(firestoreToFlyerUser(restaurateurFirestore));
 
-      _navigationService.navigateTo(chatRoute, arguments: {"room": room});
+      _navigationService.navigateTo(chatRoute, arguments: {
+        "room": room,
+        "authBloc": event.authBloc,
+      });
     }
+
+    emit(state.copyWith(isLoading: false));
   }
 }

@@ -12,3 +12,21 @@ bool isYesterday(DateTime date) => _equalDays(
       date,
       date2: DateTime.now().subtract(const Duration(days: 1)),
     );
+
+bool isPast(DateTime booking, DateTime sittingTime) {
+  final endBooking = booking.copyWith(
+    hour: sittingTime.hour,
+    minute: sittingTime.minute,
+  );
+
+  return DateTime.now().isAfter(endBooking);
+}
+
+bool isFuture(DateTime booking, DateTime sittingTime) {
+  final startBooking = booking.copyWith(
+    hour: sittingTime.hour,
+    minute: sittingTime.minute,
+  );
+
+  return DateTime.now().isBefore(startBooking);
+}

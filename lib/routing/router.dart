@@ -85,12 +85,17 @@ class Router {
         );
       case restaurantDetailsRoute:
         return CupertinoPageRoute(
-          builder: (_) => BlocProvider<RestaurantDetailsBloc>(
-            create: (context) => RestaurantDetailsBloc(
-              foodyApiClient: context.read<FoodyApiClient>(),
-              userRepository: context.read<UserRepository>(),
-              restaurantId: arguments?["restaurantId"],
-            ),
+          builder: (_) => MultiBlocProvider(
+            providers: [
+              BlocProvider.value(value: arguments!["authBloc"] as AuthBloc),
+              BlocProvider<RestaurantDetailsBloc>(
+                create: (context) => RestaurantDetailsBloc(
+                  foodyApiClient: context.read<FoodyApiClient>(),
+                  userRepository: context.read<UserRepository>(),
+                  restaurantId: arguments["restaurantId"],
+                ),
+              ),
+            ],
             child: const Scaffold(
               extendBody: true,
               body: RestaurantDetails(),

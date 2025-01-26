@@ -9,13 +9,13 @@ class RestaurantDetailsState extends Equatable {
   final DetailedRestaurantResponseDto restaurant;
   final String apiError;
   final bool isFetching;
-  final bool isUpdatingImage;
+  final bool isLoading;
 
   const RestaurantDetailsState({
     required this.restaurant,
     required this.apiError,
     required this.isFetching,
-    required this.isUpdatingImage,
+    required this.isLoading,
   });
 
   RestaurantDetailsState.initial()
@@ -82,19 +82,19 @@ class RestaurantDetailsState extends Equatable {
         ),
         apiError = "",
         isFetching = false,
-        isUpdatingImage = false;
+        isLoading = false;
 
   RestaurantDetailsState copyWith({
     DetailedRestaurantResponseDto? restaurant,
     String? apiError,
     bool? isFetching,
-    bool? isUpdatingImage,
+    bool? isLoading,
   }) {
     return RestaurantDetailsState(
       restaurant: restaurant ?? this.restaurant,
       apiError: apiError ?? this.apiError,
       isFetching: isFetching ?? this.isFetching,
-      isUpdatingImage: isUpdatingImage ?? this.isUpdatingImage,
+      isLoading: isLoading ?? this.isLoading,
     );
   }
 
@@ -103,6 +103,6 @@ class RestaurantDetailsState extends Equatable {
         restaurant,
         apiError,
         isFetching,
-        isUpdatingImage,
+        isLoading,
       ];
 }

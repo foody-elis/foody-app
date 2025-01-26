@@ -6,18 +6,16 @@ import 'package:foody_api_client/foody_api_client.dart';
 import 'package:foody_api_client/utils/call_api.dart';
 import 'package:foody_app/bloc/review_form/review_form_event.dart';
 import 'package:foody_app/bloc/review_form/review_form_state.dart';
-import 'package:foody_app/bloc/reviews/reviews_bloc.dart';
-import 'package:foody_app/bloc/reviews/reviews_event.dart';
 import 'package:foody_app/routing/navigation_service.dart';
 
 class ReviewFormBloc extends Bloc<ReviewFormEvent, ReviewFormState> {
   final FoodyApiClient foodyApiClient;
-  final ReviewsBloc reviewsBloc;
+  final int restaurantId;
   final int? dishId;
 
   ReviewFormBloc({
     required this.foodyApiClient,
-    required this.reviewsBloc,
+    required this.restaurantId,
     this.dishId,
   }) : super(const ReviewFormState.initial()) {
     on<Save>(_onSave, transformer: droppable());
@@ -60,13 +58,12 @@ class ReviewFormBloc extends Bloc<ReviewFormEvent, ReviewFormState> {
           title: state.title,
           description: state.description,
           rating: state.rating,
-          restaurantId: reviewsBloc.restaurantId,
+          restaurantId: restaurantId,
           dishId: dishId,
         )),
         onComplete: (response) {
           emit(state.copyWith(apiError: "Recensione aggiunta con successo"));
           emit(state.copyWith(apiError: ""));
-          reviewsBloc.add(FetchReviews());
           NavigationService().goBack();
         },
         errorToEmit: (msg) => emit(state.copyWith(apiError: msg)),

@@ -7,6 +7,7 @@ import 'package:foody_app/bloc/bookings/bookings_event.dart';
 import 'package:foody_app/bloc/bookings/bookings_state.dart';
 import 'package:foody_app/repository/interface/user_repository.dart';
 import 'package:foody_app/utils/bookings_filter.dart';
+import 'package:foody_app/utils/date_comparisons.dart';
 import 'package:foody_app/widgets/foody_booking_card.dart';
 import 'package:foody_app/widgets/foody_empty_data.dart';
 import 'package:foody_app/widgets/foody_filter_chip.dart';
@@ -86,7 +87,12 @@ class Bookings extends HookWidget {
                       children: [
                         const SizedBox(height: 20),
                         ...state.bookingsFiltered.map(
-                            (booking) => FoodyBookingCard(booking: booking)),
+                          (booking) => FoodyBookingCard(
+                            booking: booking,
+                            isPast: state.filter == BookingsFilter.past ||
+                                isPast(booking.date, booking.sittingTime.end),
+                          ),
+                        ),
                       ],
                     ),
                   ),

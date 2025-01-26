@@ -27,15 +27,15 @@ class FoodyChatItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final lastMessage = room.lastMessages?.first;
+    final lastMessage = room.lastMessages!.first;
 
     final otherUser =
         FirebaseChatCore.instance.firebaseUser!.uid == room.users[0].id
             ? room.users[1]
             : room.users[0];
 
-    final lastMessageIsRead = lastMessage?.status == Status.delivered &&
-        lastMessage?.author.id == otherUser.id;
+    final lastMessageIsRead = lastMessage.status == Status.delivered &&
+        lastMessage.author.id == otherUser.id;
 
     return Material(
       child: ListTile(
@@ -60,10 +60,10 @@ class FoodyChatItem extends StatelessWidget {
               "${otherUser.firstName} ${otherUser.lastName}",
               style: const TextStyle(fontWeight: FontWeight.bold),
             ),
-            if (lastMessage?.createdAt != null)
+            if (lastMessage.createdAt != null)
               Text(
                 DateFormat("HH:mm").format(DateTime.fromMillisecondsSinceEpoch(
-                    lastMessage!.createdAt!)),
+                    lastMessage.createdAt!)),
                 style: TextStyle(
                   color: lastMessageIsRead
                       ? Theme.of(context).primaryColor
@@ -76,9 +76,9 @@ class FoodyChatItem extends StatelessWidget {
         subtitle: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            switch (lastMessage?.type) {
+            switch (lastMessage.type) {
               MessageType.text => _lastMessageWidget(
-                  TextMessage.fromJson(lastMessage!.toJson()).text),
+                  TextMessage.fromJson(lastMessage.toJson()).text),
               MessageType.image => _lastMessageWidget("Foto", Icons.image),
               MessageType.video =>
                 _lastMessageWidget("Video", PhosphorIconsRegular.videoCamera),

@@ -48,17 +48,17 @@ class RestaurantReviews extends StatelessWidget {
                   spacing: 20,
                 )
               else
-                ...reviews.asMap().entries.map((e) {
+                ...reviews.asMap().entries.take(5).map((e) {
                   final i = e.key;
                   final review = e.value;
 
                   return FoodyReview(
                     review: review,
-                    isLastReview: i != reviews.length - 1,
+                    isLastReview: i != 4,
                   );
                 }),
               const SizedBox(height: 20),
-              if (reviews.length == 5)
+              if (reviews.length >= 5)
                 Skeleton.ignore(
                   child: FoodyOutlinedButton(
                     height: 50,

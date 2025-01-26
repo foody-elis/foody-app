@@ -1,36 +1,48 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:foody_api_client/dto/response/booking_response_dto.dart';
+import 'package:foody_api_client/foody_api_client.dart';
 import 'package:foody_api_client/utils/booking_status.dart';
 import 'package:foody_app/bloc/auth/auth_bloc.dart';
 import 'package:foody_app/bloc/bookings/bookings_bloc.dart';
 import 'package:foody_app/bloc/bookings/bookings_event.dart';
+import 'package:foody_app/bloc/review_form/review_form_bloc.dart';
 import 'package:foody_app/routing/constants.dart';
 import 'package:foody_app/routing/navigation_service.dart';
 import 'package:foody_app/screens/bookings/show_booking_actions.dart';
+import 'package:foody_app/screens/bookings/show_past_booking_actions.dart';
+import 'package:foody_app/screens/reviews/review_form.dart';
 import 'package:foody_app/utils/date_comparisons.dart';
+import 'package:foody_app/widgets/utils/show_foody_modal_bottom_sheet.dart';
 import 'package:intl/intl.dart';
 import 'package:skeletonizer/skeletonizer.dart';
 
 import 'foody_circular_image.dart';
 
 class FoodyBookingCard extends StatelessWidget {
-  const FoodyBookingCard({super.key, required this.booking});
+  const FoodyBookingCard({
+    super.key,
+    required this.booking,
+    required this.isPast,
+  });
 
   final BookingResponseDto booking;
-
-  bool _canOrder() {
-    final now = DateTime.now();
-
-    return isToday(booking.date) &&
-        booking.sittingTime.start.isAfter(now) &&
-        booking.sittingTime.end.isBefore(now);
-  }
+  final bool isPast;
 
   @override
   Widget build(BuildContext context) {
     final active = booking.status == BookingStatus.ACTIVE;
     final isRestaurateur = context.read<AuthBloc>().state.isRestaurateur;
+
+    bool canOrder() {
+      final now = DateTime.now();
+
+      return !isPast &&
+          !isRestaurateur &&
+          isToday(booking.date) &&
+          booking.sittingTime.start.isAfter(now) &&
+          booking.sittingTime.end.isBefore(now);
+    }
 
     return SizedBox(
       height: 125,
@@ -46,20 +58,34 @@ class FoodyBookingCard extends StatelessWidget {
         child: InkWell(
           borderRadius: BorderRadius.circular(10),
           onTap: active
-              ? () => showBookingActions(
-                    context: context,
-                    onCancel: active
-                        ? () => context
+              ? isPast
+                  ? () => showPastBookingActions(
+                        context: context,
+                        onAddReview: () {
+                          NavigationService().goBack();
+                          showFoodyModalBottomSheetWithBloc(
+                            context: context,
+                            draggable: true,
+                            child: const ReviewForm(),
+                            createBloc: (_) => ReviewFormBloc(
+                              foodyApiClient: context.read<FoodyApiClient>(),
+                              restaurantId: booking.restaurant.id,
+                            ),
+                          );
+                        },
+                      )
+                  : () => showBookingActions(
+                        context: context,
+                        onCancel: () => context
                             .read<BookingsBloc>()
-                            .add(CancelBooking(id: booking.id))
-                        : null,
-                    onOrder: _canOrder() && !isRestaurateur || true
-                        ? () => NavigationService().navigateTo(
-                              orderFormRoute,
-                              arguments: {"restaurant": booking.restaurant},
-                            )
-                        : null,
-                  )
+                            .add(CancelBooking(id: booking.id)),
+                        onOrder: canOrder()
+                            ? () => NavigationService().navigateTo(
+                                  orderFormRoute,
+                                  arguments: {"restaurant": booking.restaurant},
+                                )
+                            : null,
+                      )
               : null,
           child: Padding(
             padding: const EdgeInsets.all(10),

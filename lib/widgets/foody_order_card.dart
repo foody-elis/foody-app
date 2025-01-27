@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:foody_api_client/dto/response/order_response_dto.dart';
 import 'package:foody_api_client/utils/order_status.dart';
-import 'package:foody_app/bloc/orders/orders_bloc.dart';
 import 'package:foody_app/screens/orders/order_dishes.dart';
 import 'package:foody_app/widgets/utils/show_foody_modal_bottom_sheet.dart';
 import 'package:intl/intl.dart';
@@ -13,16 +11,15 @@ class FoodyOrderCard extends StatelessWidget {
   const FoodyOrderCard({
     super.key,
     required this.order,
+    required this.isRestaurateur,
   });
 
   final OrderResponseDto order;
+  final bool isRestaurateur;
 
   @override
   Widget build(BuildContext context) {
-    final isRestaurateur = context.read<OrdersBloc>().restaurantId != null;
-
     Color getColorBasedOnStatus() => switch (order.status) {
-          OrderStatus.PAID => Theme.of(context).primaryColor,
           OrderStatus.PREPARING => Colors.amber,
           _ => Theme.of(context).primaryColor
         };
@@ -30,7 +27,8 @@ class FoodyOrderCard extends StatelessWidget {
     String getTextBasedOnStatus() => switch (order.status) {
           OrderStatus.PAID => "DA PREPARARE",
           OrderStatus.PREPARING => "IN PREPARAZIONE",
-          _ => order.status.name
+          OrderStatus.COMPLETED => "COMPLETATO",
+          OrderStatus.CREATED => "DA PAGARE",
         };
 
     return SizedBox(
@@ -45,13 +43,15 @@ class FoodyOrderCard extends StatelessWidget {
         ),
         child: InkWell(
           borderRadius: BorderRadius.circular(10),
-          onTap: () => showFoodyModalBottomSheet(
-            context: context,
-            child: OrderDishes(
-              orderDishes: order.orderDishes,
-              restaurantId: order.restaurant.id,
-            ),
-          ),
+          onTap: !isRestaurateur && order.status == OrderStatus.COMPLETED
+              ? () => showFoodyModalBottomSheet(
+                    context: context,
+                    child: OrderDishes(
+                      orderDishes: order.orderDishes,
+                      restaurantId: order.restaurant.id,
+                    ),
+                  )
+              : null,
           child: Padding(
             padding: const EdgeInsets.all(10),
             child: Column(

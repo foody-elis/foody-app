@@ -32,7 +32,7 @@ class OrderFormBloc extends Bloc<OrderFormEvent, OrderFormState> {
     on<RemoveOrderDish>(_onRemoveOrderDish);
     on<StepChanged>(_onStepChanged);
     on<PreviousStep>(_onPreviousStep);
-    on<Pay>(_onPay);
+    on<Pay>(_onPay, transformer: droppable());
   }
 
   void _onFetchDishes(FetchDishes event, Emitter<OrderFormState> emit) async {

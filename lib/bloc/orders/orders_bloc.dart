@@ -1,3 +1,4 @@
+import 'package:bloc_concurrency/bloc_concurrency.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:foody_api_client/dto/response/order_response_dto.dart';
 import 'package:foody_api_client/foody_api_client.dart';
@@ -16,7 +17,7 @@ class OrdersBloc extends Bloc<OrdersEvent, OrdersState> {
     required this.foodyApiClient,
     required this.userRepository,
   }) : super(OrdersState.initial()) {
-    on<FetchOrders>(_onFetchOrders);
+    on<FetchOrders>(_onFetchOrders, transformer: droppable());
 
     restaurantId = userRepository.get()!.restaurantId;
 

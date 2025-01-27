@@ -1,11 +1,7 @@
 import 'package:equatable/equatable.dart';
 import 'package:foody_api_client/dto/response/booking_response_dto.dart';
-import 'package:foody_api_client/dto/response/detailed_restaurant_response_dto.dart';
-import 'package:foody_api_client/dto/response/sitting_time_response_dto.dart';
-import 'package:foody_api_client/dto/response/user_response_dto.dart';
-import 'package:foody_api_client/utils/booking_status.dart';
-import 'package:foody_api_client/utils/roles.dart';
 import 'package:foody_app/utils/bookings_filter.dart';
+import 'package:foody_app/utils/skeletonizer_data/fake_booking.dart';
 
 class BookingsState extends Equatable {
   final BookingsFilter filter;
@@ -26,54 +22,7 @@ class BookingsState extends Equatable {
       : filter = BookingsFilter.all,
         bookings = [],
         apiError = "",
-        bookingsFiltered = List.filled(
-          10,
-          BookingResponseDto(
-            id: 0,
-            date: DateTime.now(),
-            seats: 0,
-            customer: UserResponseDto(
-              id: 0,
-              email: "matteo@gmail.com",
-              name: "Nome",
-              surname: "Congome",
-              birthDate: DateTime(2003, 09, 23),
-              phoneNumber: "",
-              avatarUrl: "",
-              role: Role.CUSTOMER,
-              active: true,
-              firebaseCustomToken: null,
-            ),
-            restaurant: const DetailedRestaurantResponseDto(
-              id: 0,
-              restaurateurEmail: "",
-              name: "Pizzum",
-              description: "",
-              phoneNumber: "",
-              street: "",
-              civicNumber: "",
-              city: "",
-              province: "",
-              postalCode: "",
-              seats: 0,
-              approved: true,
-              restaurateurId: 0,
-              categories: [],
-              photoUrl: '',
-              averageRating: 0,
-              sittingTimes: [],
-              dishes: [],
-              reviews: [],
-            ),
-            sittingTime: SittingTimeResponseDto(
-              id: 0,
-              start: DateTime.now().copyWith(hour: 10, minute: 00),
-              end: DateTime.now().copyWith(hour: 10, minute: 30),
-              weekDayInfoId: 0,
-            ),
-            status: BookingStatus.ACTIVE,
-          ),
-        ),
+        bookingsFiltered = List.filled(10, getFakeBooking()),
         isFetching = true;
 
   BookingsState copyWith({

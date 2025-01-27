@@ -13,13 +13,13 @@ import 'package:foody_app/bloc/restaurant_details/restaurant_details_bloc.dart';
 import 'package:foody_app/bloc/restaurant_form/restaurant_form_bloc.dart';
 import 'package:foody_app/bloc/reviews/reviews_bloc.dart';
 import 'package:foody_app/bloc/sign_up/sign_up_bloc.dart';
-import 'package:foody_app/bloc/welcome/welcome_bloc.dart';
 import 'package:foody_app/repository/interface/user_repository.dart';
 import 'package:foody_app/screens/authenticated.dart';
 import 'package:foody_app/screens/booking_completed.dart';
 import 'package:foody_app/screens/booking_form/booking_form.dart';
 import 'package:foody_app/screens/chats/chat.dart';
 import 'package:foody_app/screens/edit_profile.dart';
+import 'package:foody_app/screens/info.dart';
 import 'package:foody_app/screens/menu/menu.dart';
 import 'package:foody_app/screens/order_form/order_form.dart';
 import 'package:foody_app/screens/order_paid.dart';
@@ -27,7 +27,6 @@ import 'package:foody_app/screens/orders/orders.dart';
 import 'package:foody_app/screens/restaurant_details/restaurant_details.dart';
 import 'package:foody_app/screens/restaurant_form.dart';
 import 'package:foody_app/screens/reviews/reviews.dart';
-import 'package:foody_app/screens/settings.dart';
 
 import '../bloc/sitting_times_form_list/sitting_times_form_list_bloc.dart';
 import '../screens/sitting_times_form/sitting_times_form_list.dart';
@@ -38,16 +37,9 @@ class Router {
   static Route<dynamic> generateRoute(RouteSettings settings) {
     final arguments = settings.arguments as Map<String, dynamic>?;
 
-    switch (settings.name) {
-      case welcomeRoute:
-        return CupertinoPageRoute(
-          builder: (_) => BlocProvider<WelcomeBloc>(
-            create: (context) => WelcomeBloc(),
-            child: const Welcome(),
-          ),
-        );
-      case restaurantFormRoute:
-        return CupertinoPageRoute(
+    return switch (settings.name) {
+      welcomeRoute => CupertinoPageRoute(builder: (_) => const Welcome()),
+      restaurantFormRoute => CupertinoPageRoute(
           builder: (_) => BlocProvider<RestaurantFormBloc>(
             create: (context) => RestaurantFormBloc(
               foodyApiClient: context.read<FoodyApiClient>(),
@@ -56,9 +48,8 @@ class Router {
             ),
             child: const RestaurantForm(),
           ),
-        );
-      case sittingTimesFormRoute:
-        return CupertinoPageRoute(
+        ),
+      sittingTimesFormRoute => CupertinoPageRoute(
           builder: (_) => BlocProvider<SittingTimesFormListBloc>(
             create: (context) => SittingTimesFormListBloc(
               foodyApiClient: context.read<FoodyApiClient>(),
@@ -67,9 +58,8 @@ class Router {
             ),
             child: const SittingTimesFormList(),
           ),
-        );
-      case authenticatedRoute:
-        return CupertinoPageRoute(
+        ),
+      authenticatedRoute => CupertinoPageRoute(
           builder: (_) => MultiBlocProvider(
             providers: [
               BlocProvider<BottomNavBarBloc>(
@@ -84,9 +74,8 @@ class Router {
             ],
             child: const Authenticated(),
           ),
-        );
-      case restaurantDetailsRoute:
-        return CupertinoPageRoute(
+        ),
+      restaurantDetailsRoute => CupertinoPageRoute(
           builder: (_) => MultiBlocProvider(
             providers: [
               BlocProvider.value(value: arguments!["authBloc"] as AuthBloc),
@@ -103,9 +92,8 @@ class Router {
               body: RestaurantDetails(),
             ),
           ),
-        );
-      case menuRoute:
-        return CupertinoPageRoute(
+        ),
+      menuRoute => CupertinoPageRoute(
           builder: (_) => BlocProvider<MenuBloc>(
             create: (context) => MenuBloc(
               foodyApiClient: context.read<FoodyApiClient>(),
@@ -114,13 +102,11 @@ class Router {
             ),
             child: const Menu(),
           ),
-        );
-      case settingsRoute:
-        return CupertinoPageRoute(
-          builder: (_) => const Settings(),
-        );
-      case editProfileRoute:
-        return CupertinoPageRoute(
+        ),
+      infoRoute => CupertinoPageRoute(
+          builder: (_) => const Info(),
+        ),
+      editProfileRoute => CupertinoPageRoute(
           builder: (_) => BlocProvider<SignUpBloc>(
             create: (context) => SignUpBloc(
               foodyApiClient: context.read<FoodyApiClient>(),
@@ -130,9 +116,8 @@ class Router {
             ),
             child: const EditProfile(),
           ),
-        );
-      case bookingFormRoute:
-        return CupertinoPageRoute(
+        ),
+      bookingFormRoute => CupertinoPageRoute(
           builder: (_) => BlocProvider<BookingFormBloc>(
             create: (context) => BookingFormBloc(
               foodyApiClient: context.read<FoodyApiClient>(),
@@ -141,13 +126,11 @@ class Router {
             ),
             child: const BookingForm(),
           ),
-        );
-      case bookingCompletedRoute:
-        return CupertinoPageRoute(
+        ),
+      bookingCompletedRoute => CupertinoPageRoute(
           builder: (_) => BookingCompleted(booking: arguments!["booking"]),
-        );
-      case reviewsRoute:
-        return CupertinoPageRoute(
+        ),
+      reviewsRoute => CupertinoPageRoute(
           builder: (_) => BlocProvider<ReviewsBloc>(
             create: (context) => ReviewsBloc(
               foodyApiClient: context.read<FoodyApiClient>(),
@@ -155,9 +138,8 @@ class Router {
             ),
             child: const Reviews(),
           ),
-        );
-      case orderFormRoute:
-        return CupertinoPageRoute(
+        ),
+      orderFormRoute => CupertinoPageRoute(
           builder: (_) => BlocProvider<OrderFormBloc>(
             create: (context) => OrderFormBloc(
               foodyApiClient: context.read<FoodyApiClient>(),
@@ -165,13 +147,11 @@ class Router {
             ),
             child: const OrderForm(),
           ),
-        );
-      case orderPaidRoute:
-        return CupertinoPageRoute(
+        ),
+      orderPaidRoute => CupertinoPageRoute(
           builder: (_) => OrderPaid(order: arguments!["order"]),
-        );
-      case chatRoute:
-        return CupertinoPageRoute(
+        ),
+      chatRoute => CupertinoPageRoute(
           builder: (_) => MultiBlocProvider(
             providers: [
               BlocProvider.value(value: arguments!["authBloc"] as AuthBloc),
@@ -184,9 +164,8 @@ class Router {
             ],
             child: const Chat(),
           ),
-        );
-      case ordersRoute:
-        return CupertinoPageRoute(
+        ),
+      ordersRoute => CupertinoPageRoute(
           builder: (_) => BlocProvider<OrdersBloc>(
             create: (context) => OrdersBloc(
               foodyApiClient: context.read<FoodyApiClient>(),
@@ -194,13 +173,12 @@ class Router {
             ),
             child: const Orders(),
           ),
-        );
-      default:
-        return CupertinoPageRoute(
+        ),
+      _ => CupertinoPageRoute(
           builder: (_) => Scaffold(
             body: Center(child: Text('No route defined for ${settings.name}')),
           ),
-        );
-    }
+        ),
+    };
   }
 }

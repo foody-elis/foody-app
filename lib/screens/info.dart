@@ -1,11 +1,10 @@
-// import 'package:animated_toggle_switch/animated_toggle_switch.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:foody_app/widgets/foody_secondary_layout.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 
-class Settings extends HookWidget {
-  const Settings({super.key});
+class Info extends HookWidget {
+  const Info({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -23,8 +22,8 @@ class Settings extends HookWidget {
 
     return Scaffold(
       body: FoodySecondaryLayout(
-        title: "Impostazioni",
-        subtitle: "Modifica le impostazioni in base alle tue preferenze",
+        title: "Informazioni",
+        subtitle: "Dettagli sull'app Foody",
         showBottomNavBar: false,
         body: [
           ListView(
@@ -35,6 +34,7 @@ class Settings extends HookWidget {
               tiles: [
                 ListTile(
                   title: const Text("Numero versione"),
+                  contentPadding: const EdgeInsets.only(right: 16),
                   trailing: Text(
                     "${packageInfo.value.version}.${packageInfo.value.buildNumber}",
                     style: const TextStyle(
@@ -43,6 +43,7 @@ class Settings extends HookWidget {
                     ),
                   ),
                 ),
+
                 /*BlocBuilder<FoodyBloc, FoodyState>(builder: (context, state) {
                   return ListTile(
                       title: const Text("Modalità scura"),
@@ -82,7 +83,35 @@ class Settings extends HookWidget {
                 }),*/
               ],
             ).toList(),
-          )
+          ),
+          const SizedBox(height: 10),
+          const Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              Text(
+                "Chi siamo?",
+                style: TextStyle(
+                  // fontSize: 18,
+                  fontWeight: FontWeight.bold,
+                  // color: Colors.grey,
+                ),
+              ),
+              Text.rich(
+                TextSpan(
+                  text: "",
+                  children: [],
+                ),
+              ),
+              Text(
+                "Perchè Foody?",
+                style: TextStyle(
+                  // fontSize: 18,
+                  fontWeight: FontWeight.bold,
+                  // color: Colors.grey,
+                ),
+              ),
+            ],
+          ),
         ],
       ),
     );

@@ -65,9 +65,9 @@ class Profile extends StatelessWidget {
             onTap: () => NavigationService().navigateTo(ordersRoute),
           ),
           FoodyProfileListTile(
-            label: "Impostazioni",
-            icon: PhosphorIconsRegular.gear,
-            onTap: () => NavigationService().navigateTo(settingsRoute),
+            label: "Informazioni",
+            icon: PhosphorIconsRegular.info,
+            onTap: () => NavigationService().navigateTo(infoRoute),
           ),
           FoodyProfileListTile(
             label: "Esci",

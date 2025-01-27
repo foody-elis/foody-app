@@ -24,6 +24,7 @@ class BookingsBloc extends Bloc<BookingsEvent, BookingsState> {
   void _onFetchBookings(
       FetchBookings event, Emitter<BookingsState> emit) async {
     emit(state.copyWith(isFetching: true));
+    emit(BookingsState.initial());
 
     await callApi<List<BookingResponseDto>>(
       api: () => event.restaurantId == null

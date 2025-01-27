@@ -18,13 +18,11 @@ import 'dish_form_event.dart';
 class DishFormBloc extends Bloc<DishFormEvent, DishFormState> {
   final FoodyApiClient foodyApiClient;
   final DishResponseDto? dish;
-  // final int restaurantId;
   final MenuBloc menuBloc;
   final NavigationService _navigationService = NavigationService();
 
   DishFormBloc({
     required this.foodyApiClient,
-    // required this.restaurantId,
     this.dish,
     required this.menuBloc,
   }) : super(DishFormState.initial(dish)) {

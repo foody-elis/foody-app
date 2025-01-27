@@ -14,7 +14,6 @@ class ReviewsBloc extends Bloc<ReviewsEvent, ReviewsState> {
     required this.restaurantId,
   }) : super(ReviewsState.initial()) {
     on<FetchReviews>(_onFetchReviews);
-    // on<RemoveDish>(_onRemoveDish);
 
     add(FetchReviews());
   }

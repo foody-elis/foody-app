@@ -26,19 +26,24 @@ class Orders extends StatelessWidget {
             .add(ShowLoadingOverlayChanged(show: state.isLoading));
       },
       builder: (context, state) {
+        final isRestaurateur = context.read<OrdersBloc>().restaurantId != null;
+
         return PopScope(
           canPop: !state.isLoading,
           child: Scaffold(
             body: FoodySecondaryLayout(
                 showBottomNavBar: false,
                 title: "Ordini",
-                subtitle: "Visualizza i tuoi ordini effettuati",
+                subtitle: isRestaurateur
+                    ? "Visualizza gli ordini effettuati dai clienti"
+                    : "Visualizza i tuoi ordini effettuati",
                 body: state.orders.isEmpty
                     ? [
-                        const FoodyEmptyData(
+                        FoodyEmptyData(
                           title: "Nessun ordine",
-                          description:
-                              "Non hai effettuato ancora nessun ordine",
+                          description: isRestaurateur
+                              ? "Nessun ordine effettuato al tuo ristorante"
+                              : "Non hai effettuato ancora nessun ordine",
                           lottieAsset: "empty_orders.json",
                           lottieHeight: 180,
                           lottieAnimate: true,
@@ -46,7 +51,10 @@ class Orders extends StatelessWidget {
                         )
                       ]
                     : state.orders
-                        .map((order) => FoodyOrderCard(order: order))
+                        .map((order) => FoodyOrderCard(
+                              order: order,
+                              isRestaurateur: isRestaurateur,
+                            ))
                         .toList()),
           ),
         );

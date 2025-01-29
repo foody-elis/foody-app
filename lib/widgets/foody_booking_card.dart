@@ -70,6 +70,7 @@ class FoodyBookingCard extends StatelessWidget {
                             createBloc: (_) => ReviewFormBloc(
                               foodyApiClient: context.read<FoodyApiClient>(),
                               restaurantId: booking.restaurant.id,
+                              restaurantName: booking.restaurant.name,
                             ),
                           );
                         },

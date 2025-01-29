@@ -9,14 +9,15 @@ import '../../widgets/utils/show_foody_modal_bottom_sheet.dart';
 import '../reviews/review_form.dart';
 
 class OrderDishes extends StatelessWidget {
-  const OrderDishes({
-    super.key,
-    required this.orderDishes,
-    required this.restaurantId,
-  });
+  const OrderDishes(
+      {super.key,
+      required this.orderDishes,
+      required this.restaurantId,
+      required this.restaurantName});
 
   final List<OrderDishResponseDto> orderDishes;
   final int restaurantId;
+  final String restaurantName;
 
   @override
   Widget build(BuildContext context) {
@@ -37,7 +38,9 @@ class OrderDishes extends StatelessWidget {
               createBloc: (_) => ReviewFormBloc(
                 foodyApiClient: context.read<FoodyApiClient>(),
                 restaurantId: restaurantId,
+                restaurantName: restaurantName,
                 dishId: orderDish.dishId,
+                dishName: orderDish.dishName,
               ),
             ),
             shape: RoundedRectangleBorder(
@@ -55,7 +58,7 @@ class OrderDishes extends StatelessWidget {
             trailing: const Row(
               mainAxisSize: MainAxisSize.min,
               children: [
-                Text("Lascia una valutazione"),
+                Text("Lascia una recensione"),
                 Icon(
                   PhosphorIconsRegular.caretRight,
                   size: 16,

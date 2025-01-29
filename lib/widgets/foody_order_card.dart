@@ -49,6 +49,7 @@ class FoodyOrderCard extends StatelessWidget {
                     child: OrderDishes(
                       orderDishes: order.orderDishes,
                       restaurantId: order.restaurant.id,
+                      restaurantName: order.restaurant.name,
                     ),
                   )
               : null,

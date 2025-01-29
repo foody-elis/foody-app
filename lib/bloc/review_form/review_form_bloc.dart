@@ -11,12 +11,16 @@ import 'package:foody_app/routing/navigation_service.dart';
 class ReviewFormBloc extends Bloc<ReviewFormEvent, ReviewFormState> {
   final FoodyApiClient foodyApiClient;
   final int restaurantId;
+  final String restaurantName;
   final int? dishId;
+  final String? dishName;
 
   ReviewFormBloc({
     required this.foodyApiClient,
     required this.restaurantId,
+    required this.restaurantName,
     this.dishId,
+    this.dishName,
   }) : super(const ReviewFormState.initial()) {
     on<Save>(_onSave, transformer: droppable());
     on<TitleChanged>(_onTitleChanged);

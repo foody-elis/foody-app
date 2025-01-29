@@ -43,7 +43,7 @@ class SignUp extends StatelessWidget {
                   style: TextStyle(
                     color: Colors.black,
                     fontSize: 22,
-                    fontWeight: FontWeight.w700,
+                    fontWeight: FontWeight.bold,
                   ),
                 ),
                 const SizedBox(height: 24),
@@ -89,7 +89,7 @@ class SignUp extends StatelessWidget {
                       style: TextStyle(color: Colors.grey),
                       children: [
                         TextSpan(
-                          style: TextStyle(fontWeight: FontWeight.w700),
+                          style: TextStyle(fontWeight: FontWeight.bold),
                           text: 'Accedi',
                         )
                       ],

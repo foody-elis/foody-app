@@ -48,7 +48,14 @@ class ReviewForm extends HookWidget {
                 style: TextStyle(
                   color: Colors.black,
                   fontSize: 22,
-                  fontWeight: FontWeight.w700,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              Text(
+                'Recensisci ${context.read<ReviewFormBloc>().dishName ?? context.read<ReviewFormBloc>().restaurantName}',
+                style: const TextStyle(
+                  color: Colors.grey,
+                  fontWeight: FontWeight.bold,
                 ),
               ),
               const SizedBox(height: 20),

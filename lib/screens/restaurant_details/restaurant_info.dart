@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:foody_api_client/dto/response/restaurant_response_dto.dart';
 import 'package:foody_app/routing/constants.dart';
 import 'package:foody_app/routing/navigation_service.dart';
+import 'package:foody_app/widgets/foody_tag_outlined.dart';
 import 'package:phosphor_flutter/phosphor_flutter.dart';
 import 'package:skeletonizer/skeletonizer.dart';
 
@@ -27,22 +28,36 @@ class RestaurantInfo extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Text(
-                restaurant.name,
-                style: const TextStyle(
-                  fontSize: 32,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-              if (canEdit && !enableSkeletonizer)
-                IconButton(
-                  onPressed: () => NavigationService().navigateTo(
-                    restaurantFormRoute,
-                    arguments: {"restaurant": restaurant},
+              Row(
+                children: [
+                  Text(
+                    restaurant.name,
+                    style: const TextStyle(
+                      fontSize: 32,
+                      fontWeight: FontWeight.bold,
+                    ),
                   ),
-                  icon: const Icon(PhosphorIconsRegular.pencilSimple, size: 20),
-                ),
+                  if (canEdit && !enableSkeletonizer)
+                    IconButton(
+                      onPressed: () => NavigationService().navigateTo(
+                        restaurantFormRoute,
+                        arguments: {"restaurant": restaurant},
+                      ),
+                      icon: const Icon(
+                        PhosphorIconsRegular.pencilSimple,
+                        size: 20,
+                      ),
+                    ),
+                ],
+              ),
+              if (!restaurant.approved)
+                const FoodyTagOutlined(
+                  label: "In attesa di approvazione",
+                  height: 30,
+                  color: Colors.amber,
+                )
             ],
           ),
           const SizedBox(height: 5),

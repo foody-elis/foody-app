@@ -46,10 +46,10 @@ class BookingsBloc extends Bloc<BookingsEvent, BookingsState> {
       bookingsFiltered: state.bookings
           .where(
             (b) => switch (state.filter) {
-              BookingsFilter.future => isFuture(b.date, b.sittingTime.start),
-              BookingsFilter.past => isPast(b.date, b.sittingTime.end),
               BookingsFilter.all => true,
-              BookingsFilter.active => b.status == BookingStatus.ACTIVE,
+              BookingsFilter.active => b.status == BookingStatus.ACTIVE &&
+                  isFuture(b.date, b.sittingTime.end),
+              BookingsFilter.past => isPast(b.date, b.sittingTime.end),
               BookingsFilter.canceled => b.status == BookingStatus.CANCELLED,
             },
           )

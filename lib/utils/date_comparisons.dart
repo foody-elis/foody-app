@@ -22,11 +22,5 @@ bool isPast(DateTime booking, DateTime sittingTime) {
   return DateTime.now().isAfter(endBooking);
 }
 
-bool isFuture(DateTime booking, DateTime sittingTime) {
-  final startBooking = booking.copyWith(
-    hour: sittingTime.hour,
-    minute: sittingTime.minute,
-  );
-
-  return DateTime.now().isBefore(startBooking);
-}
+bool isFuture(DateTime booking, DateTime sittingTime) =>
+    !isPast(booking, sittingTime);

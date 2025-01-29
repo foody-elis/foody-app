@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:foody_api_client/dto/response/order_response_dto.dart';
 import 'package:foody_api_client/utils/order_status.dart';
 import 'package:foody_app/screens/orders/order_dishes.dart';
+import 'package:foody_app/widgets/foody_tag_outlined.dart';
 import 'package:foody_app/widgets/utils/show_foody_modal_bottom_sheet.dart';
 import 'package:intl/intl.dart';
 
@@ -25,10 +26,10 @@ class FoodyOrderCard extends StatelessWidget {
         };
 
     String getTextBasedOnStatus() => switch (order.status) {
-          OrderStatus.PAID => "DA PREPARARE",
-          OrderStatus.PREPARING => "IN PREPARAZIONE",
-          OrderStatus.COMPLETED => "COMPLETATO",
-          OrderStatus.CREATED => "DA PAGARE",
+          OrderStatus.PAID => "Da preparare",
+          OrderStatus.PREPARING => "In preparazione",
+          OrderStatus.COMPLETED => "Completato",
+          OrderStatus.CREATED => "Da pagare",
         };
 
     return SizedBox(
@@ -160,29 +161,14 @@ class FoodyOrderCard extends StatelessWidget {
                         ],
                       ),
                     ),
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.end,
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Container(
-                          decoration: BoxDecoration(
-                            border: Border.all(
-                              width: 1,
-                              color: getColorBasedOnStatus(),
-                            ),
-                            borderRadius: BorderRadius.circular(10),
-                            color: getColorBasedOnStatus().withOpacity(0.1),
-                          ),
-                          padding: const EdgeInsets.symmetric(
-                            horizontal: 15,
-                            vertical: 5,
-                          ),
-                          child: Text(
-                            getTextBasedOnStatus(),
-                            style: TextStyle(color: getColorBasedOnStatus()),
-                          ),
-                        ),
-                      ],
+                    FoodyTagOutlined(
+                      label: getTextBasedOnStatus(),
+                      color: getColorBasedOnStatus(),
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 15,
+                        vertical: 5,
+                      ),
+                      height: 35,
                     ),
                   ],
                 ),

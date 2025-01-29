@@ -19,7 +19,7 @@ class BookingsState extends Equatable {
   });
 
   BookingsState.initial()
-      : filter = BookingsFilter.all,
+      : filter = BookingsFilter.active,
         bookings = [],
         apiError = "",
         bookingsFiltered = List.filled(10, getFakeBooking()),

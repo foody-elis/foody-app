@@ -13,6 +13,7 @@ import 'package:foody_app/screens/bookings/show_booking_actions.dart';
 import 'package:foody_app/screens/bookings/show_past_booking_actions.dart';
 import 'package:foody_app/screens/reviews/review_form.dart';
 import 'package:foody_app/utils/date_comparisons.dart';
+import 'package:foody_app/widgets/foody_tag_outlined.dart';
 import 'package:foody_app/widgets/utils/show_foody_modal_bottom_sheet.dart';
 import 'package:intl/intl.dart';
 import 'package:skeletonizer/skeletonizer.dart';
@@ -59,22 +60,25 @@ class FoodyBookingCard extends StatelessWidget {
           borderRadius: BorderRadius.circular(10),
           onTap: active
               ? isPast
-                  ? () => showPastBookingActions(
-                        context: context,
-                        onAddReview: () {
-                          NavigationService().goBack();
-                          showFoodyModalBottomSheetWithBloc(
+                  ? !isRestaurateur
+                      ? () => showPastBookingActions(
                             context: context,
-                            draggable: true,
-                            child: const ReviewForm(),
-                            createBloc: (_) => ReviewFormBloc(
-                              foodyApiClient: context.read<FoodyApiClient>(),
-                              restaurantId: booking.restaurant.id,
-                              restaurantName: booking.restaurant.name,
-                            ),
-                          );
-                        },
-                      )
+                            onAddReview: () {
+                              NavigationService().goBack();
+                              showFoodyModalBottomSheetWithBloc(
+                                context: context,
+                                draggable: true,
+                                child: const ReviewForm(),
+                                createBloc: (_) => ReviewFormBloc(
+                                  foodyApiClient:
+                                      context.read<FoodyApiClient>(),
+                                  restaurantId: booking.restaurant.id,
+                                  restaurantName: booking.restaurant.name,
+                                ),
+                              );
+                            },
+                          )
+                      : null
                   : () => showBookingActions(
                         context: context,
                         onCancel: () => context
@@ -161,35 +165,22 @@ class FoodyBookingCard extends StatelessWidget {
                           ],
                         ),
                       ),
-                      Skeleton.ignore(
-                        child: Container(
-                          decoration: BoxDecoration(
-                            border: Border.all(
-                              width: 1,
+                      if (!isPast)
+                        Skeleton.ignore(
+                          child: IntrinsicWidth(
+                            child: FoodyTagOutlined(
+                              label: active ? "Attiva" : "Cancellata",
                               color: active
                                   ? Theme.of(context).primaryColor
                                   : Theme.of(context).colorScheme.error,
-                            ),
-                            borderRadius: BorderRadius.circular(10),
-                            color: (active
-                                    ? Theme.of(context).primaryColor
-                                    : Theme.of(context).colorScheme.error)
-                                .withOpacity(0.1),
-                          ),
-                          padding: const EdgeInsets.symmetric(
-                            horizontal: 15,
-                            vertical: 5,
-                          ),
-                          child: Text(
-                            active ? "Attiva" : "Cancellata",
-                            style: TextStyle(
-                              color: active
-                                  ? Theme.of(context).primaryColor
-                                  : Theme.of(context).colorScheme.error,
+                              height: 35,
+                              padding: const EdgeInsets.symmetric(
+                                horizontal: 15,
+                                vertical: 5,
+                              ),
                             ),
                           ),
                         ),
-                      ),
                     ],
                   ),
                 ),

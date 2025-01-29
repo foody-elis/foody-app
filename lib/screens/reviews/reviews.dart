@@ -29,28 +29,31 @@ class Reviews extends StatelessWidget {
         return PopScope(
           canPop: !state.isLoading,
           child: Scaffold(
-            body: FoodySecondaryLayout(
-                showBottomNavBar: false,
-                title: "Recensioni",
-                subtitle: "Visualizza le recensioni del ristorante",
-                body: state.reviews.isEmpty
-                    ? [
-                        const FoodyEmptyData(
-                          title: "Nessun piatto nel menù",
-                          lottieAsset: "empty_menu.json",
-                          lottieHeight: 120,
-                          lottieAnimate: false,
-                        )
-                      ]
-                    : state.reviews.asMap().entries.map((e) {
-                        final i = e.key;
-                        final review = e.value;
+            body: SafeArea(
+              top: false,
+              child: FoodySecondaryLayout(
+                  showBottomNavBar: false,
+                  title: "Recensioni",
+                  subtitle: "Visualizza le recensioni del ristorante",
+                  body: state.reviews.isEmpty
+                      ? [
+                          const FoodyEmptyData(
+                            title: "Nessun piatto nel menù",
+                            lottieAsset: "empty_menu.json",
+                            lottieHeight: 120,
+                            lottieAnimate: false,
+                          )
+                        ]
+                      : state.reviews.asMap().entries.map((e) {
+                          final i = e.key;
+                          final review = e.value;
 
-                        return FoodyReview(
-                          review: review,
-                          isLastReview: i != state.reviews.length - 1,
-                        );
-                      }).toList()),
+                          return FoodyReview(
+                            review: review,
+                            isLastReview: i == state.reviews.length - 1,
+                          );
+                        }).toList()),
+            ),
           ),
         );
       },

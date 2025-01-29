@@ -31,31 +31,34 @@ class Orders extends StatelessWidget {
         return PopScope(
           canPop: !state.isLoading,
           child: Scaffold(
-            body: FoodySecondaryLayout(
-                showBottomNavBar: false,
-                title: "Ordini",
-                subtitle: isRestaurateur
-                    ? "Visualizza gli ordini effettuati dai clienti"
-                    : "Visualizza i tuoi ordini effettuati",
-                body: state.orders.isEmpty
-                    ? [
-                        FoodyEmptyData(
-                          title: "Nessun ordine",
-                          description: isRestaurateur
-                              ? "Nessun ordine effettuato al tuo ristorante"
-                              : "Non hai effettuato ancora nessun ordine",
-                          lottieAsset: "empty_orders.json",
-                          lottieHeight: 180,
-                          lottieAnimate: true,
-                          lottieRepeat: false,
-                        )
-                      ]
-                    : state.orders
-                        .map((order) => FoodyOrderCard(
-                              order: order,
-                              isRestaurateur: isRestaurateur,
-                            ))
-                        .toList()),
+            body: SafeArea(
+              top: false,
+              child: FoodySecondaryLayout(
+                  showBottomNavBar: false,
+                  title: "Ordini",
+                  subtitle: isRestaurateur
+                      ? "Visualizza gli ordini effettuati dai clienti"
+                      : "Visualizza i tuoi ordini effettuati",
+                  body: state.orders.isEmpty
+                      ? [
+                          FoodyEmptyData(
+                            title: "Nessun ordine",
+                            description: isRestaurateur
+                                ? "Nessun ordine effettuato al tuo ristorante"
+                                : "Non hai effettuato ancora nessun ordine",
+                            lottieAsset: "empty_orders.json",
+                            lottieHeight: 180,
+                            lottieAnimate: true,
+                            lottieRepeat: false,
+                          )
+                        ]
+                      : state.orders
+                          .map((order) => FoodyOrderCard(
+                                order: order,
+                                isRestaurateur: isRestaurateur,
+                              ))
+                          .toList()),
+            ),
           ),
         );
       },

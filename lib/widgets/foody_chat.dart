@@ -56,7 +56,7 @@ class FoodyChat extends StatelessWidget {
         inputTextCursorColor: Colors.black,
         inputTextColor: Colors.black,
         inputBorderRadius: BorderRadius.circular(100),
-        inputMargin: const EdgeInsets.only(bottom: 20),
+        inputMargin: const EdgeInsets.only(bottom: 20, top: 5),
         sendButtonIcon: Container(
           padding: const EdgeInsets.all(10),
           decoration: BoxDecoration(

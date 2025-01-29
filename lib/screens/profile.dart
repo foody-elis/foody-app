@@ -25,7 +25,10 @@ class Profile extends StatelessWidget {
           children: [
             Column(
               children: [
-                FoodyCircularImage(imageUrl: state.userResponseDto?.avatarUrl),
+                FoodyCircularImage(
+                  imageUrl: state.userResponseDto?.avatarUrl,
+                  showShadow: false,
+                ),
                 const SizedBox(height: 10),
                 Text(
                   "${state.userResponseDto?.name} "
@@ -33,12 +36,13 @@ class Profile extends StatelessWidget {
                   style: const TextStyle(
                     fontWeight: FontWeight.bold,
                     fontSize: 17,
+                    color: Colors.white,
                   ),
                 ),
                 Text(
                   state.userResponseDto?.email ?? "",
-                  style: const TextStyle(
-                    color: Colors.grey,
+                  style: TextStyle(
+                    color: Theme.of(context).colorScheme.primaryFixedDim,
                     fontStyle: FontStyle.italic,
                   ),
                 ),

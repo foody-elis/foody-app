@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:foody_app/main.dart' show objectBox;
@@ -76,8 +78,8 @@ Future<void> _showLocalNotification(RemoteMessage message) async {
           _channel.id,
           _channel.name,
           channelDescription: _channel.description,
-          icon: '@mipmap/ic_launcher',
-          // styleInformation: styleInformation,
+          icon: '@mipmap/ic_notification',
+          color: const Color(0xff03413e),
         ),
       ),
     );
@@ -86,7 +88,6 @@ Future<void> _showLocalNotification(RemoteMessage message) async {
 
 Future<void> initFirebaseFCM() async {
   FirebaseMessaging.onMessage.listen((RemoteMessage message) {
-    print("NOTIFICA RICEVUTA IN FOREGROUND");
     _showLocalNotification(message);
   });
 

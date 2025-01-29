@@ -83,17 +83,20 @@ class Bookings extends HookWidget {
                   )
                 : Skeletonizer(
                     enabled: state.isFetching,
-                    child: Column(
-                      children: [
-                        const SizedBox(height: 20),
-                        ...state.bookingsFiltered.map(
-                          (booking) => FoodyBookingCard(
-                            booking: booking,
-                            isPast: state.filter == BookingsFilter.past ||
-                                isPast(booking.date, booking.sittingTime.end),
-                          ),
-                        ),
-                      ],
+                    child: ListView.builder(
+                      shrinkWrap: true,
+                      padding: const EdgeInsets.only(top: 20, bottom: 20),
+                      itemCount: state.bookingsFiltered.length,
+                      physics: const NeverScrollableScrollPhysics(),
+                      itemBuilder: (context, index) {
+                        final booking = state.bookingsFiltered[index];
+
+                        return FoodyBookingCard(
+                          booking: booking,
+                          isPast: state.filter == BookingsFilter.past ||
+                              isPast(booking.date, booking.sittingTime.end),
+                        );
+                      },
                     ),
                   ),
           ],

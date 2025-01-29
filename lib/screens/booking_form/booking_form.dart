@@ -40,7 +40,7 @@ class BookingForm extends StatelessWidget {
               leading: IconButton(
                 onPressed: () =>
                     context.read<BookingFormBloc>().add(PreviousStep()),
-                icon: const Icon(PhosphorIconsLight.arrowLeft),
+                icon: const Icon(PhosphorIconsRegular.arrowLeft),
               ),
               actions: [
                 IconButton(
@@ -66,7 +66,7 @@ class BookingForm extends StatelessWidget {
                       ],
                     ),
                   ),
-                  icon: const Icon(PhosphorIconsLight.x),
+                  icon: const Icon(PhosphorIconsRegular.x),
                 )
               ],
             ),

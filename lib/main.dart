@@ -42,7 +42,10 @@ Future<void> main() async {
         ),
         RepositoryProvider<FoodyApiClient>(
           create: (_) => FoodyApiClient(
-            dio: getFoodyDio(tokenInterceptor: tokenInterceptor),
+            dio: getFoodyDio(
+              tokenInterceptor: tokenInterceptor,
+              baseUrl: 'http://172.16.217.194:8080/api/v1',
+            ),
           ),
         ),
       ],

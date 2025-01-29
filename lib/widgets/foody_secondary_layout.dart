@@ -56,21 +56,27 @@ class FoodySecondaryLayout extends HookWidget {
       }, []);
     }
 
+    // final color = Theme.of(context).colorScheme.primary.withAlpha(200);
+    const backgroundColor = Color(0xff0e4a47);
+
     final foodyDraggableHome = FoodyDraggableHome(
       physics: onRefresh == null ? null : const ClampingScrollPhysics(),
       expandedBody: expandedBody,
       scrollController: scrollController,
       stretchMaxHeight: expandedBodyHeight,
       startWithExpandedBody: startWithExpandedBody,
-      appBarColor: Theme.of(context).colorScheme.surfaceContainer,
+      appBarColor: backgroundColor,
       title: Text(
         title,
-        style: const TextStyle(fontWeight: FontWeight.bold),
+        style: const TextStyle(
+          fontWeight: FontWeight.bold,
+          color: Colors.white,
+        ),
       ),
       headerExpandedHeight: headerExpandedHeight,
       curvedBodyRadius: 20,
       headerWidget: Container(
-        color: Theme.of(context).colorScheme.surfaceContainer,
+        color: backgroundColor,
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 20),
           child: Column(
@@ -84,13 +90,16 @@ class FoodySecondaryLayout extends HookWidget {
                       style: const TextStyle(
                         fontWeight: FontWeight.bold,
                         fontSize: 26,
+                        color: Colors.white,
                       ),
                     ),
               if (subtitleWidget != null) subtitleWidget!,
               if (subtitle != null)
                 Text(
                   subtitle!,
-                  style: const TextStyle(color: Colors.grey),
+                  style: TextStyle(
+                    color: Theme.of(context).colorScheme.primaryFixedDim,
+                  ),
                 )
             ],
           ),

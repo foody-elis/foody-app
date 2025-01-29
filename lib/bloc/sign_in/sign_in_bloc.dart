@@ -49,7 +49,9 @@ class SignInBloc extends Bloc<SignInEvent, SignInState> {
 
   void _onLoginSubmit(LoginSubmit event, Emitter<SignInState> emit) async {
     if (_isFormValid(emit)) {
-      foodyApiClient.dio = getFoodyDio(); // reset dio in case of 498
+      foodyApiClient.dio = getFoodyDio(
+          baseUrl:
+              'http://172.16.217.194:8080/api/v1'); // reset dio in case of 498
 
       emit(state.copyWith(isLoading: true));
 
@@ -65,10 +67,11 @@ class SignInBloc extends Bloc<SignInEvent, SignInState> {
           ));
 
           foodyApiClient.dio = getFoodyDio(
+              baseUrl: 'http://172.16.217.194:8080/api/v1',
               tokenInterceptor: getTokenInterceptor(
-            token: response.accessToken,
-            userRepository: userRepository,
-          ));
+                token: response.accessToken,
+                userRepository: userRepository,
+              ));
           _navigationService.resetToScreen(authenticatedRoute);
         },
         errorToEmit: (msg) => emit(state.copyWith(apiError: msg)),

@@ -66,157 +66,165 @@ class RestaurantDetails extends HookWidget {
             .add(ShowLoadingOverlayChanged(show: state.isLoading));
       },
       builder: (context, state) {
-        return Stack(
-          alignment: Alignment.center,
-          children: [
-            SingleChildScrollView(
-              controller: scrollController,
-              child: Column(
-                children: [
-                  RestaurantImage(
-                    enableSkeletonizer: state.isFetching,
-                    photoUrl: state.restaurant.photoUrl,
-                  ),
-                  Padding(
+        return RefreshIndicator(
+          onRefresh: () async =>
+              context.read<RestaurantDetailsBloc>().add(FetchRestaurant()),
+          child: Stack(
+            alignment: Alignment.center,
+            children: [
+              SingleChildScrollView(
+                controller: scrollController,
+                child: Column(
+                  children: [
+                    RestaurantImage(
+                      enableSkeletonizer: state.isFetching,
+                      photoUrl: state.restaurant.photoUrl,
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.only(
+                        left: 20,
+                        right: 20,
+                        top: 20,
+                      ),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          RestaurantInfo(
+                            restaurant: state.restaurant,
+                            enableSkeletonizer: state.isFetching,
+                            canEdit: isOwner,
+                          ),
+                          if (state.restaurant.sittingTimes.isNotEmpty ||
+                              isOwner) ...[
+                            const Divider(height: 40),
+                            SittingTimesInfo(
+                              sittingTimes: state.restaurant.sittingTimes,
+                              enableSkeletonizer: state.isFetching,
+                              canEdit: isOwner,
+                            ),
+                          ],
+                          const Divider(height: 40),
+                          Skeletonizer(
+                            enabled: state.isFetching,
+                            child: Align(
+                              alignment: Alignment.center,
+                              child: Column(
+                                children: [
+                                  Skeleton.unite(
+                                    child: FoodyRatingLabel(
+                                      rating: state.restaurant.averageRating
+                                          .toString(),
+                                      iconSize: 20,
+                                      fontSize: 16,
+                                    ),
+                                  ),
+                                  const SizedBox(height: 5),
+                                  Text(
+                                      "${state.restaurant.reviews.length} recensioni su Foody"),
+                                ],
+                              ),
+                            ),
+                          ),
+                          const Divider(height: 40),
+                          RestaurantDescription(
+                            description: state.restaurant.description,
+                            enableSkeletonizer: state.isFetching,
+                          ),
+                          const SizedBox(height: 20),
+                          RestaurantMenu(
+                            enableSkeletonizer: state.isFetching,
+                            canEdit: isOwner,
+                            restaurantId: state.restaurant.id,
+                            dishes: state.restaurant.dishes,
+                          ),
+                          const SizedBox(height: 20),
+                          RestaurantReviews(
+                            enableSkeletonizer: state.isFetching,
+                            restaurantId: state.restaurant.id,
+                            reviews: state.restaurant.reviews,
+                          ),
+                          const SizedBox(height: 110),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              if (!isOwner && !state.isFetching)
+                Positioned(
+                  bottom: 0,
+                  child: AnimatedContainer(
+                    duration: const Duration(milliseconds: 200),
+                    width: MediaQuery.of(context).size.width,
+                    decoration: BoxDecoration(
+                      color: Theme.of(context).colorScheme.surface,
+                      boxShadow: showShadowFixedButton.value
+                          ? [
+                              BoxShadow(
+                                color: Colors.black.withOpacity(0.2),
+                                blurRadius: 8,
+                                offset: const Offset(0, -2),
+                              ),
+                            ]
+                          : null,
+                    ),
                     padding: const EdgeInsets.only(
                       left: 20,
                       right: 20,
                       top: 20,
+                      bottom: 10,
                     ),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        RestaurantInfo(
-                          restaurant: state.restaurant,
-                          enableSkeletonizer: state.isFetching,
-                          canEdit: isOwner,
-                        ),
-                        if (state.restaurant.sittingTimes.isNotEmpty ||
-                            isOwner) ...[
-                          const Divider(height: 40),
-                          SittingTimesInfo(
-                            sittingTimes: state.restaurant.sittingTimes,
-                            enableSkeletonizer: state.isFetching,
-                            canEdit: isOwner,
+                    child: SafeArea(
+                      top: false,
+                      child: Row(
+                        spacing: 10,
+                        children: [
+                          Expanded(
+                            flex: 3,
+                            child: FoodyButton(
+                              label: "PRENOTA",
+                              height: 50,
+                              width: MediaQuery.of(context).size.width,
+                              onPressed: () => NavigationService().navigateTo(
+                                bookingFormRoute,
+                                arguments: {
+                                  "restaurant": context
+                                      .read<RestaurantDetailsBloc>()
+                                      .state
+                                      .restaurant,
+                                },
+                              ),
+                            ),
+                          ),
+                          Material(
+                            color: Colors.transparent,
+                            child: InkWell(
+                              onTap: () => context
+                                  .read<RestaurantDetailsBloc>()
+                                  .add(OpenChat(
+                                      authBloc: context.read<AuthBloc>())),
+                              borderRadius: BorderRadius.circular(10),
+                              child: Ink(
+                                height: 50,
+                                width: 50,
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(10),
+                                  color: Theme.of(context).primaryColor,
+                                ),
+                                child: const Icon(
+                                  PhosphorIconsRegular.chatCircleDots,
+                                  color: Colors.white,
+                                ),
+                              ),
+                            ),
                           ),
                         ],
-                        const Divider(height: 40),
-                        Skeletonizer(
-                          enabled: state.isFetching,
-                          child: Align(
-                            alignment: Alignment.center,
-                            child: Column(
-                              children: [
-                                Skeleton.unite(
-                                  child: FoodyRatingLabel(
-                                    rating: state.restaurant.averageRating
-                                        .toString(),
-                                    iconSize: 20,
-                                    fontSize: 16,
-                                  ),
-                                ),
-                                const SizedBox(height: 5),
-                                Text(
-                                    "${state.restaurant.reviews.length} recensioni su Foody"),
-                              ],
-                            ),
-                          ),
-                        ),
-                        const Divider(height: 40),
-                        RestaurantDescription(
-                          description: state.restaurant.description,
-                          enableSkeletonizer: state.isFetching,
-                        ),
-                        const SizedBox(height: 20),
-                        RestaurantMenu(
-                          enableSkeletonizer: state.isFetching,
-                          canEdit: isOwner,
-                          restaurantId: state.restaurant.id,
-                          dishes: state.restaurant.dishes,
-                        ),
-                        const SizedBox(height: 20),
-                        RestaurantReviews(
-                          enableSkeletonizer: state.isFetching,
-                          restaurantId: state.restaurant.id,
-                          reviews: state.restaurant.reviews,
-                        ),
-                        const SizedBox(height: 110),
-                      ],
-                    ),
-                  ),
-                ],
-              ),
-            ),
-            if (!isOwner && !state.isFetching)
-              Positioned(
-                bottom: 0,
-                child: AnimatedContainer(
-                  duration: const Duration(milliseconds: 200),
-                  width: MediaQuery.of(context).size.width,
-                  decoration: BoxDecoration(
-                    color: Theme.of(context).colorScheme.surface,
-                    boxShadow: showShadowFixedButton.value
-                        ? [
-                            BoxShadow(
-                              color: Colors.black.withOpacity(0.2),
-                              blurRadius: 8,
-                              offset: const Offset(0, -2),
-                            ),
-                          ]
-                        : null,
-                  ),
-                  padding: const EdgeInsets.only(
-                    left: 20,
-                    right: 20,
-                    top: 20,
-                    bottom: 10,
-                  ),
-                  child: SafeArea(
-                    top: false,
-                    child: Row(
-                      spacing: 10,
-                      children: [
-                        Expanded(
-                          flex: 3,
-                          child: FoodyButton(
-                            label: "PRENOTA",
-                            height: 50,
-                            width: MediaQuery.of(context).size.width,
-                            onPressed: () => NavigationService().navigateTo(
-                              bookingFormRoute,
-                              arguments: {
-                                "restaurant": context
-                                    .read<RestaurantDetailsBloc>()
-                                    .state
-                                    .restaurant,
-                              },
-                            ),
-                          ),
-                        ),
-                        Container(
-                          height: 50,
-                          width: 50,
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(10),
-                            color: Theme.of(context).primaryColor,
-                          ),
-                          child: IconButton(
-                            color: Colors.white,
-                            icon: const Icon(
-                              PhosphorIconsRegular.chatCircleDots,
-                            ),
-                            onPressed: () => context
-                                .read<RestaurantDetailsBloc>()
-                                .add(OpenChat(
-                                    authBloc: context.read<AuthBloc>())),
-                          ),
-                        ),
-                      ],
+                      ),
                     ),
                   ),
                 ),
-              ),
-          ],
+            ],
+          ),
         );
       },
     );

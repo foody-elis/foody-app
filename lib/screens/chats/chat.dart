@@ -48,11 +48,18 @@ class Chat extends HookWidget {
                     mainAxisSize: MainAxisSize.max,
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
-                      IconButton(
-                        onPressed: () => NavigationService().goBack(),
-                        icon: const Icon(
-                          PhosphorIconsRegular.arrowLeft,
-                          color: Colors.white,
+                      Material(
+                        color: Colors.transparent,
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 15),
+                          child: InkWell(
+                            onTap: () => NavigationService().goBack(),
+                            borderRadius: BorderRadius.circular(100),
+                            child: const Icon(
+                              PhosphorIconsRegular.arrowLeft,
+                              color: Colors.white,
+                            ),
+                          ),
                         ),
                       ),
                       FoodyCircularImage(

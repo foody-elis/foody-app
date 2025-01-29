@@ -44,7 +44,7 @@ class OrderForm extends StatelessWidget {
               leading: IconButton(
                 onPressed: () =>
                     context.read<OrderFormBloc>().add(PreviousStep()),
-                icon: const Icon(PhosphorIconsLight.arrowLeft),
+                icon: const Icon(PhosphorIconsRegular.arrowLeft),
               ),
               actions: [
                 IconButton(
@@ -70,7 +70,7 @@ class OrderForm extends StatelessWidget {
                       ],
                     ),
                   ),
-                  icon: const Icon(PhosphorIconsLight.x),
+                  icon: const Icon(PhosphorIconsRegular.x),
                 )
               ],
             ),

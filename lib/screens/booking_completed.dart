@@ -33,7 +33,7 @@ class BookingCompleted extends StatelessWidget {
           IconButton(
             onPressed: () =>
                 NavigationService().resetToScreen(authenticatedRoute),
-            icon: const Icon(PhosphorIconsLight.x),
+            icon: const Icon(PhosphorIconsRegular.x),
           )
         ],
       ),

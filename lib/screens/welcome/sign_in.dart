@@ -12,6 +12,7 @@ import 'package:foody_app/widgets/utils/show_foody_snackbar.dart';
 import 'package:phosphor_flutter/phosphor_flutter.dart';
 
 import '../../bloc/sign_up/sign_up_bloc.dart';
+import '../../routing/navigation_service.dart';
 import '../../widgets/foody_button.dart';
 import '../../widgets/foody_text_field.dart';
 import '../../widgets/utils/show_foody_modal_bottom_sheet.dart';
@@ -76,7 +77,7 @@ class SignIn extends StatelessWidget {
               const SizedBox(height: 6),
               TextButton(
                 onPressed: () {
-                  Navigator.of(context).pop();
+                  NavigationService().goBack();
                   showFoodyModalBottomSheetWithBloc<void, SignUpBloc>(
                     context: context,
                     maxHeightPercentage: 90,

@@ -48,7 +48,6 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
 
   void _onFetchCategoriesAndRestaurants(
       FetchCategoriesAndRestaurants event, Emitter<HomeState> emit) async {
-    emit(state.copyWith(isFetching: true));
     emit(HomeState.initial());
 
     await Future.wait([_fetchCategories(emit), _fetchRestaurants(emit)]);

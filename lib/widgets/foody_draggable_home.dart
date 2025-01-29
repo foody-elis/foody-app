@@ -3,6 +3,7 @@ library draggable_home;
 import 'package:animate_do/animate_do.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:foody_app/routing/navigation_service.dart';
 import 'package:phosphor_flutter/phosphor_flutter.dart';
 
 class FoodyDraggableHome extends HookWidget {
@@ -170,11 +171,16 @@ class FoodyDraggableHome extends HookWidget {
               return SliverAppBar(
                 scrolledUnderElevation: 0,
                 backgroundColor: appBarColor,
-                leading: alwaysShowLeadingAndAction
-                    ? leading
-                    : isFullyCollapsed.value || isFullyExpanded.value
-                        ? leading
-                        : const SizedBox.shrink(),
+                leading: !ModalRoute.of(context)!.isFirst
+                    ? IconButton(
+                        icon: const Icon(
+                          PhosphorIconsRegular.arrowLeft,
+                          color: Colors.white,
+                        ),
+                        onPressed: () => NavigationService().goBack(),
+                      )
+                    : null,
+                automaticallyImplyLeading: false,
                 actions: alwaysShowLeadingAndAction
                     ? actions
                     : isFullyCollapsed.value || isFullyExpanded.value
@@ -199,9 +205,13 @@ class FoodyDraggableHome extends HookWidget {
                 flexibleSpace: Stack(
                   children: [
                     FlexibleSpaceBar(
-                      background: Container(
-                        child:
-                            isFullyExpanded.value ? expandedBody : headerWidget,
+                      background: SafeArea(
+                        top: !ModalRoute.of(context)!.isFirst,
+                        child: Container(
+                          child: isFullyExpanded.value
+                              ? expandedBody
+                              : headerWidget,
+                        ),
                       ),
                     ),
                     Positioned(
@@ -283,7 +293,7 @@ class FoodyDraggableHome extends HookWidget {
         ),
         boxShadow: [
           BoxShadow(
-            color: Colors.grey.withOpacity(0.5),
+            color: Theme.of(context).colorScheme.primary,
             spreadRadius: 5,
             blurRadius: 7,
             offset: const Offset(0, 3),

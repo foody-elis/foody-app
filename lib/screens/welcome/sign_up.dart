@@ -5,6 +5,7 @@ import 'package:foody_app/bloc/sign_up/sign_up_bloc.dart';
 import 'package:foody_app/bloc/sign_up/sign_up_event.dart';
 import 'package:foody_app/bloc/sign_up/sign_up_state.dart';
 import 'package:foody_app/repository/interface/user_repository.dart';
+import 'package:foody_app/routing/navigation_service.dart';
 import 'package:foody_app/screens/welcome/sign_in.dart';
 import 'package:foody_app/screens/welcome/sign_up_form.dart';
 import 'package:foody_app/widgets/foody_button.dart';
@@ -72,7 +73,7 @@ class SignUp extends StatelessWidget {
                 const SizedBox(height: 6),
                 TextButton(
                   onPressed: () {
-                    Navigator.of(context).pop();
+                    NavigationService().goBack();
                     showFoodyModalBottomSheetWithBloc<void, SignInBloc>(
                       context: context,
                       maxHeightPercentage: 80,

@@ -7,11 +7,17 @@
     <application
         android:label="Foody"
         android:name="${applicationName}"
-        android:icon="@mipmap/foody_icon"
+        android:icon="@mipmap/ic_launcher"
         >
         <meta-data
             android:name="io.flutter.embedding.android.EnableImpeller"
             android:value="false" />
+        <meta-data
+            android:name="com.google.firebase.messaging.default_notification_icon"
+            android:resource="@mipmap/ic_notification" />
+        <meta-data
+            android:name="com.google.firebase.messaging.default_notification_color"
+            android:resource="@color/primaryColor" />
         <activity
             android:name=".MainActivity"
             android:exported="true"

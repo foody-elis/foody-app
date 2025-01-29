@@ -75,7 +75,7 @@ class FoodyReview extends StatelessWidget {
           style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
         ),
         Text(review.description),
-        if (isLastReview) const Divider(height: 40)
+        if (!isLastReview) const Divider(height: 40)
       ],
     );
   }

@@ -54,7 +54,8 @@ class RestaurantReviews extends StatelessWidget {
 
                   return FoodyReview(
                     review: review,
-                    isLastReview: i != 4,
+                    isLastReview:
+                        i == reviews.asMap().entries.take(5).length - 1,
                   );
                 }),
               const SizedBox(height: 20),

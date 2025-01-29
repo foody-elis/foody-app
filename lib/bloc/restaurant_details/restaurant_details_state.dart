@@ -18,7 +18,7 @@ class RestaurantDetailsState extends Equatable {
   RestaurantDetailsState.initial()
       : restaurant = getFakeDetailedRestaurant(),
         apiError = "",
-        isFetching = false,
+        isFetching = true,
         isLoading = false;
 
   RestaurantDetailsState copyWith({

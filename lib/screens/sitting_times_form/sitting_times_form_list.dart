@@ -39,16 +39,8 @@ class SittingTimesFormList extends StatelessWidget {
                   !context.read<SittingTimesFormListBloc>().isEditing,
               expandedBody: const SittingTimesFormExpanded(),
               title: "Orari del tuo ristorante",
-              subtitleWidget: const Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    "Inserisci gli intervalli di orari in cui i tuoi clienti potranno prenotarsi.",
-                    style: TextStyle(color: Colors.grey),
-                  ),
-                  SizedBox(height: 8),
-                ],
-              ),
+              subtitle:
+                  "Inserisci gli intervalli di orari in cui i tuoi clienti potranno prenotarsi.",
               body: [
                 ListView.builder(
                   shrinkWrap: true,

@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:foody_app/bloc/bottom_nav_bar/bottom_nav_bar_bloc.dart';
 import 'package:foody_app/bloc/bottom_nav_bar/bottom_nav_bar_event.dart';
+import 'package:foody_app/widgets/utils/foody_colors.dart';
 
 import 'foody_draggable_home.dart';
 
@@ -56,16 +57,13 @@ class FoodySecondaryLayout extends HookWidget {
       }, []);
     }
 
-    // final color = Theme.of(context).colorScheme.primary.withAlpha(200);
-    const backgroundColor = Color(0xff0e4a47);
-
     final foodyDraggableHome = FoodyDraggableHome(
       physics: onRefresh == null ? null : const ClampingScrollPhysics(),
       expandedBody: expandedBody,
       scrollController: scrollController,
       stretchMaxHeight: expandedBodyHeight,
       startWithExpandedBody: startWithExpandedBody,
-      appBarColor: backgroundColor,
+      appBarColor: backgroundColorHeaderSecondaryLayout,
       title: Text(
         title,
         style: const TextStyle(
@@ -76,7 +74,7 @@ class FoodySecondaryLayout extends HookWidget {
       headerExpandedHeight: headerExpandedHeight,
       curvedBodyRadius: 20,
       headerWidget: Container(
-        color: backgroundColor,
+        color: backgroundColorHeaderSecondaryLayout,
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 20),
           child: Column(

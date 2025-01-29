@@ -1,5 +1,6 @@
 import 'package:animate_do/animate_do.dart';
 import 'package:flutter/material.dart';
+import 'package:foody_app/widgets/utils/foody_colors.dart';
 import 'package:lottie/lottie.dart';
 
 class SittingTimesFormExpanded extends StatelessWidget {
@@ -29,12 +30,15 @@ class SittingTimesFormExpanded extends StatelessWidget {
             "Descrizione",
             style: TextStyle(
               fontWeight: FontWeight.bold,
-              fontSize: 16,
+              fontSize: 18,
+              color: Colors.white,
             ),
           ),
           const SizedBox(height: 8),
-          const Text.rich(
-            TextSpan(
+          Text.rich(
+            style:
+                TextStyle(color: Theme.of(context).colorScheme.primaryFixedDim),
+            const TextSpan(
               children: [
                 TextSpan(text: "Nel form sottostante dovrai inserire gli "),
                 TextSpan(
@@ -55,46 +59,62 @@ class SittingTimesFormExpanded extends StatelessWidget {
               ],
             ),
           ),
-          const SizedBox(height: 5),
+          const SizedBox(height: 15),
           Row(
+            spacing: 5,
             children: [
-              Chip(
-                padding: const EdgeInsets.all(0),
-                // labelPadding: EdgeInsets.z,
-
-                backgroundColor: Theme.of(context).primaryColor,
-                label: const Text(
+              const Chip(
+                padding: EdgeInsets.all(0),
+                backgroundColor: backgroundColorHeaderSecondaryLayout,
+                label: Text(
                   "15 min",
                   style: TextStyle(color: Colors.white),
                 ),
               ),
-              const Text(" genera opzioni come 12:00, 12:15, 12:30"),
+              Text(
+                " genera opzioni come 12:00, 12:15, 12:30",
+                style: TextStyle(
+                  color: Theme.of(context).colorScheme.primaryFixedDim,
+                ),
+              ),
             ],
           ),
           Row(
+            spacing: 5,
             children: [
-              Chip(
-                padding: const EdgeInsets.all(0),
-                backgroundColor: Theme.of(context).primaryColor,
-                label: const Text(
+              const Chip(
+                padding: EdgeInsets.all(0),
+                backgroundColor: backgroundColorHeaderSecondaryLayout,
+                label: Text(
                   "30 min",
                   style: TextStyle(color: Colors.white),
                 ),
               ),
-              const Text(" genera opzioni come 12:00, 12:30, 13:00"),
+              Text(
+                " genera opzioni come 12:00, 12:30, 13:00",
+                style: TextStyle(
+                  color: Theme.of(context).colorScheme.primaryFixedDim,
+                ),
+              ),
             ],
           ),
           Row(
+            spacing: 5,
             children: [
-              Chip(
-                padding: const EdgeInsets.all(0),
-                backgroundColor: Theme.of(context).primaryColor,
-                label: const Text(
+              const Chip(
+                padding: EdgeInsets.all(0),
+                backgroundColor: backgroundColorHeaderSecondaryLayout,
+                label: Text(
                   "60 min",
                   style: TextStyle(color: Colors.white),
                 ),
               ),
-              const Text(" genera opzioni come 12:00, 13:00, 14:00"),
+              Text(
+                " genera opzioni come 12:00, 13:00, 14:00",
+                style: TextStyle(
+                  color: Theme.of(context).colorScheme.primaryFixedDim,
+                ),
+              ),
             ],
           ),
         ],

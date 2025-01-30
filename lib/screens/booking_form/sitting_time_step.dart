@@ -58,6 +58,7 @@ class BookingFormSittingTimeStep extends StatelessWidget {
                     runSpacing: 5,
                     children: launchSittingTimes
                         .map((sittingTime) => FoodyTag(
+                              elevation: 0,
                               width: (constraints.maxWidth / 4) - 5,
                               label:
                                   DateFormat("HH:mm").format(sittingTime.start),
@@ -86,6 +87,7 @@ class BookingFormSittingTimeStep extends StatelessWidget {
                     runSpacing: 5,
                     children: dinnerSittingTimes
                         .map((sittingTime) => FoodyTag(
+                              elevation: 0,
                               width: (constraints.maxWidth / 4) - 5,
                               label:
                                   DateFormat("HH:mm").format(sittingTime.start),

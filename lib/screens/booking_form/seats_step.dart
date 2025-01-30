@@ -40,6 +40,7 @@ class BookingFormSeatsStep extends HookWidget {
                   children: List.generate(
                     seatsExpanded.value ? 40 : 8,
                     (i) => FoodyTag(
+                      elevation: 0,
                       width: (constraints.maxWidth / 4) - 5,
                       label: "${++i}",
                       onTap: () => context

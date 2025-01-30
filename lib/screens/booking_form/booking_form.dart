@@ -78,13 +78,23 @@ class BookingForm extends StatelessWidget {
               ),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
-                spacing: 20,
+                spacing: 10,
                 children: [
                   BookingFormStepper(activeStep: state.activeStep),
-                  const BookingFormCalendarStep(),
-                  const BookingFormSittingTimeStep(),
-                  const BookingFormSeatsStep(),
-                  const BookingFormConfirmationStep(),
+                  const Expanded(
+                    child: SingleChildScrollView(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        spacing: 10,
+                        children: [
+                          BookingFormCalendarStep(),
+                          BookingFormSittingTimeStep(),
+                          BookingFormSeatsStep(),
+                          BookingFormConfirmationStep(),
+                        ],
+                      ),
+                    ),
+                  )
                 ],
               ),
             ),

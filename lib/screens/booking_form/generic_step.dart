@@ -42,7 +42,7 @@ class BookingFormGenericStep extends HookWidget {
 
         Widget content() => Column(
               crossAxisAlignment: CrossAxisAlignment.start,
-              spacing: 20,
+              spacing: 10,
               children: [
                 Text(
                   isStepPassed ? titleWhenPassed : title,

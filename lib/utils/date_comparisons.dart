@@ -24,3 +24,17 @@ bool isPast(DateTime booking, DateTime sittingTime) {
 
 bool isFuture(DateTime booking, DateTime sittingTime) =>
     !isPast(booking, sittingTime);
+
+bool isNowBeforeTime(DateTime time) {
+  final now = DateTime.now();
+
+  return now.hour < time.hour ||
+      now.hour == time.hour && now.minute < time.minute;
+}
+
+bool isNowAfterTime(DateTime time) {
+  final now = DateTime.now();
+
+  return now.hour > time.hour ||
+      now.hour == time.hour && now.minute > time.minute;
+}

@@ -13,6 +13,7 @@ import 'package:foody_app/screens/bookings/show_booking_actions.dart';
 import 'package:foody_app/screens/bookings/show_past_booking_actions.dart';
 import 'package:foody_app/screens/reviews/review_form.dart';
 import 'package:foody_app/utils/date_comparisons.dart';
+import 'package:foody_app/widgets/foody_animated_glow.dart';
 import 'package:foody_app/widgets/foody_tag_outlined.dart';
 import 'package:foody_app/widgets/utils/show_foody_modal_bottom_sheet.dart';
 import 'package:intl/intl.dart';
@@ -34,16 +35,11 @@ class FoodyBookingCard extends StatelessWidget {
   Widget build(BuildContext context) {
     final active = booking.status == BookingStatus.ACTIVE;
     final isRestaurateur = context.read<AuthBloc>().state.isRestaurateur;
-
-    bool canOrder() {
-      final now = DateTime.now();
-
-      return !isPast &&
-          !isRestaurateur &&
-          isToday(booking.date) &&
-          booking.sittingTime.start.isAfter(now) &&
-          booking.sittingTime.end.isBefore(now);
-    }
+    final canOrder = !isPast &&
+        !isRestaurateur &&
+        isToday(booking.date) &&
+        isNowAfterTime(booking.sittingTime.start) &&
+        isNowBeforeTime(booking.sittingTime.end);
 
     return SizedBox(
       height: 125,
@@ -83,7 +79,7 @@ class FoodyBookingCard extends StatelessWidget {
                         onCancel: () => context
                             .read<BookingsBloc>()
                             .add(CancelBooking(id: booking.id)),
-                        onOrder: canOrder()
+                        onOrder: canOrder
                             ? () => NavigationService().navigateTo(
                                   orderFormRoute,
                                   arguments: {"restaurant": booking.restaurant},
@@ -104,12 +100,31 @@ class FoodyBookingCard extends StatelessWidget {
                       Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Text(
-                            "Prenotazione #${booking.id}",
-                            style: const TextStyle(
-                              fontWeight: FontWeight.bold,
-                              fontSize: 16,
-                            ),
+                          Row(
+                            spacing: 10,
+                            children: [
+                              Text(
+                                "Prenotazione #${booking.id}",
+                                style: const TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 16,
+                                ),
+                              ),
+                              if (canOrder)
+                                AnimatedGlow(
+                                  glowColor: Theme.of(context).primaryColor,
+                                  glowRadiusFactor: 1,
+                                  glowCount: 1,
+                                  child: Container(
+                                    width: 10,
+                                    height: 10,
+                                    decoration: BoxDecoration(
+                                      shape: BoxShape.circle,
+                                      color: Theme.of(context).primaryColor,
+                                    ),
+                                  ),
+                                )
+                            ],
                           ),
                           Text(
                             "${DateFormat("d MMM y", "it_IT").format(booking.date)} • ${DateFormat("HH:mm").format(booking.sittingTime.start)}",

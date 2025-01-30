@@ -8,14 +8,7 @@ class BookingsEvent extends Equatable {
   List<Object?> get props => [];
 }
 
-class FetchBookings extends BookingsEvent {
-  const FetchBookings({this.restaurantId});
-
-  final int? restaurantId;
-
-  @override
-  List<Object?> get props => [restaurantId];
-}
+class FetchBookings extends BookingsEvent {}
 
 class FilterChanged extends BookingsEvent {
   const FilterChanged({required this.filter});

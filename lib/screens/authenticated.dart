@@ -59,6 +59,7 @@ class Authenticated extends HookWidget {
             BlocProvider<BookingsBloc>(
               create: (context) => BookingsBloc(
                 foodyApiClient: context.read<FoodyApiClient>(),
+                userRepository: context.read<UserRepository>(),
               ),
             ),
           ],

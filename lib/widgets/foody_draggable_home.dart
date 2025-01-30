@@ -206,6 +206,9 @@ class FoodyDraggableHome extends HookWidget {
                   children: [
                     FlexibleSpaceBar(
                       background: SafeArea(
+                        bottom: false,
+                        left: false,
+                        right: false,
                         top: !ModalRoute.of(context)!.isFirst,
                         child: Container(
                           child: isFullyExpanded.value
@@ -215,7 +218,7 @@ class FoodyDraggableHome extends HookWidget {
                       ),
                     ),
                     Positioned(
-                      bottom: -1,
+                      bottom: 0,
                       left: 0,
                       right: 0,
                       child: roundedCorner(context),
@@ -286,19 +289,24 @@ class FoodyDraggableHome extends HookWidget {
   Container roundedCorner(BuildContext context) {
     return Container(
       height: curvedBodyRadius,
+      clipBehavior: Clip.hardEdge,
       decoration: BoxDecoration(
         color: backgroundColor ?? Theme.of(context).scaffoldBackgroundColor,
         borderRadius: BorderRadius.vertical(
           top: Radius.circular(curvedBodyRadius),
         ),
-        boxShadow: [
+        border: Border.all(
+          width: 0.0,
+          color: backgroundColor ?? Theme.of(context).scaffoldBackgroundColor,
+        ),
+        /*boxShadow: [
           BoxShadow(
             color: Theme.of(context).colorScheme.primary,
             spreadRadius: 5,
             blurRadius: 7,
             offset: const Offset(0, 3),
           )
-        ],
+        ],*/
       ),
     );
   }

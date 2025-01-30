@@ -18,35 +18,30 @@ class FoodyBottomSheetLayout extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Widget modalContent() => SafeArea(
-          top: false,
-          child: Padding(
-            padding: EdgeInsets.only(
-              left: 16,
-              right: 16,
-              bottom: MediaQuery.of(context).viewInsets.bottom,
-              top: 16,
-            ),
-            child: SingleChildScrollView(
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Align(
-                    alignment: Alignment.center,
-                    child: Container(
-                      width: MediaQuery.of(context).size.width * 35 / 100,
-                      margin: const EdgeInsets.only(bottom: 20),
-                      height: 6,
-                      decoration: BoxDecoration(
-                        color: Colors.grey[300],
-                        borderRadius: BorderRadius.circular(20),
-                      ),
-                    ),
+    Widget modalContent([double? bottomPadding]) => Padding(
+          padding: EdgeInsets.only(
+            left: 16,
+            right: 16,
+            bottom: bottomPadding ?? 32,
+            top: 16,
+          ),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Align(
+                alignment: Alignment.center,
+                child: Container(
+                  width: MediaQuery.of(context).size.width * 35 / 100,
+                  margin: const EdgeInsets.only(bottom: 20),
+                  height: 6,
+                  decoration: BoxDecoration(
+                    color: Colors.grey[300],
+                    borderRadius: BorderRadius.circular(20),
                   ),
-                  child,
-                ],
+                ),
               ),
-            ),
+              child,
+            ],
           ),
         );
 
@@ -64,7 +59,12 @@ class FoodyBottomSheetLayout extends StatelessWidget {
     return draggable
         ? draggableSheet()
         : maxHeightPercentage == null
-            ? modalContent()
+            ? SafeArea(
+                top: false,
+                child: SingleChildScrollView(
+                  child: modalContent(MediaQuery.of(context).viewInsets.bottom),
+                ),
+              )
             : SizedBox(
                 width: MediaQuery.of(context).size.width,
                 height: MediaQuery.of(context).size.height *

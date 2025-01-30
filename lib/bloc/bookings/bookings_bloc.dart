@@ -9,16 +9,24 @@ import 'package:foody_app/bloc/bookings/bookings_state.dart';
 import 'package:foody_app/routing/navigation_service.dart';
 import 'package:foody_app/utils/bookings_filter.dart';
 
+import '../../repository/interface/user_repository.dart';
 import '../../utils/date_comparisons.dart';
 
 class BookingsBloc extends Bloc<BookingsEvent, BookingsState> {
   final FoodyApiClient foodyApiClient;
+  final UserRepository userRepository;
 
-  BookingsBloc({required this.foodyApiClient})
+  late final int? restaurantId;
+
+  BookingsBloc({required this.foodyApiClient, required this.userRepository})
       : super(BookingsState.initial()) {
     on<FetchBookings>(_onFetchBookings, transformer: droppable());
     on<CancelBooking>(_onCancelBooking, transformer: droppable());
     on<FilterChanged>(_onFilterChanged);
+
+    restaurantId = userRepository.get()!.restaurantId;
+
+    add(FetchBookings());
   }
 
   void _onFetchBookings(
@@ -26,9 +34,9 @@ class BookingsBloc extends Bloc<BookingsEvent, BookingsState> {
     emit(BookingsState.initial());
 
     await callApi<List<BookingResponseDto>>(
-      api: () => event.restaurantId == null
+      api: () => restaurantId == null
           ? foodyApiClient.bookings.getByCustomer()
-          : foodyApiClient.bookings.getByRestaurant(event.restaurantId!),
+          : foodyApiClient.bookings.getByRestaurant(restaurantId!),
       onComplete: (response) {
         emit(state.copyWith(bookings: response));
         _applyFilter(emit);
@@ -77,9 +85,7 @@ class BookingsBloc extends Bloc<BookingsEvent, BookingsState> {
 
     await callApi<BookingResponseDto>(
       api: () => foodyApiClient.bookings.cancel(event.id),
-      onComplete: (response) {
-        add(const FetchBookings());
-      },
+      onComplete: (response) => add(FetchBookings()),
       onFailed: (_) => emit(state.copyWith(bookings: [], bookingsFiltered: [])),
       onError: () => emit(state.copyWith(bookings: [], bookingsFiltered: [])),
       errorToEmit: (msg) => emit(state.copyWith(apiError: msg)),

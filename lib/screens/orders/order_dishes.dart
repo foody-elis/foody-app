@@ -33,7 +33,6 @@ class OrderDishes extends StatelessWidget {
           (orderDish) => ListTile(
             onTap: () => showFoodyModalBottomSheetWithBloc(
               context: context,
-              draggable: true,
               child: const ReviewForm(),
               createBloc: (_) => ReviewFormBloc(
                 foodyApiClient: context.read<FoodyApiClient>(),

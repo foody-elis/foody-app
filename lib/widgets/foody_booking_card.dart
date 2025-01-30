@@ -67,7 +67,6 @@ class FoodyBookingCard extends StatelessWidget {
                               NavigationService().goBack();
                               showFoodyModalBottomSheetWithBloc(
                                 context: context,
-                                draggable: true,
                                 child: const ReviewForm(),
                                 createBloc: (_) => ReviewFormBloc(
                                   foodyApiClient:

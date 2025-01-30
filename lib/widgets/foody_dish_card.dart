@@ -4,8 +4,8 @@ import 'package:foody_api_client/dto/response/dish_response_dto.dart';
 import 'package:foody_api_client/foody_api_client.dart';
 import 'package:foody_app/bloc/menu/menu_bloc.dart';
 import 'package:foody_app/bloc/order_form/order_form_bloc.dart';
+import 'package:foody_app/screens/menu/dish_details.dart';
 import 'package:foody_app/screens/menu/dish_form.dart';
-import 'package:foody_app/screens/restaurant_details/dish_details.dart';
 import 'package:foody_app/widgets/foody_rating.dart';
 import 'package:foody_app/widgets/utils/show_foody_modal_bottom_sheet.dart';
 import 'package:phosphor_flutter/phosphor_flutter.dart';
@@ -50,6 +50,7 @@ class FoodyDishCard extends StatelessWidget {
                 ? showFoodyModalBottomSheet(
                     context: context,
                     draggable: true,
+                    draggableInitialChildSize: 0.7,
                     child: BlocProvider<OrderFormBloc>.value(
                       value: context.read<OrderFormBloc>(),
                       child: DishDetails(dish: dish, canAddToCart: true),

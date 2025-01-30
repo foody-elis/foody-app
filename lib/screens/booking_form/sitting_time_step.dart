@@ -99,20 +99,6 @@ class BookingFormSittingTimeStep extends StatelessWidget {
                 ],
               ],
             );
-
-            return Wrap(
-              spacing: 5,
-              runSpacing: 5,
-              children: sittingTimes
-                  .map((sittingTime) => FoodyTag(
-                        width: (constraints.maxWidth / 4) - 5,
-                        label: DateFormat("HH:mm").format(sittingTime.start),
-                        onTap: () => context
-                            .read<BookingFormBloc>()
-                            .add(SittingTimeChanged(sittingTime: sittingTime)),
-                      ))
-                  .toList(),
-            );
           },
         );
       },

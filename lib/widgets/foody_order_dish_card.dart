@@ -4,7 +4,7 @@ import 'package:foody_api_client/dto/request/order_dish_request_dto.dart';
 import 'package:foody_api_client/dto/response/dish_response_dto.dart';
 import 'package:foody_app/bloc/order_form/order_form_bloc.dart';
 import 'package:foody_app/bloc/order_form/order_form_event.dart';
-import 'package:foody_app/screens/restaurant_details/dish_details.dart';
+import 'package:foody_app/screens/menu/dish_details.dart';
 import 'package:foody_app/widgets/utils/show_foody_modal_bottom_sheet.dart';
 import 'package:phosphor_flutter/phosphor_flutter.dart';
 import 'package:skeletonizer/skeletonizer.dart';

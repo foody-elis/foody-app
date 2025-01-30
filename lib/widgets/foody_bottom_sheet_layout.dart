@@ -7,45 +7,52 @@ class FoodyBottomSheetLayout extends StatelessWidget {
     required this.child,
     this.maxHeightPercentage,
     this.draggable = false,
+    this.draggableInitialChildSize = 0.6,
   });
 
   final BuildContext context;
   final Widget child;
   final int? maxHeightPercentage;
   final bool draggable;
+  final double draggableInitialChildSize;
 
   @override
   Widget build(BuildContext context) {
-    Widget modalContent() => Padding(
-          padding: const EdgeInsets.only(
-            left: 16,
-            right: 16,
-            bottom: 32,
-            top: 16,
-          ),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Align(
-                alignment: Alignment.center,
-                child: Container(
-                  width: MediaQuery.of(context).size.width * 35 / 100,
-                  margin: const EdgeInsets.only(bottom: 20),
-                  height: 6,
-                  decoration: BoxDecoration(
-                    color: Colors.grey[300],
-                    borderRadius: BorderRadius.circular(20),
+    Widget modalContent() => SafeArea(
+          top: false,
+          child: Padding(
+            padding: EdgeInsets.only(
+              left: 16,
+              right: 16,
+              bottom: MediaQuery.of(context).viewInsets.bottom,
+              top: 16,
+            ),
+            child: SingleChildScrollView(
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Align(
+                    alignment: Alignment.center,
+                    child: Container(
+                      width: MediaQuery.of(context).size.width * 35 / 100,
+                      margin: const EdgeInsets.only(bottom: 20),
+                      height: 6,
+                      decoration: BoxDecoration(
+                        color: Colors.grey[300],
+                        borderRadius: BorderRadius.circular(20),
+                      ),
+                    ),
                   ),
-                ),
+                  child,
+                ],
               ),
-              child,
-            ],
+            ),
           ),
         );
 
     Widget draggableSheet() => DraggableScrollableSheet(
           expand: false,
-          initialChildSize: 0.6,
+          initialChildSize: draggableInitialChildSize,
           builder: (context, scrollController) {
             return SingleChildScrollView(
               controller: scrollController,

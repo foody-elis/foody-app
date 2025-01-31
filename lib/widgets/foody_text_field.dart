@@ -50,6 +50,14 @@ class FoodyTextField extends HookWidget {
       return null;
     }, [label]);
 
+    final errorBorder = OutlineInputBorder(
+      borderSide: BorderSide(
+        color: Theme.of(context).colorScheme.error,
+        width: 1,
+      ),
+      borderRadius: BorderRadius.circular(10),
+    );
+
     return LayoutBuilder(
       builder: (BuildContext context, BoxConstraints constraints) => Container(
         padding: padding,
@@ -66,9 +74,10 @@ class FoodyTextField extends HookWidget {
                     style: const TextStyle(color: Colors.grey),
                   ),
                   if (required)
-                    const TextSpan(
+                    TextSpan(
                       text: ' *',
-                      style: TextStyle(color: Colors.red),
+                      style:
+                          TextStyle(color: Theme.of(context).colorScheme.error),
                     ),
                 ],
               ),
@@ -94,13 +103,20 @@ class FoodyTextField extends HookWidget {
                   hintText: hint,
                   hintStyle: TextStyle(fontSize: 14, color: Colors.grey[400]),
                   contentPadding: EdgeInsets.only(
-                      left: 16, right: 16, top: textArea ? 8 : 0),
+                    left: 16,
+                    right: 16,
+                    top: textArea ? 8 : 0,
+                  ),
+                  enabledBorder:
+                      errorText == null ? InputBorder.none : errorBorder,
                   border: InputBorder.none,
+                  focusedBorder:
+                      errorText == null ? InputBorder.none : errorBorder,
                   suffixIcon: errorText == null
                       ? suffixIcon
-                      : const Icon(
+                      : Icon(
                           PhosphorIconsRegular.warningCircle,
-                          color: Colors.red,
+                          color: Theme.of(context).colorScheme.error,
                         ),
                   counterText: "",
                 ),

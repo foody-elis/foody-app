@@ -23,7 +23,7 @@ class SittingTimesFormExpanded extends StatelessWidget {
             child: Lottie.asset(
               width: 300,
               height: 250,
-              "assets/lottie/sitting_times.json",
+              "assets/lottie/sitting_times_2.json",
             ),
           ),
           const Text(

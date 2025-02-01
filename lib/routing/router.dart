@@ -104,7 +104,7 @@ class Router {
           ),
         ),
       infoRoute => CupertinoPageRoute(
-          builder: (_) => const Info(),
+          builder: (_) => Info(),
         ),
       editProfileRoute => CupertinoPageRoute(
           builder: (_) => BlocProvider<SignUpBloc>(

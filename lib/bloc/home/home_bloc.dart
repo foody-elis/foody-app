@@ -1,5 +1,6 @@
 import 'package:bloc_concurrency/bloc_concurrency.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:foody_api_client/dto/response/booking_response_dto.dart';
 import 'package:foody_api_client/dto/response/category_response_dto.dart';
 import 'package:foody_api_client/dto/response/detailed_restaurant_response_dto.dart';
 import 'package:foody_api_client/foody_api_client.dart';
@@ -12,8 +13,8 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
   final FoodyApiClient foodyApiClient;
 
   HomeBloc({required this.foodyApiClient}) : super(HomeState.initial()) {
-    on<FetchCategoriesAndRestaurants>(
-      _onFetchCategoriesAndRestaurants,
+    on<FetchCategoriesAndRestaurantsAndCurrentBookings>(
+      _onFetchCategoriesAndRestaurantsAndCurrentBookings,
       transformer: droppable(),
     );
     on<AddCategoriesFilter>(_onAddCategoriesFilter);
@@ -21,7 +22,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     on<SearchBarFilterChanged>(_onSearchBarFilterChanged);
     on<ClearFilters>(_onClearFilters);
 
-    add(FetchCategoriesAndRestaurants());
+    add(FetchCategoriesAndRestaurantsAndCurrentBookings());
   }
 
   Future<void> _fetchCategories(Emitter<HomeState> emit) async =>
@@ -46,11 +47,27 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
         errorToEmit: (msg) => emit(state.copyWith(apiError: msg)),
       );
 
-  void _onFetchCategoriesAndRestaurants(
-      FetchCategoriesAndRestaurants event, Emitter<HomeState> emit) async {
+  Future<void> _fetchCurrentBookings(Emitter<HomeState> emit) async =>
+      callApi<List<BookingResponseDto>>(
+        api: foodyApiClient.bookings.getCurrentByCustomer,
+        onComplete: (bookings) =>
+            emit(state.copyWith(currentBookings: bookings)),
+        onFailed: (_) => emit(state.copyWith(categories: [])),
+        onError: () => emit(state.copyWith(categories: [])),
+        errorToEmit: (msg) => emit(state.copyWith(apiError: msg)),
+      );
+
+  void _onFetchCategoriesAndRestaurantsAndCurrentBookings(
+    FetchCategoriesAndRestaurantsAndCurrentBookings event,
+    Emitter<HomeState> emit,
+  ) async {
     emit(HomeState.initial());
 
-    await Future.wait([_fetchCategories(emit), _fetchRestaurants(emit)]);
+    await Future.wait([
+      _fetchCategories(emit),
+      _fetchRestaurants(emit),
+      _fetchCurrentBookings(emit),
+    ]);
 
     emit(state.copyWith(isFetching: false));
   }

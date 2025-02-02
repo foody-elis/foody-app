@@ -4,6 +4,7 @@ import 'package:foody_app/bloc/auth/auth_bloc.dart';
 import 'package:foody_app/bloc/home/home_event.dart';
 import 'package:foody_app/bloc/home/home_state.dart';
 import 'package:foody_app/screens/home/categories.dart';
+import 'package:foody_app/screens/home/current_bookings.dart';
 import 'package:foody_app/screens/home/restaurants.dart';
 import 'package:foody_app/widgets/foody_main_layout.dart';
 import 'package:foody_app/widgets/utils/show_foody_snackbar.dart';
@@ -24,7 +25,9 @@ class Home extends StatelessWidget {
       },
       child: FoodyMainLayout(
         onRefresh: () async {
-          context.read<HomeBloc>().add(FetchCategoriesAndRestaurants());
+          context
+              .read<HomeBloc>()
+              .add(FetchCategoriesAndRestaurantsAndCurrentBookings());
           context.read<AuthBloc>().add(FetchUser());
         },
         child: const Padding(
@@ -32,6 +35,7 @@ class Home extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
+              CurrentBookings(),
               Categories(),
               Restaurants(),
             ],

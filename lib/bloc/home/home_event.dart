@@ -7,7 +7,7 @@ class HomeEvent extends Equatable {
   List<Object> get props => [];
 }
 
-class FetchCategoriesAndRestaurants extends HomeEvent {}
+class FetchCategoriesAndRestaurantsAndCurrentBookings extends HomeEvent {}
 
 class ClearFilters extends HomeEvent {}
 

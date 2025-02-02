@@ -11,6 +11,7 @@ import 'package:foody_api_client/utils/call_api.dart';
 import 'package:foody_app/bloc/restaurant_form/restaurant_form_event.dart';
 import 'package:foody_app/bloc/restaurant_form/restaurant_form_state.dart';
 import 'package:foody_app/repository/interface/user_repository.dart';
+import 'package:foody_app/utils/download_and_save_file.dart';
 import 'package:image_picker/image_picker.dart';
 
 import '../../routing/constants.dart';
@@ -132,6 +133,20 @@ class RestaurantFormBloc
     if (_isFormValid(emit)) {
       emit(state.copyWith(isLoading: true));
 
+      final isEditing = restaurant != null;
+
+      late final String photoPath;
+
+      if (isEditing) {
+        photoPath = state.photoPath == ""
+            ? state.photoUrl == ""
+                ? ""
+                : await downloadAndSaveFile(state.photoUrl, "restaurant_edit")
+            : state.photoPath;
+      } else {
+        photoPath = state.photoPath;
+      }
+
       final bodyData = RestaurantRequestDto(
         name: state.name,
         phoneNumber: state.phoneNumber,
@@ -143,11 +158,10 @@ class RestaurantFormBloc
         province: state.province,
         seats: state.seats,
         categories: state.selectedCategories,
-        photoBase64: state.photoPath == ""
+        photoBase64: photoPath == ""
             ? null
-            : base64Encode(File(state.photoPath).readAsBytesSync()),
+            : base64Encode(File(photoPath).readAsBytesSync()),
       );
-      final isEditing = restaurant != null;
 
       await callApi<RestaurantResponseDto>(
         api: () => isEditing

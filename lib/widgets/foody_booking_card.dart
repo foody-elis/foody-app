@@ -6,13 +6,12 @@ import 'package:foody_api_client/utils/booking_status.dart';
 import 'package:foody_app/bloc/auth/auth_bloc.dart';
 import 'package:foody_app/bloc/bookings/bookings_bloc.dart';
 import 'package:foody_app/bloc/bookings/bookings_event.dart';
+import 'package:foody_app/bloc/home/home_bloc.dart';
 import 'package:foody_app/bloc/review_form/review_form_bloc.dart';
 import 'package:foody_app/routing/constants.dart';
 import 'package:foody_app/routing/navigation_service.dart';
 import 'package:foody_app/screens/bookings/show_booking_actions.dart';
-import 'package:foody_app/screens/bookings/show_past_booking_actions.dart';
 import 'package:foody_app/screens/reviews/review_form.dart';
-import 'package:foody_app/utils/date_comparisons.dart';
 import 'package:foody_app/widgets/foody_animated_glow.dart';
 import 'package:foody_app/widgets/foody_tag_outlined.dart';
 import 'package:foody_app/widgets/utils/show_foody_modal_bottom_sheet.dart';
@@ -35,11 +34,12 @@ class FoodyBookingCard extends StatelessWidget {
   Widget build(BuildContext context) {
     final active = booking.status == BookingStatus.ACTIVE;
     final isRestaurateur = context.read<AuthBloc>().state.isRestaurateur;
-    final canOrder = !isPast &&
-        !isRestaurateur &&
-        isToday(booking.date) &&
-        isNowAfterTime(booking.sittingTime.start) &&
-        isNowBeforeTime(booking.sittingTime.end);
+    final canOrder = !isRestaurateur &&
+        context
+            .read<HomeBloc>()
+            .state
+            .currentBookings
+            .any((b) => b.id == booking.id);
 
     return SizedBox(
       height: 125,
@@ -57,7 +57,7 @@ class FoodyBookingCard extends StatelessWidget {
           onTap: active
               ? isPast
                   ? !isRestaurateur
-                      ? () => showPastBookingActions(
+                      ? () => showBookingActions(
                             context: context,
                             onAddReview: () {
                               NavigationService().goBack();
@@ -76,9 +76,11 @@ class FoodyBookingCard extends StatelessWidget {
                       : null
                   : () => showBookingActions(
                         context: context,
-                        onCancel: () => context
-                            .read<BookingsBloc>()
-                            .add(CancelBooking(id: booking.id)),
+                        onCancel: !canOrder
+                            ? () => context
+                                .read<BookingsBloc>()
+                                .add(CancelBooking(id: booking.id))
+                            : null,
                         onOrder: canOrder
                             ? () => NavigationService().navigateTo(
                                   orderFormRoute,

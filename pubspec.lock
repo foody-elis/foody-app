@@ -711,7 +711,7 @@ packages:
     description:
       path: "."
       ref: main
-      resolved-ref: e767bd92239ebcfbcb383f5f4006daeeee01b70e
+      resolved-ref: "5fec672797237381a49884f3931c63dd2117b747"
       url: "https://github.com/foody-elis/foody_api_client"
     source: git
     version: "0.0.1"

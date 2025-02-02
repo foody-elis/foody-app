@@ -1,4 +1,5 @@
 import 'package:animate_do/animate_do.dart';
+import 'package:easy_rich_text/easy_rich_text.dart';
 import 'package:flutter/material.dart';
 import 'package:foody_app/widgets/utils/foody_colors.dart';
 import 'package:lottie/lottie.dart';
@@ -18,12 +19,11 @@ class SittingTimesFormExpanded extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           FadeInDown(
-            animate: true,
             duration: const Duration(milliseconds: 500),
             child: Lottie.asset(
               width: 300,
               height: 250,
-              "assets/lottie/sitting_times_2.json",
+              "assets/lottie/sitting_times.json",
             ),
           ),
           const Text(
@@ -35,28 +35,19 @@ class SittingTimesFormExpanded extends StatelessWidget {
             ),
           ),
           const SizedBox(height: 8),
-          Text.rich(
-            style:
-                TextStyle(color: Theme.of(context).colorScheme.primaryFixedDim),
-            const TextSpan(
-              children: [
-                TextSpan(text: "Nel form sottostante dovrai inserire gli "),
-                TextSpan(
-                  text: "orari",
-                  style: TextStyle(fontWeight: FontWeight.bold),
-                ),
-                TextSpan(
-                    text:
-                        " di apertura e chiusura settimanali del tuo ristorante.\n\n"),
-                TextSpan(text: "Successivamente dovrai scegliere in quanti "),
-                TextSpan(
-                  text: "intervalli",
-                  style: TextStyle(fontWeight: FontWeight.bold),
-                ),
-                TextSpan(
-                    text: " suddividere la tua giornata lavorativa, "
-                        "cosi da permettere ai clienti di prenotarsi."),
-              ],
+          EasyRichText(
+            "Nel form sottostante dovrai inserire gli orari di apertura e "
+            "chiusura settimanali del tuo ristorante.\n\nSuccessivamente "
+            "dovrai scegliere in quanti intervalli  suddividere la tua giornata lavorativa, "
+            "cosi da permettere ai clienti di prenotarsi.",
+            patternList: const [
+              EasyRichTextPattern(
+                targetString: ["orari", "intervalli"],
+                style: TextStyle(fontWeight: FontWeight.bold),
+              ),
+            ],
+            defaultStyle: TextStyle(
+              color: Theme.of(context).colorScheme.primaryFixedDim,
             ),
           ),
           const SizedBox(height: 15),

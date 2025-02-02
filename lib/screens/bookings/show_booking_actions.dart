@@ -4,8 +4,9 @@ import 'package:phosphor_flutter/phosphor_flutter.dart';
 
 void showBookingActions({
   required BuildContext context,
-  required void Function()? onCancel,
-  required void Function()? onOrder,
+  void Function()? onCancel,
+  void Function()? onOrder,
+  void Function()? onAddReview,
 }) {
   showFoodyModalBottomSheet(
     context: context,
@@ -17,12 +18,19 @@ void showBookingActions({
             icon: PhosphorIconsRegular.forkKnife,
             onTap: onOrder,
           ),
-        _actionItem(
-          label: "Cancella prenotazione",
-          icon: PhosphorIconsRegular.receiptX,
-          onTap: onCancel,
-          color: Theme.of(context).colorScheme.error,
-        ),
+        if (onCancel != null)
+          _actionItem(
+            label: "Cancella prenotazione",
+            icon: PhosphorIconsRegular.receiptX,
+            onTap: onCancel,
+            color: Theme.of(context).colorScheme.error,
+          ),
+        if (onAddReview != null)
+          _actionItem(
+            label: "Lascia una recensione",
+            icon: PhosphorIconsRegular.chatDots,
+            onTap: onAddReview,
+          ),
       ],
     ),
   );

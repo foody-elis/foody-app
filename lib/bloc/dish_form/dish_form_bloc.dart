@@ -12,6 +12,7 @@ import 'package:foody_app/bloc/menu/menu_event.dart';
 import 'package:foody_app/routing/navigation_service.dart';
 import 'package:image_picker/image_picker.dart';
 
+import '../../utils/download_and_save_file.dart';
 import '../menu/menu_bloc.dart';
 import 'dish_form_event.dart';
 
@@ -76,16 +77,29 @@ class DishFormBloc extends Bloc<DishFormEvent, DishFormState> {
 
   void _onSave(Save event, Emitter<DishFormState> emit) async {
     if (_isFormValid(emit)) {
+      final isEditing = dish != null;
+
+      late final String photoPath;
+
+      if (isEditing) {
+        photoPath = state.photoPath == ""
+            ? state.photoUrl == ""
+                ? ""
+                : await downloadAndSaveFile(state.photoUrl, "dish_edit")
+            : state.photoPath;
+      } else {
+        photoPath = state.photoPath;
+      }
+
       final bodyData = DishRequestDto(
         name: state.name,
         description: state.description,
         price: double.parse(state.price),
-        photoBase64: state.photoPath == ""
+        photoBase64: photoPath == ""
             ? null
-            : base64Encode(File(state.photoPath).readAsBytesSync()),
+            : base64Encode(File(photoPath).readAsBytesSync()),
         restaurantId: menuBloc.restaurantId,
       );
-      final isEditing = dish != null;
 
       emit(state.copyWith(isLoading: true));
 

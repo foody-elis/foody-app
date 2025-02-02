@@ -1,4 +1,5 @@
 import 'package:equatable/equatable.dart';
+import 'package:foody_api_client/dto/response/booking_response_dto.dart';
 import 'package:foody_api_client/dto/response/category_response_dto.dart';
 import 'package:foody_api_client/dto/response/detailed_restaurant_response_dto.dart';
 import 'package:foody_app/utils/skeletonizer_data/fake_category.dart';
@@ -10,6 +11,7 @@ class HomeState extends Equatable {
   final List<DetailedRestaurantResponseDto> restaurantsFiltered;
   final Set<int> categoriesFilter;
   final String searchBarFilter;
+  final List<BookingResponseDto> currentBookings;
   final bool isFetching;
   final String apiError;
 
@@ -19,6 +21,7 @@ class HomeState extends Equatable {
     required this.restaurantsFiltered,
     required this.categoriesFilter,
     required this.searchBarFilter,
+    required this.currentBookings,
     required this.isFetching,
     required this.apiError,
   });
@@ -29,6 +32,7 @@ class HomeState extends Equatable {
         restaurantsFiltered = List.filled(10, getFakeDetailedRestaurant()),
         categoriesFilter = {},
         searchBarFilter = "",
+        currentBookings = [],
         isFetching = true,
         apiError = "";
 
@@ -38,6 +42,7 @@ class HomeState extends Equatable {
     List<DetailedRestaurantResponseDto>? restaurantsFiltered,
     Set<int>? categoriesFilter,
     String? searchBarFilter,
+    List<BookingResponseDto>? currentBookings,
     bool? isFetching,
     String? apiError,
   }) {
@@ -46,8 +51,9 @@ class HomeState extends Equatable {
       restaurants: restaurants ?? this.restaurants,
       restaurantsFiltered: restaurantsFiltered ?? this.restaurantsFiltered,
       categoriesFilter: categoriesFilter ?? this.categoriesFilter,
-      isFetching: isFetching ?? this.isFetching,
       searchBarFilter: searchBarFilter ?? this.searchBarFilter,
+      currentBookings: currentBookings ?? this.currentBookings,
+      isFetching: isFetching ?? this.isFetching,
       apiError: apiError ?? this.apiError,
     );
   }
@@ -59,6 +65,7 @@ class HomeState extends Equatable {
         restaurantsFiltered,
         categoriesFilter,
         searchBarFilter,
+        currentBookings,
         isFetching,
         apiError,
       ];

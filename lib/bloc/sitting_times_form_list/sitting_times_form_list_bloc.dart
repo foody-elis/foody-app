@@ -70,14 +70,14 @@ class SittingTimesFormListBloc
           weekDayState.dinnerStartTime != null) {
         sittingTimeApiCalls.add(
           callApi<WeekdayInfoResponseDto>(
-            api: () => isEditing
-                ? foodyApiClient.weekdayInfo.update(weekDayState.id!, body)
-                : foodyApiClient.weekdayInfo.save(
+            api: () => weekDayState.id == null
+                ? foodyApiClient.weekdayInfo.save(
                     body.toWeekdayInfoRequestDto(
                       weekDay: weekDay,
                       restaurantId: _restaurantId,
                     ),
-                  ),
+                  )
+                : foodyApiClient.weekdayInfo.update(weekDayState.id!, body),
             errorToEmit: (e) => emit(state.copyWith(error: e)),
             throwException: true,
           ),
@@ -169,13 +169,7 @@ class SittingTimesFormListBloc
       onComplete: (response) {
         final Map<String, SittingTimesFormState> weekDays = Map.from(
           state.weekDays.map(
-            (k, v) => MapEntry(
-              k,
-              v.copyWith(
-                accordionsState: false,
-                id: state.weekDays.keys.toList().indexOf(k),
-              ),
-            ),
+            (k, v) => MapEntry(k, v.copyWith(accordionsState: false)),
           ),
         );
 

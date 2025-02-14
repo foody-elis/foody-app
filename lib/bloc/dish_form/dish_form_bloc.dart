@@ -81,6 +81,8 @@ class DishFormBloc extends Bloc<DishFormEvent, DishFormState> {
 
       late final String photoPath;
 
+      emit(state.copyWith(isLoading: true));
+
       if (isEditing) {
         photoPath = state.photoPath == ""
             ? state.photoUrl == ""
@@ -100,8 +102,6 @@ class DishFormBloc extends Bloc<DishFormEvent, DishFormState> {
             : base64Encode(File(photoPath).readAsBytesSync()),
         restaurantId: menuBloc.restaurantId,
       );
-
-      emit(state.copyWith(isLoading: true));
 
       await callApi<DishResponseDto>(
         api: () => isEditing

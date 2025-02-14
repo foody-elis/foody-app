@@ -75,6 +75,7 @@ class ReviewFormBloc extends Bloc<ReviewFormEvent, ReviewFormState> {
           emit(state.copyWith(apiError: "Recensione aggiunta con successo"));
           emit(state.copyWith(apiError: ""));
           NavigationService().goBack();
+          if (dishId != null) NavigationService().goBack();
         },
         errorToEmit: (msg) => emit(state.copyWith(apiError: msg)),
       );

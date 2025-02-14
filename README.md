@@ -69,10 +69,11 @@ With its seamless and user-friendly interface, Foody Customer App makes dining o
 ## Customer
 
 ### Sign up
-![](resources/use_cases/customer/sign_up.webm.mp4)
+![](resources/use_cases/customer/sign_up.webm)
 
 ### Sign in
-![](resources/use_cases/customer/sign_in.webm)
+![](resources/use_cases/customer/sign_in.mp4)
+![](resources/use_cases/customer/sign_in.gif)
 
 ### Create booking
 ![](resources/use_cases/customer/create_booking.webm)

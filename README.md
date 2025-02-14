@@ -69,92 +69,92 @@ With its seamless and user-friendly interface, Foody Customer App makes dining o
 ## Customer
 
 ### Sign up
-![](resources/use_cases/customer/sign_up.webm)
+
+<img height="500" src="resources/use_cases/customer/sign_up.gif" />
 
 ### Sign in
-![](resources/use_cases/customer/sign_in.mp4)
-![](resources/use_cases/customer/sign_in.gif)
+<img height="500" src="resources/use_cases/customer/sign_in.gif" />
 
 ### Create booking
-![](resources/use_cases/customer/create_booking.webm)
+<img height="500" src="resources/use_cases/customer/create_booking.gif" />
 
 ### Create order
-![](resources/use_cases/customer/create_order.webm)
+<img height="500" src="resources/use_cases/customer/create_order.gif" />
 
 ### Create restaurant review
-![](resources/use_cases/customer/create_restaurant_review.webm)
+<img height="500" src="resources/use_cases/customer/create_restaurant_review.gif" />
 
 ### Create dish review
-![](resources/use_cases/customer/create_dish_review.webm)
+<img height="500" src="resources/use_cases/customer/create_dish_review.gif" />
 
 ## Restaurateur
 
 ### Sign up
 
 #### Create profile
-![](resources/use_cases/restaurateur/sign_up/create_profile.webm)
+<img height="500" src="resources/use_cases/restaurateur/sign_up/create_profile.gif" />
 
 #### Create restaurant
-![](resources/use_cases/restaurateur/sign_up/create_restaurant.webm)
+<img height="500" src="resources/use_cases/restaurateur/sign_up/create_restaurant.gif" />
 
 #### Create sitting times
-![](resources/use_cases/restaurateur/sign_up/create_sitting_times.webm)
+<img height="500" src="resources/use_cases/restaurateur/sign_up/create_sitting_times.gif" />
 
 ### Sign in
-![](resources/use_cases/restaurateur/sign_in.webm)
+<img height="500" src="resources/use_cases/restaurateur/sign_in.gif" />
 
 ### Menu
 
 #### Create dish
-![](resources/use_cases/restaurateur/menu/create_dish.webm)
+<img height="500" src="resources/use_cases/restaurateur/menu/create_dish.gif" />
 
 #### Update dish
-![](resources/use_cases/restaurateur/menu/update_dish.webm)
+<img height="500" src="resources/use_cases/restaurateur/menu/update_dish.gif" />
 
 #### Delete dish
-![](resources/use_cases/restaurateur/menu/delete_dish.webm)
-![](resources/use_cases/restaurateur/menu/delete_dish_2.webm)
+<img height="500" src="resources/use_cases/restaurateur/menu/delete_dish.gif" />
+<img height="500" src="resources/use_cases/restaurateur/menu/delete_dish_2.gif" />
 
 ### Edit sitting times
-![](resources/use_cases/restaurateur/edit_sitting_times.webm)
+<img height="500" src="resources/use_cases/restaurateur/edit_sitting_times.gif" />
 
 ### Edit restaurant info
-![](resources/use_cases/restaurateur/edit_restaurant_info.webm)
+<img height="500" src="resources/use_cases/restaurateur/edit_restaurant_info.gif" />
 
 ## Common Cases
 
 ### View restaurant menu
-![](resources/use_cases/common_cases/view_restaurant_menu.webm)
+<img height="500" src="resources/use_cases/common_cases/view_restaurant_menu.gif" />
 
 ### View restaurant reviews
-![](resources/use_cases/common_cases/view_restaurant_reviews.webm)
+<img height="500" src="resources/use_cases/common_cases/view_restaurant_reviews.gif" />
 
 ### Chat
 
 #### Text message
-![](resources/use_cases/common_cases/chat/text_message.webm)
+<img height="500" src="resources/use_cases/common_cases/chat/text_message.gif" />
 
 #### Image message
-![](resources/use_cases/common_cases/chat/image_message.webm)
+<img height="500" src="resources/use_cases/common_cases/chat/image_message.gif" />
 
 #### File message
-![](resources/use_cases/common_cases/chat/file_message.webm)
+<img height="500" src="resources/use_cases/common_cases/chat/file_message.gif" />
 
 #### Message read
-![](resources/use_cases/common_cases/chat/message_read.webm)
+<img height="500" src="resources/use_cases/common_cases/chat/message_read.gif" />
 
 #### Notification
-![](resources/use_cases/common_cases/chat/notification.webm)
-![](resources/use_cases/common_cases/chat/notification_2.webm)
+<img height="500" src="resources/use_cases/common_cases/chat/notification.gif" />
+<img height="500" src="resources/use_cases/common_cases/chat/notification_2.gif" />
 
 ### Bookings
-![](resources/use_cases/common_cases/bookings.webm)
+<img height="500" src="resources/use_cases/common_cases/bookings.gif" />
 
 ### Edit profile
-![](resources/use_cases/common_cases/edit_profile.webm)
+<img height="500" src="resources/use_cases/common_cases/edit_profile.gif" />
 
 ### Orders
-![](resources/use_cases/common_cases/orders.webm)
+<img height="500" src="resources/use_cases/common_cases/orders.gif" />
 
 ### Logout
-![](resources/use_cases/common_cases/logout.webm)
+<img height="500" src="resources/use_cases/common_cases/logout.gif" />

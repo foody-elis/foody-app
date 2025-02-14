@@ -70,91 +70,91 @@ With its seamless and user-friendly interface, Foody Customer App makes dining o
 
 ### Sign up
 
-<img height="500" src="resources/use_cases/customer/sign_up.gif" />
+<img loading="lazy" height="500" src="resources/use_cases/customer/sign_up.gif" />
 
 ### Sign in
-<img height="500" src="resources/use_cases/customer/sign_in.gif" />
+<img loading="lazy" height="500" src="resources/use_cases/customer/sign_in.gif" />
 
 ### Create booking
-<img height="500" src="resources/use_cases/customer/create_booking.gif" />
+<img loading="lazy" height="500" src="resources/use_cases/customer/create_booking.gif" />
 
 ### Create order
-<img height="500" src="resources/use_cases/customer/create_order.gif" />
+<img loading="lazy" height="500" src="resources/use_cases/customer/create_order.gif" />
 
 ### Create restaurant review
-<img height="500" src="resources/use_cases/customer/create_restaurant_review.gif" />
+<img loading="lazy" height="500" src="resources/use_cases/customer/create_restaurant_review.gif" />
 
 ### Create dish review
-<img height="500" src="resources/use_cases/customer/create_dish_review.gif" />
+<img loading="lazy" height="500" src="resources/use_cases/customer/create_dish_review.gif" />
 
 ## Restaurateur
 
 ### Sign up
 
 #### Create profile
-<img height="500" src="resources/use_cases/restaurateur/sign_up/create_profile.gif" />
+<img loading="lazy" height="500" src="resources/use_cases/restaurateur/sign_up/create_profile.gif" />
 
 #### Create restaurant
-<img height="500" src="resources/use_cases/restaurateur/sign_up/create_restaurant.gif" />
+<img loading="lazy" height="500" src="resources/use_cases/restaurateur/sign_up/create_restaurant.gif" />
 
 #### Create sitting times
-<img height="500" src="resources/use_cases/restaurateur/sign_up/create_sitting_times.gif" />
+<img loading="lazy" height="500" src="resources/use_cases/restaurateur/sign_up/create_sitting_times.gif" />
 
 ### Sign in
-<img height="500" src="resources/use_cases/restaurateur/sign_in.gif" />
+<img loading="lazy" height="500" src="resources/use_cases/restaurateur/sign_in.gif" />
 
 ### Menu
 
 #### Create dish
-<img height="500" src="resources/use_cases/restaurateur/menu/create_dish.gif" />
+<img loading="lazy" height="500" src="resources/use_cases/restaurateur/menu/create_dish.gif" />
 
 #### Update dish
-<img height="500" src="resources/use_cases/restaurateur/menu/update_dish.gif" />
+<img loading="lazy" height="500" src="resources/use_cases/restaurateur/menu/update_dish.gif" />
 
 #### Delete dish
-<img height="500" src="resources/use_cases/restaurateur/menu/delete_dish.gif" />
-<img height="500" src="resources/use_cases/restaurateur/menu/delete_dish_2.gif" />
+<img loading="lazy" height="500" src="resources/use_cases/restaurateur/menu/delete_dish.gif" />
+<img loading="lazy" height="500" src="resources/use_cases/restaurateur/menu/delete_dish_2.gif" />
 
 ### Edit sitting times
-<img height="500" src="resources/use_cases/restaurateur/edit_sitting_times.gif" />
+<img loading="lazy" height="500" src="resources/use_cases/restaurateur/edit_sitting_times.gif" />
 
 ### Edit restaurant info
-<img height="500" src="resources/use_cases/restaurateur/edit_restaurant_info.gif" />
+<img loading="lazy" height="500" src="resources/use_cases/restaurateur/edit_restaurant_info.gif" />
 
 ## Common Cases
 
 ### View restaurant menu
-<img height="500" src="resources/use_cases/common_cases/view_restaurant_menu.gif" />
+<img loading="lazy" height="500" src="resources/use_cases/common_cases/view_restaurant_menu.gif" />
 
 ### View restaurant reviews
-<img height="500" src="resources/use_cases/common_cases/view_restaurant_reviews.gif" />
+<img loading="lazy" height="500" src="resources/use_cases/common_cases/view_restaurant_reviews.gif" />
 
 ### Chat
 
 #### Text message
-<img height="500" src="resources/use_cases/common_cases/chat/text_message.gif" />
+<img loading="lazy" height="500" src="resources/use_cases/common_cases/chat/text_message.gif" />
 
 #### Image message
-<img height="500" src="resources/use_cases/common_cases/chat/image_message.gif" />
+<img loading="lazy" height="500" src="resources/use_cases/common_cases/chat/image_message.gif" />
 
 #### File message
-<img height="500" src="resources/use_cases/common_cases/chat/file_message.gif" />
+<img loading="lazy" height="500" src="resources/use_cases/common_cases/chat/file_message.gif" />
 
 #### Message read
-<img height="500" src="resources/use_cases/common_cases/chat/message_read.gif" />
+<img loading="lazy" height="500" src="resources/use_cases/common_cases/chat/message_read.gif" />
 
 #### Notification
-<img height="500" src="resources/use_cases/common_cases/chat/notification.gif" />
-<img height="500" src="resources/use_cases/common_cases/chat/notification_2.gif" />
+<img loading="lazy" height="500" src="resources/use_cases/common_cases/chat/notification.gif" />
+<img loading="lazy" height="500" src="resources/use_cases/common_cases/chat/notification_2.gif" />
 
 ### Bookings
-<img height="500" src="resources/use_cases/common_cases/bookings.gif" />
+<img loading="lazy" height="500" src="resources/use_cases/common_cases/bookings.gif" />
 
 ### Edit profile
-<img height="500" src="resources/use_cases/common_cases/edit_profile.gif" />
+<img loading="lazy" height="500" src="resources/use_cases/common_cases/edit_profile.gif" />
 
 ### Orders
-<img height="500" src="resources/use_cases/common_cases/orders.gif" />
+<img loading="lazy" height="500" src="resources/use_cases/common_cases/orders.gif" />
 
 ### Logout
-<img height="500" src="resources/use_cases/common_cases/logout.gif" />
+<img loading="lazy" height="500" src="resources/use_cases/common_cases/logout.gif" />

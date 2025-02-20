@@ -78,7 +78,9 @@ dependencies:
   file_picker: ^8.1.7
   mime: ^2.0.0
   uuid: ^4.5.1
-  open_filex: ^4.6.0
+  open_filex:
+    git:
+      url: https://github.com/mufassalhussain/open_filex
   firebase_messaging: ^15.2.0
   flutter_local_notifications: ^18.0.1
   path_provider: ^2.1.5

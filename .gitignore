@@ -54,3 +54,5 @@ GoogleService-Info.plist
 firebase_options.dart
 firebase.json
 android/app/.cxx/
+google_key_store.jks
+key.properties
